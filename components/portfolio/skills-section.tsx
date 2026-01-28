@@ -17,7 +17,7 @@ const skillCategories = [
   {
     title: "Backend & APIs",
     icon: Server,
-    skills: ["Flask", "Node.js", "Go", "RESTful APIs", "Firebase", "Odoo Integration"],
+    skills: ["Flask", "Node.js", "Go", "RESTful APIs", "Firebase", "Next.js"],
   },
   {
     title: "AI & ML",
