@@ -104,9 +104,30 @@
   body {
     @apply bg-background text-foreground;
   }
-  
   html {
     scroll-behavior: smooth;
+  }
+  /* Focus visible for keyboard nav - cosmic accent */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-cosmic-blue rounded;
+  }
+  /* Selection styling */
+  ::selection {
+    background: rgba(74, 159, 255, 0.25);
+    color: var(--silver-bright);
+  }
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
@@ -549,21 +570,44 @@
 }
 
 .text-gradient-silver {
-  background: linear-gradient(135deg, #c0c0d0 0%, #e8e8f0 50%, #c0c0d0 100%);
+  background: linear-gradient(135deg, #a0a0b8 0%, #e8e8f0 35%, #fff 50%, #e8e8f0 65%, #c0c0d0 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-cosmic {
-  background: linear-gradient(135deg, #4a9fff 0%, #22d3ee 50%, #4a9fff 100%);
+  background: linear-gradient(135deg, #4a9fff 0%, #22d3ee 40%, #7dd3fc 60%, #4a9fff 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .bg-cosmic-gradient {
-  background: radial-gradient(ellipse at top, #1a1a2e 0%, #050510 50%, #000008 100%);
+  background: radial-gradient(ellipse 120% 80% at 50% -20%, #1a1a2e 0%, #0d0d18 40%, #050510 70%, #000008 100%);
+}
+
+/* Section paint optimization - browser can skip off-screen work */
+section[id] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* Section fade in/out - used with inline opacity from visibility ratio */
+.section-transition {
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Consistent section content width */
+.section-content {
+  max-width: 80rem; /* 1280px - max-w-7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 .border-glow {
@@ -597,4 +641,15 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #5aafff, #32e3fe);
+}
+
+/* Subtle noise texture overlay - creative depth */
+.noise-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

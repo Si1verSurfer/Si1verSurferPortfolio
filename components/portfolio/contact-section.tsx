@@ -1,39 +1,22 @@
 "use client";
 
-import React from "react"
-
-import { useEffect, useRef, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { Send, Github, Linkedin, Mail, MapPin, Zap } from "lucide-react";
+import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
 
 export function ContactSection() {
-  const [isVisible, setIsVisible] = useState(false);
+  const isVisible = useSectionVisibility("contact");
+  const ratio = useSectionVisibilityRatio("contact");
+  const opacity = Math.min(1, ratio * 1.4);
+  const translateY = 20 * (1 - opacity);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     message: "",
-    // Add other form fields if necessary
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     // Simulate form submission
@@ -45,9 +28,8 @@ export function ContactSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="contact"
-      className="relative py-24 md:py-32 bg-deep-space overflow-hidden floating-orbs"
+      className="relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
     >
       {/* Animated background effects */}
       <div className="absolute inset-0">
@@ -65,10 +47,13 @@ export function ContactSection() {
         }}
       />
 
-      <div className="relative max-w-6xl mx-auto px-6">
+      <div
+        className="relative max-w-7xl mx-auto px-6 section-transition"
+        style={{ opacity, transform: `translateY(${translateY}px)` }}
+      >
         {/* Section header */}
         <div
-          className={`text-center mb-16 transition-all duration-1000 ${
+          className={`text-center mb-14 md:mb-16 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
@@ -83,10 +68,10 @@ export function ContactSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Contact info */}
           <div
-            className={`transition-all duration-1000 delay-200 ${
+            className={`transition-all duration-700 delay-200 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
@@ -169,7 +154,7 @@ export function ContactSection() {
 
           {/* Contact form */}
           <div
-            className={`transition-all duration-1000 delay-400 ${
+            className={`transition-all duration-700 delay-300 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
             }`}
           >

@@ -12,7 +12,7 @@ export function Footer() {
       {/* Background accent */}
       <div className="absolute inset-0 bg-gradient-to-t from-cosmic-blue/5 to-transparent pointer-events-none" />
 
-      <div className="relative max-w-6xl mx-auto px-6 py-12">
+      <div className="relative max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo and tagline */}
           <div className="flex flex-col items-center md:items-start gap-2">
@@ -93,8 +93,10 @@ export function Footer() {
 
           {/* Back to top button */}
           <button
+            type="button"
             onClick={scrollToTop}
-            className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-cosmic-blue transition-all duration-300"
+            className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-cosmic-blue transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cosmic-blue rounded"
+            aria-label="Back to top"
           >
             <span className="group-hover:-translate-y-0.5 transition-transform duration-300">Back to top</span>
             <div className="p-1.5 rounded border border-border group-hover:border-cosmic-blue/50 group-hover:bg-cosmic-blue/10 group-hover:shadow-[0_0_15px_rgba(74,159,255,0.2)] transition-all duration-300">

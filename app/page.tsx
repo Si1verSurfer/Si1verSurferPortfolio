@@ -7,11 +7,11 @@ import { Footer } from "@/components/portfolio/footer";
 
 export default function Portfolio() {
   return (
-    <main className="min-h-screen bg-deep-space">
+    <main className="min-h-screen bg-deep-space noise-overlay">
       <Navigation />
       <HeroSection />
-      <SkillsSection />
       <ProjectsSection />
+      <SkillsSection />
       <ContactSection />
       <Footer />
     </main>

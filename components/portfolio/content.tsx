@@ -1,6 +1,6 @@
-import React from "react"
+"use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { Send, Github, Linkedin, Mail, MapPin, Zap } from "lucide-react";
 
 export function ContactSection() {
@@ -31,7 +31,7 @@ export function ContactSection() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     // Simulate form submission

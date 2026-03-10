@@ -1,40 +1,53 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const MAX_TRAILS = 10;
+const TRAIL_PRUNE_INTERVAL_MS = 60;
 
 export function CosmicCursor() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [trails, setTrails] = useState<{ x: number; y: number; id: number }[]>([]);
-  const trailId = useRef(0);
+  const trailIdRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const pendingRef = useRef<{ x: number; y: number; pointer: boolean } | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      
-      // Add trail particle
-      trailId.current += 1;
-      setTrails((prev) => [
-        ...prev.slice(-12),
-        { x: e.clientX, y: e.clientY, id: trailId.current },
-      ]);
-
-      // Check if hovering over clickable element
       const target = e.target as HTMLElement;
-      const isClickable =
+      const pointer =
         target.tagName === "A" ||
         target.tagName === "BUTTON" ||
-        target.closest("a") ||
-        target.closest("button") ||
+        !!target.closest("a") ||
+        !!target.closest("button") ||
         window.getComputedStyle(target).cursor === "pointer";
-      setIsPointer(isClickable);
+
+      pendingRef.current = { x: e.clientX, y: e.clientY, pointer };
+
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        const p = pendingRef.current;
+        if (p) {
+          pendingRef.current = null;
+          setPosition({ x: p.x, y: p.y });
+          setIsPointer(p.pointer);
+          const nextId = trailIdRef.current + 1;
+          trailIdRef.current = nextId;
+          setTrails((prev) => [
+            ...prev.slice(-(MAX_TRAILS - 1)),
+            { x: p.x, y: p.y, id: nextId },
+          ]);
+        }
+      });
     };
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
 
@@ -42,15 +55,15 @@ export function CosmicCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
-  // Clean up old trails
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTrails((prev) => prev.slice(-8));
-    }, 50);
-    return () => clearInterval(interval);
+    const t = setInterval(() => {
+      setTrails((prev) => (prev.length <= 4 ? prev : prev.slice(-6)));
+    }, TRAIL_PRUNE_INTERVAL_MS);
+    return () => clearInterval(t);
   }, []);
 
   return (
@@ -72,7 +85,7 @@ export function CosmicCursor() {
       <div className="fixed inset-0 pointer-events-none z-[9998] hidden md:block">
         {trails.map((trail, index) => (
           <div
-            key={trail.id}
+            key={`trail-${trail.id}-${index}`}
             className="absolute rounded-full"
             style={{
               left: trail.x,

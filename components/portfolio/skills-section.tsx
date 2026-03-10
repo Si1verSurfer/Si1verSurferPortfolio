@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo } from "react";
 import { Code2, Smartphone, Server, Brain, Wrench } from "lucide-react";
+import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
 
-const skillCategories = [
+const SKILL_CATEGORIES = [
   {
     title: "Languages",
     icon: Code2,
@@ -31,12 +32,12 @@ const skillCategories = [
   },
 ];
 
-function SkillCard({
+const SkillCard = memo(function SkillCard({
   category,
   index,
   isVisible,
 }: {
-  category: (typeof skillCategories)[0];
+  category: (typeof SKILL_CATEGORIES)[0];
   index: number;
   isVisible: boolean;
 }) {
@@ -91,34 +92,18 @@ function SkillCard({
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cosmic-blue/0 to-transparent group-hover:via-cosmic-blue/50 transition-all duration-700" />
     </div>
   );
-}
+});
 
 export function SkillsSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const isVisible = useSectionVisibility("skills");
+  const ratio = useSectionVisibilityRatio("skills");
+  const opacity = Math.min(1, ratio * 1.4);
+  const translateY = 20 * (1 - opacity);
 
   return (
     <section
-      ref={sectionRef}
       id="skills"
-      className="relative py-24 md:py-32 bg-deep-space overflow-hidden floating-orbs"
+      className="relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
     >
       {/* Animated background grid */}
       <div
@@ -136,10 +121,10 @@ export function SkillsSection() {
         <div className="absolute bottom-32 left-[30%] w-24 h-24 rounded-full bg-silver/5 blur-3xl animate-float-gentle" style={{ animationDelay: "4s" }} />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-6 section-transition" style={{ opacity, transform: `translateY(${translateY}px)` }}>
         {/* Section header */}
         <div
-          className={`text-center mb-16 transition-all duration-1000 ${
+          className={`text-center mb-14 md:mb-16 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
@@ -155,8 +140,8 @@ export function SkillsSection() {
         </div>
 
         {/* Skills grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+          {SKILL_CATEGORIES.map((category, index) => (
             <SkillCard
               key={category.title}
               category={category}
@@ -168,7 +153,7 @@ export function SkillsSection() {
 
         {/* Stats row */}
         <div
-          className={`mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 transition-all duration-1000 delay-500 ${
+          className={`mt-14 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
