@@ -15,7 +15,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSectionVisibility } from "@/context/portfolio-context";
+import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
+import { usePersistedVisible } from "@/hooks/use-persisted-visible";
+import { SectionHeader } from "@/components/portfolio/section-header";
 import { PROJECTS } from "@/data/projects";
 import type { Project } from "@/data/projects";
 import { MobilePhoneMockup } from "./mobile-phone-mockup";
@@ -115,13 +117,13 @@ const ImageLightbox = memo(function ImageLightbox({
 const ProjectRow = memo(function ProjectRow({
   project,
   index,
-  isVisible,
+  revealed,
   onImageClick,
   imageOnLeft,
 }: {
   project: Project;
   index: number;
-  isVisible: boolean;
+  revealed: boolean;
   onImageClick: (projectId: number, imageIndex: number) => void;
   imageOnLeft: boolean;
 }) {
@@ -239,10 +241,10 @@ const ProjectRow = memo(function ProjectRow({
 
   return (
     <article
-      className={`grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-0 lg:gap-12 items-stretch rounded-2xl border border-border bg-card/40 overflow-hidden transition-all duration-500 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      className={`grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-0 lg:gap-12 items-stretch rounded-2xl border border-border bg-card/40 overflow-hidden transition-all duration-700 [transition-property:opacity,transform,box-shadow,background-color] ${
+        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       } hover:border-cosmic-blue/30 hover:bg-card/50`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      style={{ transitionDelay: revealed ? `${index * 100}ms` : "0ms" }}
     >
       {imageOnLeft ? (
         <>
@@ -266,6 +268,11 @@ const GRID_STYLE = {
 
 export const ProjectsSection = memo(function ProjectsSection() {
   const isVisible = useSectionVisibility("projects");
+  const revealed = usePersistedVisible(isVisible);
+  const scrollRatio = useSectionVisibilityRatio("projects");
+  const progress = Math.min(1, scrollRatio * 1.5);
+  const layerOpacity = 0.6 + progress * 0.4;
+  const layerY = 12 * (1 - progress);
   const [lightbox, setLightbox] = useState<{ isOpen: boolean; projectId: number | null; imageIndex: number }>({
     isOpen: false,
     projectId: null,
@@ -294,7 +301,10 @@ export const ProjectsSection = memo(function ProjectsSection() {
 
   return (
     <>
-      <section id="projects" className="relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs">
+      <section
+        id="projects"
+        className="section-ribbon relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
+      >
         <div className="absolute inset-0 opacity-[0.03]" style={GRID_STYLE} />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 left-[10%] w-32 h-32 rounded-full bg-cosmic-blue/5 blur-3xl animate-float-gentle" />
@@ -302,22 +312,17 @@ export const ProjectsSection = memo(function ProjectsSection() {
           <div className="absolute bottom-32 left-[30%] w-24 h-24 rounded-full bg-silver/5 blur-3xl animate-float-gentle" style={{ animationDelay: "4s" }} />
         </div>
 
-        <div className="relative max-w-6xl mx-auto px-5 sm:px-6">
-          <header
-            className={`text-center mb-12 md:mb-16 transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            <span className="inline-block px-4 py-1.5 rounded-full border border-cosmic-blue/30 bg-cosmic-blue/5 text-cosmic-blue text-sm font-mono tracking-wider mb-4">
-              PORTFOLIO
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-silver mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Selected work — mobile apps and full‑stack platforms.
-            </p>
-          </header>
+        <div
+          className="relative max-w-6xl mx-auto px-5 sm:px-6 section-transition will-change-transform"
+          style={{ opacity: layerOpacity, transform: `translate3d(0, ${layerY}px, 0)` }}
+        >
+          <SectionHeader
+            step="02"
+            eyebrow="PORTFOLIO"
+            title="Featured Projects"
+            description="Selected work across mobile, AI, and full‑stack platforms — each with a deeper case study."
+            revealed={revealed}
+          />
 
           <div className="space-y-8 md:space-y-10">
             {PROJECTS.map((project, index) => (
@@ -325,14 +330,18 @@ export const ProjectsSection = memo(function ProjectsSection() {
                 key={project.id}
                 project={project}
                 index={index}
-                isVisible={isVisible}
+                revealed={revealed}
                 onImageClick={openLightbox}
                 imageOnLeft={index % 2 === 0}
               />
             ))}
           </div>
 
-          <div className={`mt-14 flex justify-center transition-all duration-700 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+          <div
+            className={`mt-14 flex justify-center transition-all duration-700 ${
+              revealed ? "delay-300 opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             <a
               href="https://github.com/Si1verSurfer"
               target="_blank"

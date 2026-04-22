@@ -1,14 +1,28 @@
 "use client";
 
+import { useRef } from "react";
 import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
+import { useInView } from "@/hooks/use-in-view";
+import { usePersistedVisible } from "@/hooks/use-persisted-visible";
+import { cn } from "@/lib/utils";
 
 export function Footer() {
+  const ref = useRef<HTMLElement | null>(null);
+  const inView = useInView(ref, { rootMargin: "0px 0px 10% 0px" });
+  const revealed = usePersistedVisible(inView);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="relative bg-card/30 border-t border-border">
+    <footer
+      ref={ref}
+      className={cn(
+        "relative bg-card/30 border-t border-border section-transition will-change-transform",
+        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      )}
+    >
       {/* Background accent */}
       <div className="absolute inset-0 bg-gradient-to-t from-cosmic-blue/5 to-transparent pointer-events-none" />
 

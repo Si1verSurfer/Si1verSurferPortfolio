@@ -10,8 +10,8 @@ export default function Portfolio() {
     <main className="min-h-screen bg-deep-space noise-overlay">
       <Navigation />
       <HeroSection />
-      <ProjectsSection />
       <SkillsSection />
+      <ProjectsSection />
       <ContactSection />
       <Footer />
     </main>

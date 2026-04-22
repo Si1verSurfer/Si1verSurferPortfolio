@@ -3,12 +3,16 @@
 import { type FormEvent, useState } from "react";
 import { Send, Github, Linkedin, Mail, MapPin, Zap } from "lucide-react";
 import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
+import { usePersistedVisible } from "@/hooks/use-persisted-visible";
+import { SectionHeader } from "@/components/portfolio/section-header";
 
 export function ContactSection() {
   const isVisible = useSectionVisibility("contact");
+  const revealed = usePersistedVisible(isVisible);
   const ratio = useSectionVisibilityRatio("contact");
-  const opacity = Math.min(1, ratio * 1.4);
-  const translateY = 20 * (1 - opacity);
+  const progress = Math.min(1, ratio * 1.5);
+  const opacity = 0.55 + progress * 0.45;
+  const translateY = 14 * (1 - progress);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -29,7 +33,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
+      className="section-ribbon relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
     >
       {/* Animated background effects */}
       <div className="absolute inset-0">
@@ -48,31 +52,21 @@ export function ContactSection() {
       />
 
       <div
-        className="relative max-w-7xl mx-auto px-6 section-transition"
-        style={{ opacity, transform: `translateY(${translateY}px)` }}
+        className="relative max-w-7xl mx-auto px-6 section-transition will-change-transform"
+        style={{ opacity, transform: `translate3d(0, ${translateY}px, 0)` }}
       >
-        {/* Section header */}
-        <div
-          className={`text-center mb-14 md:mb-16 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-cosmic-blue/30 bg-cosmic-blue/5 text-cosmic-blue text-sm font-mono tracking-wider mb-4 animate-glow-pulse">
-            CONTACT
-          </span>
-          <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-silver mb-4 ${isVisible ? "animate-text-reveal" : ""}`}>
-            Let{"'"}s Connect
-          </h2>
-          <p className={`text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed ${isVisible ? "animate-fade-in" : ""}`} style={{ animationDelay: "0.5s" }}>
-            Ready to build something extraordinary? Let{"'"}s discuss your next project.
-          </p>
-        </div>
+        <SectionHeader
+          step="03"
+          eyebrow="CONTACT"
+          title="Let's Connect"
+          description="Ready to build something extraordinary? Reach out and we can discuss scope, stack, and timelines."
+          revealed={revealed}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          {/* Contact info */}
           <div
-            className={`transition-all duration-700 delay-200 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+            className={`transition-all duration-1000 ${
+              revealed ? "delay-200 opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
             }`}
           >
             <div className="space-y-8">
@@ -154,8 +148,8 @@ export function ContactSection() {
 
           {/* Contact form */}
           <div
-            className={`transition-all duration-700 delay-300 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+            className={`transition-all duration-1000 ${
+              revealed ? "delay-300 opacity-100 translate-x-0" : "opacity-0 translate-x-8"
             }`}
           >
             <form

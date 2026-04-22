@@ -3,6 +3,8 @@
 import { memo } from "react";
 import { Code2, Smartphone, Server, Brain, Wrench } from "lucide-react";
 import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
+import { usePersistedVisible } from "@/hooks/use-persisted-visible";
+import { SectionHeader } from "@/components/portfolio/section-header";
 
 const SKILL_CATEGORIES = [
   {
@@ -35,18 +37,18 @@ const SKILL_CATEGORIES = [
 const SkillCard = memo(function SkillCard({
   category,
   index,
-  isVisible,
+  revealed,
 }: {
   category: (typeof SKILL_CATEGORIES)[0];
   index: number;
-  isVisible: boolean;
+  revealed: boolean;
 }) {
   const Icon = category.icon;
 
   return (
     <div
       className={`group relative p-6 rounded-xl bg-card/50 border border-border backdrop-blur-sm hover-lift hover-glow energy-border ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
       style={{ 
         transitionDelay: `${index * 150}ms`,
@@ -73,7 +75,7 @@ const SkillCard = memo(function SkillCard({
           <span
             key={skill}
             className={`px-3 py-1.5 text-sm rounded-full bg-secondary/50 text-muted-foreground border border-border hover:border-cosmic-blue/50 hover:text-silver-bright hover:bg-cosmic-blue/15 hover-scale transition-all duration-300 cursor-default ${
-              isVisible ? "animate-fade-in" : ""
+              revealed ? "animate-fade-in" : ""
             }`}
             style={{ animationDelay: `${index * 150 + i * 75}ms` }}
           >
@@ -96,14 +98,16 @@ const SkillCard = memo(function SkillCard({
 
 export function SkillsSection() {
   const isVisible = useSectionVisibility("skills");
+  const revealed = usePersistedVisible(isVisible);
   const ratio = useSectionVisibilityRatio("skills");
-  const opacity = Math.min(1, ratio * 1.4);
-  const translateY = 20 * (1 - opacity);
+  const progress = Math.min(1, ratio * 1.5);
+  const opacity = 0.55 + progress * 0.45;
+  const translateY = 14 * (1 - progress);
 
   return (
     <section
       id="skills"
-      className="relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
+      className="section-ribbon relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
     >
       {/* Animated background grid */}
       <div
@@ -121,40 +125,32 @@ export function SkillsSection() {
         <div className="absolute bottom-32 left-[30%] w-24 h-24 rounded-full bg-silver/5 blur-3xl animate-float-gentle" style={{ animationDelay: "4s" }} />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 section-transition" style={{ opacity, transform: `translateY(${translateY}px)` }}>
-        {/* Section header */}
-        <div
-          className={`text-center mb-14 md:mb-16 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-cosmic-blue/30 bg-cosmic-blue/5 text-cosmic-blue text-sm font-mono tracking-wider mb-4 animate-glow-pulse">
-            CAPABILITIES
-          </span>
-          <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-silver mb-4 ${isVisible ? "animate-text-reveal" : ""}`}>
-            Technical Arsenal
-          </h2>
-          <p className={`text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed ${isVisible ? "animate-fade-in" : ""}`} style={{ animationDelay: "0.5s" }}>
-            Mastering the technologies that power modern applications across all platforms
-          </p>
-        </div>
+      <div
+        className="relative max-w-7xl mx-auto px-6 section-transition will-change-transform"
+        style={{ opacity, transform: `translate3d(0, ${translateY}px, 0)` }}
+      >
+        <SectionHeader
+          step="01"
+          eyebrow="CAPABILITIES"
+          title="Technical Arsenal"
+          description="Stack and tooling that power production mobile, web, and AI systems end to end."
+          revealed={revealed}
+        />
 
-        {/* Skills grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {SKILL_CATEGORIES.map((category, index) => (
             <SkillCard
               key={category.title}
               category={category}
               index={index}
-              isVisible={isVisible}
+              revealed={revealed}
             />
           ))}
         </div>
 
-        {/* Stats row */}
         <div
-          className={`mt-14 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 transition-all duration-700 delay-300 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          className={`mt-14 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 transition-all duration-700 ${
+            revealed ? "delay-200 opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
           {[

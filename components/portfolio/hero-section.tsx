@@ -93,11 +93,28 @@ function EnergyTrail() {
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [reduceMotion, setReduceMotion] = useState(false);
   const [mousePosition, setMousePosition] = useRafState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsVisible(true);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+    const onChange = () => setReduceMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -118,14 +135,27 @@ export function HeroSection() {
 
   const particles = useMemo(() => PARTICLES, []);
 
+  const rawT = Math.min(1, scrollY / 680);
+  const scrollT = reduceMotion ? 0 : rawT;
+  const scrollOffsetY = scrollT * 44;
+  const scrollScale = 1 - scrollT * 0.06;
+  const scrollOpacity = 1 - scrollT * 0.92;
+
   return (
     <section
       ref={heroRef}
       id="home"
       className="relative min-h-[120vh] flex items-center justify-center overflow-hidden bg-cosmic-gradient pt-24 pb-20"
     >
-      {/* Cosmic background particles */}
-      <div className="absolute inset-0">
+      <div
+        className="absolute inset-0 will-change-transform"
+        style={{
+          transform: reduceMotion
+            ? undefined
+            : `translate3d(0, ${scrollY * 0.12}px, 0)`,
+        }}
+        aria-hidden
+      >
         {particles.map((particle) => (
           <CosmicParticle key={particle.id} {...particle} />
         ))}
@@ -141,8 +171,10 @@ export function HeroSection() {
       <div
         className="relative z-10 text-center px-6 max-w-6xl mx-auto section-transition py-8"
         style={{
-          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-          transition: "transform 0.3s ease-out, opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+          transform: `translate3d(${mousePosition.x}px, ${mousePosition.y - scrollOffsetY}px, 0) scale(${scrollScale})`,
+          opacity: isVisible ? scrollOpacity : 0,
+          transition:
+            "transform 0.32s ease-out, opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
         {/* Glowing orb behind name */}
