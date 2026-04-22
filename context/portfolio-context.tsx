@@ -30,6 +30,38 @@ const INITIAL_SCROLL: ScrollState = {
   isScrolled: false,
 };
 
+function applyScrollDocumentVars(scrollProgress: number) {
+  const t = scrollProgress / 100;
+  if (typeof document !== "undefined") {
+    document.documentElement.style.setProperty("--scroll", String(t));
+  }
+}
+
+function computeScrollState(): ScrollState {
+  const y = window.scrollY;
+  const docHeight =
+    document.documentElement.scrollHeight - window.innerHeight;
+  const scrollProgress =
+    docHeight > 0 ? Math.min((y / docHeight) * 100, 100) : 0;
+  applyScrollDocumentVars(scrollProgress);
+  let activeSection = "";
+  for (const id of SECTION_IDS) {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 120 && rect.bottom >= 120) {
+        activeSection = id;
+        break;
+      }
+    }
+  }
+  return {
+    scrollProgress,
+    activeSection,
+    isScrolled: y > 50,
+  };
+}
+
 function ScrollProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useReducer(
     (prev: ScrollState, next: ScrollState) =>
@@ -51,58 +83,27 @@ function ScrollProvider({ children }: { children: ReactNode }) {
         rafRef.current = requestAnimationFrame(() => {
           rafRef.current = null;
           lastRun.current = Date.now();
-          const y = window.scrollY;
-          const docHeight =
-            document.documentElement.scrollHeight - window.innerHeight;
-          const scrollProgress =
-            docHeight > 0 ? Math.min((y / docHeight) * 100, 100) : 0;
-          let activeSection = "";
-          for (const id of SECTION_IDS) {
-            const el = document.getElementById(id);
-            if (el) {
-              const rect = el.getBoundingClientRect();
-              if (rect.top <= 120 && rect.bottom >= 120) {
-                activeSection = id;
-                break;
-              }
-            }
-          }
-          setState({
-            scrollProgress,
-            activeSection,
-            isScrolled: y > 50,
-          });
+          setState(computeScrollState());
         });
         return;
       }
       lastRun.current = now;
-      const y = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress =
-        docHeight > 0 ? Math.min((y / docHeight) * 100, 100) : 0;
-      let activeSection = "";
-      for (const id of SECTION_IDS) {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 120 && rect.bottom >= 120) {
-            activeSection = id;
-            break;
-          }
-        }
-      }
-      setState({
-        scrollProgress,
-        activeSection,
-        isScrolled: y > 50,
-      });
+      setState(computeScrollState());
+    };
+
+    const onResize = () => {
+      setState(computeScrollState());
     };
 
     onScroll();
+    if (typeof document !== "undefined") {
+      applyScrollDocumentVars(0);
+    }
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);

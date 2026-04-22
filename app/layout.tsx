@@ -1,8 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { CosmicCursorLoader } from "@/components/portfolio/cosmic-cursor-loader";
 import { PortfolioProviders } from "@/components/portfolio/providers";
 import "./globals.css";
 
@@ -14,6 +13,11 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
+  display: "swap",
+});
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -47,10 +51,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`} suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} ${plusJakarta.variable} font-sans antialiased bg-background text-foreground`}
+        suppressHydrationWarning
+      >
         <PortfolioProviders>
           {children}
-          <CosmicCursorLoader />
         </PortfolioProviders>
         <Analytics />
       </body>

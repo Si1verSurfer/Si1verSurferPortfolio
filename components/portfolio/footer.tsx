@@ -1,128 +1,89 @@
 "use client";
 
-import { useRef } from "react";
 import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
-import { useInView } from "@/hooks/use-in-view";
-import { usePersistedVisible } from "@/hooks/use-persisted-visible";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { portfolioProfile } from "@/data/profile";
+import { ScrollSlide } from "@/components/portfolio/scroll-slide";
+import { easeOutExpo } from "@/lib/motion";
 
 export function Footer() {
-  const ref = useRef<HTMLElement | null>(null);
-  const inView = useInView(ref, { rootMargin: "0px 0px 10% 0px" });
-  const revealed = usePersistedVisible(inView);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer
-      ref={ref}
-      className={cn(
-        "relative bg-card/30 border-t border-border section-transition will-change-transform",
-        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-      )}
-    >
-      {/* Background accent */}
-      <div className="absolute inset-0 bg-gradient-to-t from-cosmic-blue/5 to-transparent pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Logo and tagline */}
-          <div className="flex flex-col items-center md:items-start gap-2">
-            <div className="group flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-cosmic-blue/10 border border-cosmic-blue/30 flex items-center justify-center group-hover:animate-glow-pulse transition-all duration-300">
-                <span className="text-cosmic-blue font-mono font-bold group-hover:animate-pulse">S</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-gradient-silver">Bashar Rizk</span>
-                <span className="text-xs text-cosmic-cyan font-mono">Si1ver Surfer</span>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Building the future, one line at a time.
+    <footer className="border-t border-zinc-800/80 bg-zinc-950/60 [background:linear-gradient(180deg,rgba(3,3,5,0.2)_0%,#030305_100%)]">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div className="flex flex-col items-center justify-between gap-10 sm:flex-row sm:items-start">
+          <ScrollSlide from="left" className="text-center sm:text-left">
+            <p className="font-display text-xl font-semibold tracking-tight text-zinc-100">{portfolioProfile.name}</p>
+            <p className="mt-1 font-mono text-xs text-zinc-500">Software engineer · AI & mobile</p>
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-600">
+              Building fast, maintainable software — from product UI to model deployment.
             </p>
-          </div>
-
-          {/* Quick links */}
-          <div className="flex items-center gap-6">
-            <a
-              href="#skills"
-              className="text-sm text-muted-foreground hover:text-cosmic-blue hover:translate-x-0.5 transition-all duration-300"
-            >
-              Skills
-            </a>
-            <a
-              href="#projects"
-              className="text-sm text-muted-foreground hover:text-cosmic-blue hover:translate-x-0.5 transition-all duration-300"
-            >
-              Projects
-            </a>
-            <a
-              href="#contact"
-              className="text-sm text-muted-foreground hover:text-cosmic-blue hover:translate-x-0.5 transition-all duration-300"
-            >
-              Contact
-            </a>
-          </div>
-
-          {/* Social links */}
-          <div className="flex items-center gap-3">
-            <a
-              href="https://github.com/Si1verSurfer"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-2 rounded-lg border border-border text-muted-foreground hover:text-cosmic-blue hover:border-cosmic-blue/50 hover:bg-cosmic-blue/10 hover:shadow-[0_0_15px_rgba(74,159,255,0.2)] transition-all duration-300"
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4 group-hover:animate-spin" style={{ animationDuration: "1s", animationIterationCount: "1" }} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/bashar-rizq/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-2 rounded-lg border border-border text-muted-foreground hover:text-cosmic-blue hover:border-cosmic-blue/50 hover:bg-cosmic-blue/10 hover:shadow-[0_0_15px_rgba(74,159,255,0.2)] transition-all duration-300"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-            </a>
-            <a
-              href="mailto:bashar772004@gmail.com"
-              className="group p-2 rounded-lg border border-border text-muted-foreground hover:text-cosmic-blue hover:border-cosmic-blue/50 hover:bg-cosmic-blue/10 hover:shadow-[0_0_15px_rgba(74,159,255,0.2)] transition-all duration-300"
-              aria-label="Email"
-            >
-              <Mail className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-            </a>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="my-8 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-
-        {/* Bottom row */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground text-center md:text-left">
-            © {new Date().getFullYear()} Bashar Rizk. Crafted with passion in the cosmos.
-          </p>
-
-          {/* Back to top button */}
-          <button
-            type="button"
-            onClick={scrollToTop}
-            className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-cosmic-blue transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cosmic-blue rounded"
-            aria-label="Back to top"
-          >
-            <span className="group-hover:-translate-y-0.5 transition-transform duration-300">Back to top</span>
-            <div className="p-1.5 rounded border border-border group-hover:border-cosmic-blue/50 group-hover:bg-cosmic-blue/10 group-hover:shadow-[0_0_15px_rgba(74,159,255,0.2)] transition-all duration-300">
-              <ArrowUp className="w-3 h-3 group-hover:-translate-y-1 transition-transform duration-300" />
+          </ScrollSlide>
+          <ScrollSlide from="right" delay={60} className="flex w-full flex-col items-center gap-8 sm:w-auto sm:items-end">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-zinc-500 sm:justify-end">
+              <a href="#skills" className="transition hover:text-lime-300">
+                Skills
+              </a>
+              <a href="#projects" className="transition hover:text-lime-300">
+                Projects
+              </a>
+              <a href="#contact" className="transition hover:text-lime-300">
+                Contact
+              </a>
             </div>
-          </button>
+            <div className="flex items-center gap-2">
+              <a
+                href="https://github.com/Si1verSurfer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-zinc-800/90 p-2.5 text-zinc-500 transition hover:border-lime-400/35 hover:text-lime-300"
+                aria-label="GitHub"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/bashar-rizq/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-zinc-800/90 p-2.5 text-zinc-500 transition hover:border-lime-400/35 hover:text-lime-300"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a
+                href="mailto:bashar772004@gmail.com"
+                className="rounded-xl border border-zinc-800/90 p-2.5 text-zinc-500 transition hover:border-lime-400/35 hover:text-lime-300"
+                aria-label="Email"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
+            </div>
+          </ScrollSlide>
         </div>
+        <ScrollSlide from="left" delay={100} className="mt-10">
+          <div className="flex flex-col items-center justify-between gap-4 border-t border-zinc-800/80 pt-8 sm:flex-row">
+            <p className="text-center text-xs text-zinc-600 sm:text-left">
+              © {new Date().getFullYear()} {portfolioProfile.name}. All rights reserved.
+            </p>
+            <motion.button
+              type="button"
+              onClick={scrollToTop}
+              className="group flex items-center gap-2 text-xs text-zinc-500 transition hover:text-lime-300"
+              aria-label="Back to top"
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.22, ease: easeOutExpo }}
+            >
+              <span>Back to top</span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-zinc-800/90 transition group-hover:border-lime-400/30">
+                <ArrowUp className="h-3.5 w-3.5" />
+              </span>
+            </motion.button>
+          </div>
+        </ScrollSlide>
       </div>
-
-      {/* Decorative corner lines */}
-      <div className="absolute bottom-0 left-0 w-24 h-24 border-l border-b border-cosmic-blue/10" />
-      <div className="absolute bottom-0 right-0 w-24 h-24 border-r border-b border-cosmic-blue/10" />
     </footer>
   );
 }

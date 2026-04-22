@@ -15,7 +15,7 @@ const MobileProjectDetail = dynamic(
 
 function ProjectDetailSkeleton() {
   return (
-    <div className="min-h-screen bg-deep-space animate-pulse flex items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-950 animate-pulse">
       <div className="h-8 w-48 rounded bg-white/10" />
     </div>
   );

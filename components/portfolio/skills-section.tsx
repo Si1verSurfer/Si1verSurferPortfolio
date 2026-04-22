@@ -1,10 +1,11 @@
 "use client";
 
 import { memo } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Code2, Smartphone, Server, Brain, Wrench } from "lucide-react";
-import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
-import { usePersistedVisible } from "@/hooks/use-persisted-visible";
 import { SectionHeader } from "@/components/portfolio/section-header";
+import { ScrollSlide } from "@/components/portfolio/scroll-slide";
+import { springCard } from "@/lib/motion";
 
 const SKILL_CATEGORIES = [
   {
@@ -36,141 +37,99 @@ const SKILL_CATEGORIES = [
 
 const SkillCard = memo(function SkillCard({
   category,
-  index,
-  revealed,
 }: {
   category: (typeof SKILL_CATEGORIES)[0];
-  index: number;
-  revealed: boolean;
 }) {
   const Icon = category.icon;
+  const reduce = useReducedMotion();
 
   return (
-    <div
-      className={`group relative p-6 rounded-xl bg-card/50 border border-border backdrop-blur-sm hover-lift hover-glow energy-border ${
-        revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
-      style={{ 
-        transitionDelay: `${index * 150}ms`,
-        transition: "all 0.7s cubic-bezier(0.16, 1, 0.3, 1)"
-      }}
+    <motion.div
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-800/90 bg-zinc-950/40 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur-sm transition-colors duration-500 hover:border-lime-400/25 hover:bg-zinc-900/50"
+      whileHover={
+        reduce
+          ? undefined
+          : {
+              y: -4,
+              transition: springCard,
+            }
+      }
     >
-      {/* Animated glow effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cosmic-blue/10 via-transparent to-cosmic-cyan/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-      
-      {/* Orbiting particle */}
-      <div className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-cosmic-cyan/50 opacity-0 group-hover:opacity-100 group-hover:animate-orbit" />
-
-      {/* Icon with danger glow */}
-      <div className="relative flex items-center gap-3 mb-4">
-        <div className="p-2.5 rounded-lg bg-cosmic-blue/10 border border-cosmic-blue/20 group-hover:bg-cosmic-blue/20 group-hover:border-cosmic-blue/50 group-hover:animate-glow-pulse transition-all duration-500">
-          <Icon className="w-5 h-5 text-cosmic-blue group-hover:animate-danger-glow" />
-        </div>
-        <h3 className="text-lg font-semibold text-silver-bright group-hover:text-cosmic-shadow transition-all duration-300">{category.title}</h3>
+      <div
+        className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br from-lime-400/10 via-violet-500/5 to-transparent opacity-0 blur-2xl transition duration-500 group-hover:opacity-100"
+        aria-hidden
+      />
+      <div className="relative mb-5 flex items-center gap-3">
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800/90 bg-zinc-950/80 text-lime-300 shadow-[0_0_24px_rgba(163,230,53,0.08)] transition duration-500 group-hover:border-lime-400/35 group-hover:text-lime-200">
+          <Icon className="h-5 w-5" />
+        </span>
+        <h3 className="font-display text-lg font-semibold text-zinc-100">{category.title}</h3>
       </div>
-
-      {/* Skills with staggered hover */}
       <div className="relative flex flex-wrap gap-2">
-        {category.skills.map((skill, i) => (
+        {category.skills.map((skill) => (
           <span
             key={skill}
-            className={`px-3 py-1.5 text-sm rounded-full bg-secondary/50 text-muted-foreground border border-border hover:border-cosmic-blue/50 hover:text-silver-bright hover:bg-cosmic-blue/15 hover-scale transition-all duration-300 cursor-default ${
-              revealed ? "animate-fade-in" : ""
-            }`}
-            style={{ animationDelay: `${index * 150 + i * 75}ms` }}
+            className="rounded-lg border border-zinc-800/90 bg-zinc-950/80 px-2.5 py-1.5 text-xs text-zinc-400 transition group-hover:border-zinc-700/80 group-hover:text-zinc-300"
           >
             {skill}
           </span>
         ))}
       </div>
-
-      {/* Corner accent with animation */}
-      <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden rounded-tr-xl">
-        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-cosmic-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="absolute top-2 right-2 w-1 h-1 rounded-full bg-cosmic-cyan opacity-0 group-hover:opacity-100 group-hover:animate-pulse" />
-      </div>
-      
-      {/* Bottom energy line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cosmic-blue/0 to-transparent group-hover:via-cosmic-blue/50 transition-all duration-700" />
-    </div>
+    </motion.div>
   );
 });
 
 export function SkillsSection() {
-  const isVisible = useSectionVisibility("skills");
-  const revealed = usePersistedVisible(isVisible);
-  const ratio = useSectionVisibilityRatio("skills");
-  const progress = Math.min(1, ratio * 1.5);
-  const opacity = 0.55 + progress * 0.45;
-  const translateY = 14 * (1 - progress);
-
   return (
     <section
       id="skills"
-      className="section-ribbon relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
+      className="section-ribbon relative border-b border-zinc-800/80 bg-zinc-950/30 py-20 sm:py-24 md:py-32"
     >
-      {/* Animated background grid */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(#4a9fff 1px, transparent 1px), linear-gradient(90deg, #4a9fff 1px, transparent 1px)`,
-          backgroundSize: "50px 50px",
-        }}
+        className="pointer-events-none absolute inset-0 opacity-25 [background-image:radial-gradient(#3f3f46_0.5px,transparent_0.5px)] [background-size:30px_30px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_40%,#000,transparent_75%)]"
+        aria-hidden
       />
-      
-      {/* Floating cosmic particles */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-[10%] w-32 h-32 rounded-full bg-cosmic-blue/5 blur-3xl animate-float-gentle" />
-        <div className="absolute top-40 right-[15%] w-40 h-40 rounded-full bg-cosmic-cyan/5 blur-3xl animate-float-gentle" style={{ animationDelay: "2s" }} />
-        <div className="absolute bottom-32 left-[30%] w-24 h-24 rounded-full bg-silver/5 blur-3xl animate-float-gentle" style={{ animationDelay: "4s" }} />
-      </div>
 
-      <div
-        className="relative max-w-7xl mx-auto px-6 section-transition will-change-transform"
-        style={{ opacity, transform: `translate3d(0, ${translateY}px, 0)` }}
-      >
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
-          step="01"
-          eyebrow="CAPABILITIES"
-          title="Technical Arsenal"
-          description="Stack and tooling that power production mobile, web, and AI systems end to end."
-          revealed={revealed}
+          eyebrow="Capabilities"
+          title="What I build with"
+          description="Production-focused stack for mobile, web, APIs, and applied ML — the same tools I use to ship and maintain real products."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {SKILL_CATEGORIES.map((category, index) => (
-            <SkillCard
+            <ScrollSlide
               key={category.title}
-              category={category}
-              index={index}
-              revealed={revealed}
-            />
+              from={index % 2 === 0 ? "left" : "right"}
+              delay={index * 55}
+            >
+              <SkillCard category={category} />
+            </ScrollSlide>
           ))}
         </div>
 
-        <div
-          className={`mt-14 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 transition-all duration-700 ${
-            revealed ? "delay-200 opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
+        <div className="mt-14 grid grid-cols-2 gap-3 md:mt-20 md:grid-cols-4 md:gap-4">
           {[
-            { label: "Years Coding", value: "8+" },
-            { label: "Projects Delivered", value: "8+" },
+            { label: "Years coding", value: "8+" },
+            { label: "Projects shipped", value: "8+" },
             { label: "Technologies", value: "15+" },
-            { label: "Happy Clients", value: "10+" },
+            { label: "Happy clients", value: "10+" },
           ].map((stat, index) => (
-            <div
+            <ScrollSlide
               key={stat.label}
-              className="group text-center p-6 rounded-xl bg-card/30 border border-border/50 hover-lift hover-glow cursor-default"
-              style={{ animationDelay: `${index * 100}ms` }}
+              from="up"
+              delay={index * 60}
             >
-              <div className="text-3xl md:text-4xl font-bold text-gradient-cosmic mb-2 group-hover:animate-scale-pulse">
-                {stat.value}
+              <div className="overflow-hidden rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-950/80 to-zinc-950/30 px-4 py-6 text-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] transition hover:border-lime-400/20">
+                <p className="font-display text-3xl font-bold tabular-nums text-transparent [background-clip:text] [background-image:linear-gradient(135deg,#d9f99d_0%,#4ade80_40%,#22d3ee_100%)] md:text-4xl">
+                  {stat.value}
+                </p>
+                <p className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+                  {stat.label}
+                </p>
               </div>
-              <div className="text-sm text-muted-foreground font-mono tracking-wider group-hover:text-silver transition-colors duration-300">
-                {stat.label}
-              </div>
-            </div>
+            </ScrollSlide>
           ))}
         </div>
       </div>

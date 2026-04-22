@@ -130,10 +130,10 @@ export function CosmicCursor() {
         <div
           className={`absolute rounded-full border transition-all duration-150 ${
             isClicking
-              ? "scale-50 border-cosmic-cyan"
+              ? "scale-50 border-teal-400"
               : isPointer
-              ? "scale-125 border-cosmic-blue"
-              : "scale-100 border-cosmic-blue/50"
+              ? "scale-125 border-lime-400"
+              : "scale-100 border-lime-400/50"
           }`}
           style={{
             width: 24,
@@ -148,7 +148,7 @@ export function CosmicCursor() {
         {/* Core dot */}
         <div
           className={`absolute rounded-full transition-all duration-100 ${
-            isClicking ? "scale-200 bg-cosmic-cyan" : "bg-cosmic-blue"
+            isClicking ? "scale-200 bg-teal-400" : "bg-lime-400"
           }`}
           style={{
             width: 6,
@@ -177,11 +177,11 @@ export function CosmicCursor() {
         {isPointer && (
           <>
             <div
-              className="absolute w-1 h-1 rounded-full bg-cosmic-cyan animate-ping"
+              className="absolute w-1 h-1 rounded-full bg-teal-400 animate-ping"
               style={{ left: 15, top: -10 }}
             />
             <div
-              className="absolute w-1 h-1 rounded-full bg-cosmic-blue animate-ping"
+              className="absolute w-1 h-1 rounded-full bg-lime-400 animate-ping"
               style={{ left: -15, top: 10, animationDelay: "0.2s" }}
             />
             <div

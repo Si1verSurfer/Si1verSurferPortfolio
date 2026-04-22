@@ -1,7 +1,12 @@
 "use client";
 
+import Image from "next/image";
+import { LayoutGroup, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { portfolioProfile } from "@/data/profile";
 import { useScrollState, useMobileMenu } from "@/context/portfolio-context";
+import { ScrollSlide } from "@/components/portfolio/scroll-slide";
+import { easeOutExpo, springNav } from "@/lib/motion";
 
 const NAV_LINKS = [
   { label: "Home", href: "#" },
@@ -16,101 +21,129 @@ export function Navigation() {
 
   return (
     <>
-      {/* Scroll progress bar */}
-      <div
-        className="fixed top-0 left-0 right-0 h-0.5 z-[60] overflow-hidden origin-left transition-transform duration-150 ease-out will-change-transform"
-        style={{ transform: `scaleX(${scrollProgress / 100})` }}
+      <motion.div
+        className="fixed top-0 left-0 right-0 z-[60] h-0.5 origin-left overflow-hidden"
+        initial={false}
+        animate={{ scaleX: Math.max(0, Math.min(1, scrollProgress / 100)) }}
+        transition={{ duration: 0.4, ease: easeOutExpo }}
         aria-hidden
       >
-        <div className="h-full w-full bg-gradient-to-r from-cosmic-blue to-cosmic-cyan" />
-      </div>
+        <div className="h-full w-full bg-gradient-to-r from-violet-400 via-lime-300 to-cyan-400" />
+      </motion.div>
 
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0.5 left-0 right-0 z-50 overflow-x-hidden border-b transition-[padding,background,backdrop-filter,border-color] duration-700 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${
           isScrolled
-            ? "bg-deep-space/90 backdrop-blur-xl border-b border-border/50 py-4 shadow-lg shadow-cosmic-blue/5"
-            : "bg-transparent py-6"
+            ? "border-zinc-800/80 bg-zinc-950/75 py-2.5 backdrop-blur-2xl supports-[backdrop-filter]:bg-zinc-950/55"
+            : "border-transparent bg-transparent py-5"
         }`}
       >
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
-          <a
-            href="#"
-            className="group flex items-center gap-2 text-xl font-bold text-silver-bright focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cosmic-blue rounded"
-          >
-            <div className="relative w-10 h-10 rounded-xl bg-cosmic-blue/10 border border-cosmic-blue/30 flex items-center justify-center overflow-hidden group-hover:border-cosmic-blue/60 group-hover:shadow-[0_0_20px_rgba(74,159,255,0.3)] transition-all duration-300">
-              <span className="text-cosmic-blue font-mono font-bold text-lg group-hover:animate-pulse">S</span>
-              <div className="absolute inset-0 bg-gradient-to-br from-cosmic-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <span className="hidden sm:inline text-gradient-silver group-hover:tracking-wider transition-all duration-300">Si1ver</span>
-          </a>
+        <div
+          className={`mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 transition-all duration-700 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${
+            isScrolled
+              ? "md:max-w-5xl md:rounded-2xl md:border md:border-zinc-800/70 md:bg-zinc-950/40 md:px-5 md:py-2"
+              : ""
+          }`}
+        >
+          <ScrollSlide from="left" className="min-w-0 shrink-0">
+            <a
+              href="#"
+              className="group flex items-center gap-3 font-display text-lg font-semibold tracking-tight text-zinc-100"
+            >
+              <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-zinc-700/90 bg-zinc-900 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] ring-2 ring-lime-400/10 transition duration-500 group-hover:border-lime-400/40 group-hover:shadow-[0_0_20px_rgba(163,230,53,0.15)]">
+                <Image
+                  src={portfolioProfile.avatarSrc}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="36px"
+                  priority
+                />
+              </span>
+              <span className="hidden sm:inline">{portfolioProfile.name}</span>
+            </a>
+          </ScrollSlide>
 
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((link) => {
-              const isActive =
-                (link.href === "#" && activeSection === "") ||
-                link.href === `#${activeSection}`;
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-cosmic-blue/5 ${
-                    isActive
-                      ? "text-cosmic-blue"
-                      : "text-muted-foreground hover:text-silver-bright"
-                  }`}
-                >
-                  {link.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-cosmic-blue animate-pulse shadow-[0_0_10px_rgba(74,159,255,0.5)]" />
-                  )}
-                </a>
-              );
-            })}
-          </div>
-
-          <a
-            href="#contact"
-            className="group hidden md:inline-flex relative px-5 py-2.5 rounded-xl bg-cosmic-blue/10 border border-cosmic-blue/30 text-cosmic-blue text-sm font-medium hover:bg-cosmic-blue/20 hover:border-cosmic-blue/50 hover:shadow-[0_0_20px_rgba(74,159,255,0.3)] transition-all duration-300 overflow-hidden"
+          <ScrollSlide
+            from="right"
+            delay={100}
+            className="flex shrink-0 items-center gap-1 md:gap-2"
           >
-            <span className="relative z-10">Hire Me</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cosmic-blue/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-          </a>
+            <LayoutGroup>
+              <div className="hidden items-center gap-0.5 rounded-full border border-zinc-800/80 bg-zinc-950/40 p-1 md:flex">
+                {NAV_LINKS.map((link) => {
+                  const isActive =
+                    (link.href === "#" && activeSection === "") ||
+                    link.href === `#${activeSection}`;
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      className="relative rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-pill"
+                          className="absolute inset-0 rounded-full bg-zinc-800/90 shadow-[0_0_0_1px_rgba(163,230,53,0.12)]"
+                          transition={springNav}
+                        />
+                      )}
+                      <span
+                        className={`relative z-10 ${isActive ? "text-lime-300" : "text-zinc-500 hover:text-zinc-200"}`}
+                      >
+                        {link.label}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </LayoutGroup>
 
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2.5 rounded-xl border border-border text-silver-bright hover:bg-secondary/50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-cosmic-blue"
-            aria-label="Toggle menu"
-            aria-expanded={isMobileMenuOpen}
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+            <a
+              href="#contact"
+              className="group relative hidden items-center overflow-hidden rounded-full border border-lime-400/35 bg-gradient-to-r from-lime-400/15 to-cyan-500/10 px-4 py-2 text-sm font-semibold text-lime-200 transition hover:border-lime-400/55 md:inline-flex"
+            >
+              <span className="absolute inset-0 translate-x-[-100%] bg-gradient-to-r from-lime-400/25 to-cyan-400/20 transition duration-500 group-hover:translate-x-0" />
+              <span className="relative">Let&apos;s talk</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
+              className="rounded-xl border border-zinc-800/90 bg-zinc-950/50 p-2.5 text-zinc-200 backdrop-blur-sm transition hover:border-lime-400/30 hover:bg-zinc-900/80 md:hidden"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </ScrollSlide>
         </div>
       </nav>
 
-      {/* Mobile menu */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-40 transition-opacity duration-300 md:hidden ${
+          isMobileMenuOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
         aria-hidden={!isMobileMenuOpen}
       >
         <div
-          className="absolute inset-0 bg-deep-space/95 backdrop-blur-xl"
+          className="absolute inset-0 bg-zinc-950/92 backdrop-blur-2xl"
           onClick={() => setMobileMenuOpen(false)}
           onKeyDown={(e) => e.key === "Escape" && setMobileMenuOpen(false)}
         />
-        <div className="relative h-full flex flex-col items-center justify-center gap-8">
+        <div className="relative flex h-full flex-col items-center justify-center gap-5 px-6">
           {NAV_LINKS.map((link, index) => (
             <a
               key={link.label}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="text-3xl font-bold text-silver-bright hover:text-cosmic-blue transition-all duration-300"
+              className="font-display text-2xl font-semibold text-zinc-100"
               style={{
                 opacity: isMobileMenuOpen ? 1 : 0,
-                transform: isMobileMenuOpen ? "translateY(0)" : "translateY(1rem)",
-                transitionDelay: `${index * 80}ms`,
+                transform: isMobileMenuOpen ? "none" : "translateY(0.5rem)",
+                transition: `all 0.3s ease ${index * 45}ms`,
               }}
             >
               {link.label}
@@ -119,14 +152,14 @@ export function Navigation() {
           <a
             href="#contact"
             onClick={() => setMobileMenuOpen(false)}
-            className="mt-4 px-8 py-3 rounded-xl bg-cosmic-blue/20 border border-cosmic-blue/50 text-cosmic-blue font-semibold transition-all duration-300"
+            className="mt-3 rounded-full border border-lime-400/40 bg-lime-400/10 px-10 py-3.5 text-sm font-semibold text-lime-200"
             style={{
               opacity: isMobileMenuOpen ? 1 : 0,
-              transform: isMobileMenuOpen ? "translateY(0)" : "translateY(1rem)",
-              transitionDelay: "320ms",
+              transform: isMobileMenuOpen ? "none" : "translateY(0.5rem)",
+              transition: "all 0.3s ease 200ms",
             }}
           >
-            Hire Me
+            Let&apos;s talk
           </a>
         </div>
       </div>

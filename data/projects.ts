@@ -99,6 +99,15 @@ export const PROJECTS: Project[] = [
   },
 ];
 
+export function getDefaultProjectImage(p: Project): string {
+  if (p.defaultImageIndex != null) {
+    return p.images[Math.min(p.defaultImageIndex, p.images.length - 1)] ?? p.images[0]!;
+  }
+  return p.images[0] ?? "";
+}
+
+export const MOBILE_APP_PROJECTS: Project[] = PROJECTS.filter((p) => p.is_mobile_app);
+
 export function getProjectBySlug(slug: string): Project | undefined {
   return PROJECTS.find((p) => p.slug === slug);
 }

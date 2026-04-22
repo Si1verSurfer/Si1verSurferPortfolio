@@ -3,54 +3,54 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Silver Surfer Cosmic Theme */
+/* Studio — zinc + lime, editorial / product-dev */
 :root {
-  --background: #050510;
-  --foreground: #e8e8f0;
-  --card: #0a0a1a;
-  --card-foreground: #e8e8f0;
-  --popover: #0a0a1a;
-  --popover-foreground: #e8e8f0;
-  --primary: #c0c0d0;
-  --primary-foreground: #050510;
-  --secondary: #1a1a2e;
-  --secondary-foreground: #c0c0d0;
-  --muted: #12121f;
-  --muted-foreground: #8888a0;
-  --accent: #4a9fff;
-  --accent-foreground: #050510;
-  --destructive: #ff4444;
+  --background: #030305;
+  --foreground: #f4f4f5;
+  --card: #0c0c0f;
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #09090b;
+  --secondary: #27272a;
+  --secondary-foreground: #e4e4e7;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #a3e635;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #2a2a40;
-  --input: #1a1a2e;
-  --ring: #4a9fff;
-  --chart-1: #4a9fff;
-  --chart-2: #c0c0d0;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #a3e635;
+  --chart-1: #a3e635;
+  --chart-2: #a1a1aa;
   --chart-3: #6366f1;
-  --chart-4: #22d3ee;
-  --chart-5: #a855f7;
-  --radius: 0.5rem;
-  --sidebar: #0a0a1a;
-  --sidebar-foreground: #e8e8f0;
-  --sidebar-primary: #c0c0d0;
-  --sidebar-primary-foreground: #050510;
-  --sidebar-accent: #1a1a2e;
-  --sidebar-accent-foreground: #e8e8f0;
-  --sidebar-border: #2a2a40;
-  --sidebar-ring: #4a9fff;
-  
-  /* Custom cosmic colors */
-  --silver: #c0c0d0;
-  --silver-bright: #e8e8f0;
-  --cosmic-blue: #4a9fff;
-  --cosmic-cyan: #22d3ee;
-  --deep-space: #050510;
-  --nebula: #1a1a2e;
+  --chart-4: #2dd4bf;
+  --chart-5: #c084fc;
+  --radius: 0.75rem;
+  --sidebar: #18181b;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #a3e635;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #a3e635;
+  /* Back-compat aliases → new palette */
+  --silver: #d4d4d8;
+  --silver-bright: #fafafa;
+  --cosmic-blue: #a3e635;
+  --cosmic-cyan: #2dd4bf;
+  --deep-space: #030305;
+  --nebula: #18181b;
 }
 
 @theme inline {
   --font-sans: 'Inter', 'Inter Fallback', sans-serif;
   --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
+  --font-display: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', var(--font-sans);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -101,20 +101,23 @@
   * {
     @apply border-border outline-ring/50;
   }
+  :root {
+    /* 0–1, updated while scrolling (Sofi / editorial parallax) */
+    --scroll: 0;
+  }
   body {
     @apply bg-background text-foreground;
   }
   html {
     scroll-behavior: smooth;
   }
-  /* Focus visible for keyboard nav - cosmic accent */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-cosmic-blue rounded;
+    @apply outline-2 outline-offset-2 outline-lime-400 rounded;
   }
   /* Selection styling */
   ::selection {
-    background: rgba(74, 159, 255, 0.25);
-    color: var(--silver-bright);
+    background: rgba(163, 230, 53, 0.22);
+    color: var(--foreground);
   }
   /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
@@ -127,6 +130,33 @@
     }
     html {
       scroll-behavior: auto;
+    }
+    .sofi-parallax-hero,
+    .sofi-parallax-hero-slow {
+      transform: none !important;
+    }
+    .vionaro-hero-bloom,
+    .vionaro-hero-bloom-2,
+    .vionaro-hero-depth,
+    .vionaro-hero-ambient {
+      transform: none !important;
+      opacity: 1 !important;
+      filter: none !important;
+    }
+    .vionaro-hero-fade-mask,
+    .vionaro-hero-vignette {
+      opacity: 0 !important;
+    }
+    .vionaro-hero-mint-line {
+      opacity: 0.85 !important;
+      transform: scaleX(1) !important;
+    }
+    .vionaro-hero-clip {
+      clip-path: none !important;
+    }
+    .vionaro-hero-depth > .vionaro-stag {
+      transform: none !important;
+      opacity: 1 !important;
     }
   }
 }
@@ -393,7 +423,7 @@
     border-right-color: transparent;
   }
   50% {
-    border-right-color: #4a9fff;
+    border-right-color: #a3e635;
   }
 }
 
@@ -459,7 +489,7 @@
 }
 
 .animate-border-flow {
-  background: linear-gradient(90deg, #4a9fff, #22d3ee, #4a9fff);
+  background: linear-gradient(90deg, #a3e635, #2dd4bf, #a3e635);
   background-size: 200% 200%;
   animation: border-flow 3s ease infinite;
 }
@@ -570,23 +600,26 @@
 }
 
 .text-gradient-silver {
-  background: linear-gradient(135deg, #a0a0b8 0%, #e8e8f0 35%, #fff 50%, #e8e8f0 65%, #c0c0d0 100%);
-  background-size: 200% auto;
+  background: linear-gradient(135deg, #f4f4f5 0%, #a1a1aa 45%, #fafafa 55%, #d4d4d8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-cosmic {
-  background: linear-gradient(135deg, #4a9fff 0%, #22d3ee 40%, #7dd3fc 60%, #4a9fff 100%);
+  background: linear-gradient(135deg, #a3e635 0%, #2dd4bf 50%, #a3e635 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.font-display {
+  font-family: var(--font-display, "Plus Jakarta Sans", system-ui, sans-serif);
+}
+
 .bg-cosmic-gradient {
-  background: radial-gradient(ellipse 120% 80% at 50% -20%, #1a1a2e 0%, #0d0d18 40%, #050510 70%, #000008 100%);
+  background: radial-gradient(ellipse 100% 80% at 50% 0%, #1c1c1e 0%, #09090b 50%, #09090b 100%);
 }
 
 /* Section paint optimization - browser can skip off-screen work */
@@ -611,9 +644,9 @@ section[id] {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(74, 159, 255, 0.35),
-    rgba(34, 211, 238, 0.25),
-    rgba(74, 159, 255, 0.35),
+    rgba(163, 230, 53, 0.4),
+    rgba(45, 212, 191, 0.25),
+    rgba(163, 230, 53, 0.4),
     transparent
   );
   pointer-events: none;
@@ -624,11 +657,11 @@ section[id] {
   top: 0;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--cosmic-cyan);
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
+  background: #a3e635;
+  box-shadow: 0 0 14px rgba(163, 230, 53, 0.45);
   pointer-events: none;
 }
 
@@ -643,6 +676,46 @@ section[id] {
 }
 .animate-section-glow {
   animation: section-glow 5s ease-in-out infinite;
+}
+
+/* Hero — software / IDE atmosphere */
+.dev-code-grid-hero {
+  background-size: 40px 40px;
+  background-image: linear-gradient(
+      rgba(74, 159, 255, 0.05) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(74, 159, 255, 0.05) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 15%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, #000 15%, transparent 75%);
+}
+
+.dev-scanline-hero {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(34, 211, 238, 0.03) 3px,
+    rgba(34, 211, 238, 0.03) 4px
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: hero-scan 14s linear infinite;
+}
+
+@keyframes hero-scan {
+  0% {
+    transform: translateY(-5%);
+  }
+  100% {
+    transform: translateY(5%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dev-scanline-hero {
+    animation: none;
+  }
 }
 
 /* Section fade in/out - used with inline opacity from visibility ratio */
@@ -675,22 +748,156 @@ section[id] {
   border-color: rgba(74, 159, 255, 0.5);
 }
 
+/* Sofi-style hero parallax (driven by --scroll on <html> from scroll context) */
+@layer utilities {
+  .sofi-parallax-hero {
+    transform: translate3d(0, calc(var(--scroll) * -3.5rem), 0);
+    will-change: transform;
+  }
+  .sofi-parallax-hero-slow {
+    transform: translate3d(0, calc(var(--scroll) * -1.75rem), 0);
+    will-change: transform;
+  }
+}
+
+/* GRASS Vionaro V8–inspired scroll hero — set --hero-t 0…1 on .vionaro-hero-wrap */
+.vionaro-hero-wrap {
+  --hero-t: 0;
+}
+.vionaro-hero-ambient {
+  will-change: transform, opacity;
+  opacity: calc(0.11 + 0.18 * (1 - var(--hero-t)));
+  transform: translate3d(0, calc(var(--hero-t) * 3.5rem), 0) scale(calc(1 + var(--hero-t) * 0.05));
+}
+.vionaro-hero-bloom {
+  will-change: transform;
+  transform: translate3d(0, calc(var(--hero-t) * -2.5rem), 0);
+}
+.vionaro-hero-bloom-2 {
+  will-change: transform;
+  transform: translate3d(0, calc(var(--hero-t) * -4.25rem), 0)
+    scale(calc(1 + var(--hero-t) * 0.045));
+}
+.vionaro-hero-fade-mask {
+  opacity: calc(0.55 * var(--hero-t));
+}
+.vionaro-hero-vignette {
+  opacity: calc(0.35 * var(--hero-t));
+  pointer-events: none;
+}
+/* Bottom rail: grow from center; top rail: grow from left (Vionaro-style sweep) */
+.vionaro-hero-mint-line {
+  transform: scaleX(var(--hero-t));
+  opacity: calc(0.12 + var(--hero-t) * 0.88);
+  will-change: transform, opacity;
+}
+.vionaro-hero-mint-line-top {
+  transform: scaleX(calc(0.15 + var(--hero-t) * 0.85));
+  transform-origin: left center;
+}
+.vionaro-hero-mint-line:not(.vionaro-hero-mint-line-top) {
+  transform-origin: center;
+}
+.vionaro-hero-perspective {
+  perspective: 1600px;
+  perspective-origin: 50% 28%;
+}
+.vionaro-hero-clip {
+  clip-path: inset(
+    calc(5% * var(--hero-t)) calc(3% * var(--hero-t)) calc(4% * var(--hero-t)) calc(3% * var(--hero-t)) round
+      0.75rem
+  );
+  will-change: clip-path;
+  backface-visibility: hidden;
+}
+.vionaro-hero-depth {
+  backface-visibility: hidden;
+  transform: perspective(1600px) rotateX(calc(-15deg * var(--hero-t)))
+    rotateY(calc(2.8deg * var(--hero-t)))
+    translate3d(0, calc(-1.75rem * var(--hero-t)), calc(-3.5rem * var(--hero-t)))
+    scale(calc(1 - 0.08 * var(--hero-t)));
+  filter: blur(calc(0.5px + 5.5px * var(--hero-t)));
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+  opacity: calc(1 - 0.48 * var(--hero-t));
+}
+/* Stagger: lower blocks drift slightly more (scroll-triggered parallax in copy) */
+.vionaro-hero-depth > .vionaro-stag:nth-child(1) {
+  transform: translate3d(0, calc(0.2rem * var(--hero-t)), 0);
+}
+.vionaro-hero-depth > .vionaro-stag:nth-child(2) {
+  transform: translate3d(0, calc(0.45rem * var(--hero-t)), 0);
+}
+.vionaro-hero-depth > .vionaro-stag:nth-child(3) {
+  transform: translate3d(0, calc(0.65rem * var(--hero-t)), 0);
+}
+.vionaro-hero-depth > .vionaro-stag:nth-child(4) {
+  transform: translate3d(0, calc(0.85rem * var(--hero-t)), 0);
+}
+.vionaro-hero-depth > .vionaro-stag:nth-child(5) {
+  transform: translate3d(0, calc(1.05rem * var(--hero-t)), 0);
+}
+.vionaro-hero-depth > .vionaro-stag:nth-child(6) {
+  transform: translate3d(0, calc(1.3rem * var(--hero-t)), 0);
+}
+.vionaro-hero-depth > .vionaro-stag:nth-child(7) {
+  transform: translate3d(0, calc(1.5rem * var(--hero-t)), 0);
+}
+
+/* Mobile phone mockup — soft 3D float (hero / showcase) */
+@keyframes phone-float-3d {
+  0%,
+  100% {
+    transform: translateY(0) rotateY(-4deg) rotateX(2deg) rotateZ(-0.3deg);
+  }
+  50% {
+    transform: translateY(-12px) rotateY(-2deg) rotateX(3.5deg) rotateZ(0.3deg);
+  }
+}
+@keyframes phone-screen-sheen {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+/* Phone mockup animations — keep outside @layer so nothing overrides the animation property */
+.animate-phone-mobile {
+  animation: phone-float-3d 5.5s ease-in-out infinite;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.animate-phone-screen-sheen {
+  animation: phone-screen-sheen 4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-phone-mobile,
+  .animate-phone-screen-sheen {
+    animation: none !important;
+  }
+  .animate-phone-mobile {
+    transform: rotateY(-4deg) rotateX(2deg);
+  }
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050510;
+  background: #030305;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #4a9fff, #22d3ee);
+  background: linear-gradient(180deg, #a3e635, #2dd4bf);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #5aafff, #32e3fe);
+  background: linear-gradient(180deg, #bef264, #5eead4);
 }
 
 /* Subtle noise texture overlay - creative depth */
@@ -702,4 +909,74 @@ section[id] {
   z-index: 9997;
   opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* —— Site backdrop: aurora + grain (used by site-backdrop.tsx) —— */
+.aurora-mesh {
+  background:
+    radial-gradient(ellipse 120% 80% at 20% 0%, rgba(139, 92, 246, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 60% at 80% 10%, rgba(34, 211, 238, 0.12) 0%, transparent 45%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(163, 230, 53, 0.08) 0%, transparent 50%),
+    #030305;
+  animation: aurora-breathe 18s ease-in-out infinite;
+}
+
+@keyframes aurora-breathe {
+  0%,
+  100% {
+    filter: hue-rotate(0deg) saturate(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: hue-rotate(8deg) saturate(1.08);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes aurora-orb-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(4%, 8%) scale(1.05);
+    opacity: 0.85;
+  }
+}
+
+@keyframes aurora-orb-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-5%, -6%) scale(1.08);
+    opacity: 0.7;
+  }
+}
+
+.animate-aurora-orb-1 {
+  animation: aurora-orb-1 16s ease-in-out infinite;
+}
+
+.animate-aurora-orb-2 {
+  animation: aurora-orb-2 20s ease-in-out infinite;
+}
+
+.site-noise {
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-mesh {
+    animation: none;
+  }
+  .animate-aurora-orb-1,
+  .animate-aurora-orb-2 {
+    animation: none;
+  }
 }

@@ -1,61 +1,31 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { ScrollSlide } from "@/components/portfolio/scroll-slide";
 
 type SectionHeaderProps = {
-  step: string;
   eyebrow: string;
   title: string;
   description: string;
-  revealed: boolean;
   className?: string;
 };
 
-export function SectionHeader({
-  step,
-  eyebrow,
-  title,
-  description,
-  revealed,
-  className,
-}: SectionHeaderProps) {
+export function SectionHeader({ eyebrow, title, description, className }: SectionHeaderProps) {
   return (
-    <header
-      className={cn(
-        "relative mb-12 md:mb-16 max-w-6xl mx-auto",
-        className
-      )}
-    >
-      <div
-        className={cn(
-          "flex flex-col md:flex-row md:items-stretch items-center md:items-stretch gap-6 md:gap-10 transition-all duration-1000 ease-out [transition-property:opacity,transform,filter]",
-          revealed
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10 [filter:blur(3px)]"
-        )}
-      >
-        <div
-          className="shrink-0 flex flex-col items-center md:items-start gap-1 md:gap-2 md:min-w-[4.5rem] md:pt-1"
-          aria-hidden
-        >
-          <span className="text-3xl sm:text-4xl md:text-5xl font-bold text-cosmic-blue/[0.15] font-mono tabular-nums leading-none tracking-tight">
-            {step}
-          </span>
-          <div className="hidden md:block w-px h-10 bg-gradient-to-b from-cosmic-blue/40 to-transparent" />
-        </div>
-
-        <div className="flex-1 min-w-0 text-center md:text-left space-y-4">
-          <span className="inline-block px-4 py-1.5 rounded-full border border-cosmic-blue/30 bg-cosmic-blue/5 text-cosmic-blue text-sm font-mono tracking-widest">
+    <header className={cn("relative mb-14 max-w-6xl md:mb-20", className)}>
+      <ScrollSlide from="up" delay={0}>
+        <div className="space-y-4 text-center md:text-left">
+          <p className="font-mono text-xs uppercase tracking-[0.4em] text-lime-400/90">
             {eyebrow}
-          </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-silver text-balance">
+          </p>
+          <h2 className="font-display text-3xl font-semibold leading-[1.08] tracking-tight text-zinc-50 sm:text-4xl md:text-5xl">
             {title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl md:max-w-none leading-relaxed">
+          <p className="max-w-2xl text-pretty text-base leading-relaxed text-zinc-500 md:max-w-none">
             {description}
           </p>
         </div>
-      </div>
+      </ScrollSlide>
     </header>
   );
 }

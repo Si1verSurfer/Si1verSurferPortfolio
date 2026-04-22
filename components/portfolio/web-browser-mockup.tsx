@@ -43,7 +43,7 @@ export const WebBrowserMockup = memo(function WebBrowserMockup({
     >
       {/* Browser frame: full width of card, scales with screen */}
       <div
-        className="relative w-full overflow-hidden rounded-lg border border-border/80 bg-card shadow-[0_0_0_1px_rgba(74,159,255,0.08),0_20px_50px_-15px_rgba(0,0,0,0.45)] transition-transform duration-500 group-hover:scale-[1.02] group-hover:-translate-y-0.5 sm:rounded-xl"
+        className="relative w-full overflow-hidden rounded-lg border border-border/80 bg-card shadow-[0_0_0_1px_rgba(163,230,53,0.08),0_20px_50px_-15px_rgba(0,0,0,0.45)] transition-transform duration-500 group-hover:scale-[1.02] group-hover:-translate-y-0.5 sm:rounded-xl"
         style={{
           transformStyle: "preserve-3d",
           transform: "rotateY(2deg) rotateX(-1deg)",
@@ -79,9 +79,9 @@ export const WebBrowserMockup = memo(function WebBrowserMockup({
       </div>
 
       {showBadge && (
-        <div className="mt-2.5 flex items-center gap-1.5 rounded-full border border-cosmic-blue/40 bg-cosmic-blue/10 px-2.5 py-1.5 backdrop-blur-sm sm:mt-3 sm:px-3">
-          <Monitor className="h-3 w-3 text-cosmic-blue sm:h-3.5 sm:w-3.5" />
-          <span className="text-[10px] font-mono font-medium tracking-wider text-cosmic-blue sm:text-xs">
+        <div className="mt-2.5 flex items-center gap-1.5 rounded-full border border-lime-400/40 bg-lime-400/10 px-2.5 py-1.5 backdrop-blur-sm sm:mt-3 sm:px-3">
+          <Monitor className="h-3 w-3 text-lime-400 sm:h-3.5 sm:w-3.5" />
+          <span className="text-[10px] font-mono font-medium tracking-wider text-lime-400 sm:text-xs">
             {badgeLabel}
           </span>
         </div>

@@ -2,17 +2,13 @@
 
 import { type FormEvent, useState } from "react";
 import { Send, Github, Linkedin, Mail, MapPin, Zap } from "lucide-react";
-import { useSectionVisibility, useSectionVisibilityRatio } from "@/context/portfolio-context";
-import { usePersistedVisible } from "@/hooks/use-persisted-visible";
 import { SectionHeader } from "@/components/portfolio/section-header";
+import { ScrollSlide } from "@/components/portfolio/scroll-slide";
+
+const inputClass =
+  "w-full rounded-xl border border-zinc-800/90 bg-zinc-950/60 px-4 py-3 text-sm text-zinc-100 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] placeholder:text-zinc-600 outline-none transition focus:border-lime-400/40 focus:ring-2 focus:ring-lime-400/15";
 
 export function ContactSection() {
-  const isVisible = useSectionVisibility("contact");
-  const revealed = usePersistedVisible(isVisible);
-  const ratio = useSectionVisibilityRatio("contact");
-  const progress = Math.min(1, ratio * 1.5);
-  const opacity = 0.55 + progress * 0.45;
-  const translateY = 14 * (1 - progress);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -23,7 +19,6 @@ export function ContactSection() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setFormState({ name: "", email: "", message: "" });
@@ -33,226 +28,156 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="section-ribbon relative py-20 sm:py-24 md:py-28 lg:py-32 bg-deep-space overflow-hidden floating-orbs"
+      className="section-ribbon relative border-b border-zinc-800/80 bg-zinc-950/35 py-20 sm:py-24 md:py-32"
     >
-      {/* Animated background effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cosmic-blue/5 rounded-full blur-[100px] animate-float-gentle" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cosmic-cyan/5 rounded-full blur-[100px] animate-float-gentle" style={{ animationDelay: "3s" }} />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-silver/3 rounded-full blur-[80px] animate-pulse-soft" />
-      </div>
-
-      {/* Grid pattern */}
       <div
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `radial-gradient(#4a9fff 1px, transparent 1px)`,
-          backgroundSize: "30px 30px",
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_45%_at_15%_10%,rgba(139,92,246,0.1),transparent),radial-gradient(ellipse_55%_40%_at_85%_20%,rgba(45,212,191,0.1),transparent)]"
+        aria-hidden
       />
 
-      <div
-        className="relative max-w-7xl mx-auto px-6 section-transition will-change-transform"
-        style={{ opacity, transform: `translate3d(0, ${translateY}px, 0)` }}
-      >
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader
-          step="03"
-          eyebrow="CONTACT"
-          title="Let's Connect"
-          description="Ready to build something extraordinary? Reach out and we can discuss scope, stack, and timelines."
-          revealed={revealed}
+          eyebrow="Contact"
+          title="Let's work together"
+          description="Share a few details about your product or team — I usually reply within 24 hours."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          <div
-            className={`transition-all duration-1000 ${
-              revealed ? "delay-200 opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
-            }`}
-          >
-            <div className="space-y-8">
-              {/* Quick info cards */}
-              <div className="space-y-4">
-                <a 
-                  href="mailto:bashar772004@gmail.com"
-                  className="group flex items-center gap-4 p-4 rounded-xl bg-card/50 border border-border hover:border-cosmic-blue/50 hover-lift hover-glow energy-border transition-all duration-500"
-                >
-                  <div className="p-3 rounded-lg bg-cosmic-blue/10 border border-cosmic-blue/20 group-hover:bg-cosmic-blue/20 group-hover:animate-glow-pulse transition-all duration-300">
-                    <Mail className="w-5 h-5 text-cosmic-blue group-hover:animate-danger-glow" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground font-mono">EMAIL</p>
-                    <p className="text-silver-bright group-hover:text-cosmic-shadow transition-all duration-300">bashar772004@gmail.com</p>
-                  </div>
-                </a>
-
-                <div className="group flex items-center gap-4 p-4 rounded-xl bg-card/50 border border-border hover:border-cosmic-blue/50 hover-lift hover-glow energy-border transition-all duration-500">
-                  <div className="p-3 rounded-lg bg-cosmic-blue/10 border border-cosmic-blue/20 group-hover:bg-cosmic-blue/20 group-hover:animate-glow-pulse transition-all duration-300">
-                    <MapPin className="w-5 h-5 text-cosmic-blue group-hover:animate-danger-glow" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground font-mono">LOCATION</p>
-                    <p className="text-silver-bright group-hover:text-cosmic-shadow transition-all duration-300">Available Worldwide (Remote)</p>
-                  </div>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+          <ScrollSlide from="left" delay={50}>
+            <div className="space-y-6">
+              <a
+                href="mailto:bashar772004@gmail.com"
+                className="group flex items-center gap-4 rounded-2xl border border-zinc-800/90 bg-zinc-950/40 p-4 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition duration-500 hover:-translate-y-0.5 hover:border-lime-400/25"
+              >
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800/90 bg-zinc-950 text-lime-300">
+                  <Mail className="h-5 w-5" />
                 </div>
-
-                <div className="group flex items-center gap-4 p-4 rounded-xl bg-card/50 border border-border hover:border-cosmic-blue/50 hover-lift hover-glow energy-border transition-all duration-500">
-                  <div className="p-3 rounded-lg bg-cosmic-blue/10 border border-cosmic-blue/20 group-hover:bg-cosmic-blue/20 group-hover:animate-glow-pulse transition-all duration-300">
-                    <Zap className="w-5 h-5 text-cosmic-blue group-hover:animate-danger-glow" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground font-mono">RESPONSE TIME</p>
-                    <p className="text-silver-bright group-hover:text-cosmic-shadow transition-all duration-300">Within 24 hours</p>
-                  </div>
+                <div>
+                  <p className="font-mono text-xs text-zinc-500">Email</p>
+                  <p className="text-zinc-200">bashar772004@gmail.com</p>
+                </div>
+              </a>
+              <div className="flex items-center gap-4 rounded-2xl border border-zinc-800/90 bg-zinc-950/40 p-4 shadow-[0_0_0_1px_rgba(255,255,255,0.03)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800/90 bg-zinc-950 text-lime-300">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-zinc-500">Location</p>
+                  <p className="text-zinc-200">Worldwide (remote)</p>
                 </div>
               </div>
-
-              {/* Social links */}
+              <div className="flex items-center gap-4 rounded-2xl border border-zinc-800/90 bg-zinc-950/40 p-4 shadow-[0_0_0_1px_rgba(255,255,255,0.03)]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800/90 bg-zinc-950 text-lime-300">
+                  <Zap className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-mono text-xs text-zinc-500">Response</p>
+                  <p className="text-zinc-200">Within 24 hours</p>
+                </div>
+              </div>
               <div>
-                <h3 className="text-sm font-mono text-muted-foreground mb-4 tracking-wider">
-                  FIND ME ON
+                <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-zinc-500">
+                  Social
                 </h3>
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                   <a
                     href="https://github.com/Si1verSurfer"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-4 rounded-xl bg-card/50 border border-border hover:border-cosmic-blue/50 hover:bg-cosmic-blue/10 hover-scale hover:shadow-[0_0_25px_rgba(74,159,255,0.3)] transition-all duration-300"
+                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-800 text-zinc-500 transition hover:border-lime-400/50 hover:text-lime-400"
                     aria-label="GitHub"
                   >
-                    <Github className="w-6 h-6 text-muted-foreground group-hover:text-cosmic-blue group-hover:animate-spin transition-all duration-500" style={{ animationDuration: "1s", animationIterationCount: "1" }} />
+                    <Github className="h-5 w-5" />
                   </a>
                   <a
                     href="https://www.linkedin.com/in/bashar-rizq/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-4 rounded-xl bg-card/50 border border-border hover:border-cosmic-blue/50 hover:bg-cosmic-blue/10 hover-scale hover:shadow-[0_0_25px_rgba(74,159,255,0.3)] transition-all duration-300"
+                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-zinc-800 text-zinc-500 transition hover:border-lime-400/50 hover:text-lime-400"
                     aria-label="LinkedIn"
                   >
-                    <Linkedin className="w-6 h-6 text-muted-foreground group-hover:text-cosmic-blue group-hover:animate-bounce transition-all duration-300" />
+                    <Linkedin className="h-5 w-5" />
                   </a>
                 </div>
               </div>
-
-              {/* Decorative element */}
-              <div className="hidden lg:block relative mt-8">
-                <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-cosmic-blue via-cosmic-cyan to-transparent rounded-full" />
-                <blockquote className="pl-6 text-lg text-muted-foreground italic">
-                  {"\""}The only way to do great work is to love what you do.{"\""}
-                  <footer className="mt-2 text-sm text-silver font-mono">
-                    — Steve Jobs
-                  </footer>
-                </blockquote>
-              </div>
             </div>
-          </div>
+          </ScrollSlide>
 
-          {/* Contact form */}
-          <div
-            className={`transition-all duration-1000 ${
-              revealed ? "delay-300 opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-            }`}
-          >
+          <ScrollSlide from="right" delay={100}>
             <form
               onSubmit={handleSubmit}
-              className="relative p-8 rounded-2xl bg-card/50 border border-border backdrop-blur-sm hover-glow energy-border transition-all duration-500"
+              className="relative overflow-hidden rounded-2xl border border-zinc-800/90 bg-zinc-950/40 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_32px_80px_rgba(0,0,0,0.2)] backdrop-blur-md sm:p-8"
             >
-              {/* Animated form glow */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cosmic-blue/5 via-transparent to-cosmic-cyan/5 opacity-50 animate-pulse-soft" />
-
-              <div className="relative space-y-6">
-                {/* Name field */}
+              <div
+                className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gradient-to-br from-lime-400/15 via-violet-500/10 to-transparent blur-3xl"
+                aria-hidden
+              />
+              <div className="relative space-y-5">
                 <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-mono text-muted-foreground mb-2 tracking-wider"
-                  >
-                    NAME
+                  <label htmlFor="name" className="mb-1.5 block text-xs font-mono text-zinc-500">
+                    Name
                   </label>
                   <input
                     type="text"
                     id="name"
                     value={formState.name}
-                    onChange={(e) =>
-                      setFormState((prev) => ({ ...prev, name: e.target.value }))
-                    }
+                    onChange={(e) => setFormState((p) => ({ ...p, name: e.target.value }))}
                     required
-                    className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-silver-bright placeholder:text-muted-foreground/50 focus:border-cosmic-blue/50 focus:ring-2 focus:ring-cosmic-blue/20 focus:shadow-[0_0_20px_rgba(74,159,255,0.15)] outline-none transition-all duration-300"
+                    className={inputClass}
                     placeholder="Your name"
                   />
                 </div>
-
-                {/* Email field */}
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-mono text-muted-foreground mb-2 tracking-wider"
-                  >
-                    EMAIL
+                  <label htmlFor="email" className="mb-1.5 block text-xs font-mono text-zinc-500">
+                    Email
                   </label>
                   <input
                     type="email"
                     id="email"
                     value={formState.email}
-                    onChange={(e) =>
-                      setFormState((prev) => ({ ...prev, email: e.target.value }))
-                    }
+                    onChange={(e) => setFormState((p) => ({ ...p, email: e.target.value }))}
                     required
-                    className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-silver-bright placeholder:text-muted-foreground/50 focus:border-cosmic-blue/50 focus:ring-2 focus:ring-cosmic-blue/20 focus:shadow-[0_0_20px_rgba(74,159,255,0.15)] outline-none transition-all duration-300"
-                    placeholder="your@email.com"
+                    className={inputClass}
+                    placeholder="you@email.com"
                   />
                 </div>
-
-                {/* Message field */}
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-mono text-muted-foreground mb-2 tracking-wider"
+                    className="mb-1.5 block text-xs font-mono text-zinc-500"
                   >
-                    MESSAGE
+                    Message
                   </label>
                   <textarea
                     id="message"
                     value={formState.message}
-                    onChange={(e) =>
-                      setFormState((prev) => ({ ...prev, message: e.target.value }))
-                    }
+                    onChange={(e) => setFormState((p) => ({ ...p, message: e.target.value }))}
                     required
                     rows={5}
-                    className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-silver-bright placeholder:text-muted-foreground/50 focus:border-cosmic-blue/50 focus:ring-2 focus:ring-cosmic-blue/20 focus:shadow-[0_0_20px_rgba(74,159,255,0.15)] outline-none transition-all duration-300 resize-none"
-                    placeholder="Tell me about your project..."
+                    className={`${inputClass} resize-none`}
+                    placeholder="Project scope, timeline, or stack…"
                   />
                 </div>
-
-                {/* Submit button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group relative w-full py-4 rounded-lg bg-cosmic-blue/20 border border-cosmic-blue/50 text-silver-bright font-semibold overflow-hidden transition-all duration-300 hover:bg-cosmic-blue/30 hover:border-cosmic-blue hover:shadow-[0_0_30px_rgba(74,159,255,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-lime-400/45 bg-gradient-to-r from-lime-400/20 to-cyan-500/10 py-3.5 text-sm font-semibold text-lime-200 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-silver-bright/30 border-t-silver-bright rounded-full animate-spin" />
-                        <span>Sending...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5" />
-                        <span>Send Message</span>
-                      </>
-                    )}
-                  </span>
-                  <div className="absolute inset-0 animate-shimmer" />
+                  {isSubmitting ? (
+                    <>
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-lime-400/30 border-t-lime-400" />
+                      Sending…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" />
+                      Send message
+                    </>
+                  )}
                 </button>
               </div>
-
-              {/* Corner accents */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-cosmic-blue/30 rounded-tl-2xl" />
-              <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-cosmic-blue/30 rounded-tr-2xl" />
-              <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-cosmic-blue/30 rounded-bl-2xl" />
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-cosmic-blue/30 rounded-br-2xl" />
             </form>
-          </div>
+          </ScrollSlide>
         </div>
       </div>
     </section>

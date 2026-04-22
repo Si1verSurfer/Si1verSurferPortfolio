@@ -28,19 +28,19 @@ export function MobileProjectDetail({ project }: { project: Project }) {
     setCurrentImage((i) => (i - 1 + project.images.length) % project.images.length);
 
   return (
-    <div className="min-h-screen bg-deep-space noise-overlay">
+    <div className="min-h-screen bg-zinc-950 pb-20 sm:pb-24">
       {/* App-style header */}
       <header className="sticky top-0 z-50 border-b border-border/80 bg-card/90 backdrop-blur-xl">
         <div className="flex items-center justify-between h-14 px-4 sm:px-6">
           <Link
             href="/#projects"
-            className="flex items-center gap-2 text-silver hover:text-cosmic-blue transition-colors"
+            className="flex items-center gap-2 text-silver hover:text-lime-400 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm font-medium hidden sm:inline">Back to portfolio</span>
           </Link>
           <div className="flex items-center gap-2">
-            <Smartphone className="h-5 w-5 text-cosmic-cyan" />
+            <Smartphone className="h-5 w-5 text-teal-400" />
             <span className="text-sm font-mono text-muted-foreground">Mobile App</span>
           </div>
         </div>
@@ -51,8 +51,8 @@ export function MobileProjectDetail({ project }: { project: Project }) {
         <section className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 mb-16 md:mb-24">
           <div className="flex-1 order-2 lg:order-1 text-center lg:text-left">
             {project.is_featured && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-cosmic-blue/40 bg-cosmic-blue/10 text-cosmic-blue text-xs font-mono tracking-wider mb-4 animate-glow-pulse">
-                <Star className="h-3 w-3 fill-cosmic-blue" />
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-lime-400/40 bg-lime-400/10 text-lime-400 text-xs font-mono tracking-wider mb-4 animate-glow-pulse">
+                <Star className="h-3 w-3 fill-lime-400" />
                 FEATURED
               </span>
             )}
@@ -70,7 +70,7 @@ export function MobileProjectDetail({ project }: { project: Project }) {
           {/* Phone mockup - main hero */}
           <div className="flex-shrink-0 order-1 lg:order-2">
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-br from-cosmic-blue/20 via-transparent to-cosmic-cyan/20 rounded-full blur-3xl animate-pulse-soft" />
+              <div className="absolute -inset-4 bg-gradient-to-br from-lime-400/20 via-transparent to-teal-400/20 rounded-full blur-3xl animate-pulse-soft" />
               <MobilePhoneMockup
                 src={project.images[currentImage]}
                 alt={`${project.title} screen ${currentImage + 1}`}
@@ -85,7 +85,7 @@ export function MobileProjectDetail({ project }: { project: Project }) {
 
         {/* Screens gallery - horizontal scroll / carousel */}
         <section className="mb-16 md:mb-24">
-          <h2 className="text-sm font-mono text-cosmic-blue tracking-wider mb-6">
+          <h2 className="text-sm font-mono text-lime-400 tracking-wider mb-6">
             APP SCREENS
           </h2>
           <div className="relative">
@@ -94,7 +94,7 @@ export function MobileProjectDetail({ project }: { project: Project }) {
                 <button
                   type="button"
                   onClick={prev}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-card/90 border border-border hover:border-cosmic-blue/50 text-silver hover:text-cosmic-blue transition-all -translate-x-2 md:translate-x-0"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-card/90 border border-border hover:border-lime-400/50 text-silver hover:text-lime-400 transition-all -translate-x-2 md:translate-x-0"
                   aria-label="Previous screen"
                 >
                   <ChevronLeft className="h-6 w-6" />
@@ -102,7 +102,7 @@ export function MobileProjectDetail({ project }: { project: Project }) {
                 <button
                   type="button"
                   onClick={next}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-card/90 border border-border hover:border-cosmic-blue/50 text-silver hover:text-cosmic-blue transition-all translate-x-2 md:translate-x-0"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-card/90 border border-border hover:border-lime-400/50 text-silver hover:text-lime-400 transition-all translate-x-2 md:translate-x-0"
                   aria-label="Next screen"
                 >
                   <ChevronRight className="h-6 w-6" />
@@ -117,8 +117,8 @@ export function MobileProjectDetail({ project }: { project: Project }) {
                 onClick={() => setCurrentImage(i)}
                 className={`flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
                   currentImage === i
-                    ? "border-cosmic-blue shadow-[0_0_30px_rgba(74,159,255,0.3)] scale-[1.02]"
-                    : "border-border/50 hover:border-cosmic-blue/40 opacity-80 hover:opacity-100"
+                    ? "border-lime-400 shadow-[0_0_30px_rgba(163,230,53,0.3)] scale-[1.02]"
+                    : "border-border/50 hover:border-lime-400/40 opacity-80 hover:opacity-100"
                 }`}
               >
                 <div className="w-[180px] sm:w-[220px] aspect-[9/19.5] relative bg-muted/30">
@@ -145,7 +145,7 @@ export function MobileProjectDetail({ project }: { project: Project }) {
                   type="button"
                   onClick={() => setCurrentImage(i)}
                   className={`h-2 rounded-full transition-all duration-300 ${
-                    i === currentImage ? "w-8 bg-cosmic-cyan" : "w-2 bg-silver/40 hover:bg-silver/60"
+                    i === currentImage ? "w-8 bg-teal-400" : "w-2 bg-silver/40 hover:bg-silver/60"
                   }`}
                   aria-label={`Go to screen ${i + 1}`}
                 />
@@ -157,14 +157,14 @@ export function MobileProjectDetail({ project }: { project: Project }) {
         {/* Tech + CTA */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="rounded-2xl border border-border bg-card/40 p-6 md:p-8 backdrop-blur-sm">
-            <h2 className="text-sm font-mono text-cosmic-blue tracking-wider mb-4">
+            <h2 className="text-sm font-mono text-lime-400 tracking-wider mb-4">
               TECH STACK
             </h2>
             <div className="flex flex-wrap gap-2">
               {project.tech_stack.map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1.5 text-sm rounded-lg bg-cosmic-blue/10 text-cosmic-blue border border-cosmic-blue/20"
+                  className="px-3 py-1.5 text-sm rounded-lg bg-lime-400/10 text-lime-400 border border-lime-400/20"
                 >
                   {tech}
                 </span>
@@ -176,7 +176,7 @@ export function MobileProjectDetail({ project }: { project: Project }) {
               href={project.project_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-cosmic-blue/20 border border-cosmic-blue/40 text-cosmic-blue font-medium hover:bg-cosmic-blue/30 hover:border-cosmic-blue/60 transition-all"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-lime-400/20 border border-lime-400/40 text-lime-400 font-medium hover:bg-lime-400/30 hover:border-lime-400/60 transition-all"
             >
               <Github className="h-5 w-5" />
               View Code
