@@ -11,10 +11,8 @@ const PROFILE = {
   title: "SOFTWARE ENGINEER",
   summary:
     "Software Engineer and AI Specialist with a strong foundation in Flutter, Node.js, and Go. Programming since age 15, I have delivered 8+ cross-platform mobile applications and a specialized AI system for medical diagnostics. Expert in building scalable, user-centric architectures using Clean Architecture, GetX, and BLOC.",
-  images: [
-    "https://raw.githubusercontent.com/Si1verSurfer/my_port_images_db/main/projects/my_images/IMG_9374%202.JPG",
-    "https://raw.githubusercontent.com/Si1verSurfer/my_port_images_db/main/projects/my_images/IMG_9960.JPG",
-  ],
+  image:
+    "https://raw.githubusercontent.com/Si1verSurfer/my_port_images_db/main/projects/my_images/IMG_0769.jpg",
 } as const;
 
 const PARTICLE_COUNT = 50;
@@ -93,45 +91,9 @@ function EnergyTrail() {
   );
 }
 
-function ElectricFlash() {
-  return (
-    <div className="absolute inset-0 pointer-events-none z-20">
-      <div className="absolute inset-0 bg-cosmic-blue/30 animate-[flash_0.15s_ease-out]" />
-      <div className="absolute inset-0">
-        {/* Lightning bolts */}
-        <svg className="absolute w-full h-full" viewBox="0 0 200 200">
-          <path
-            d="M100,0 L95,60 L110,55 L90,100 L105,95 L85,140 L100,135 L80,200"
-            fill="none"
-            stroke="url(#lightning-gradient)"
-            strokeWidth="3"
-            className="animate-[lightning_0.15s_ease-out]"
-          />
-          <path
-            d="M120,0 L115,50 L130,45 L110,90 L125,85 L105,130"
-            fill="none"
-            stroke="url(#lightning-gradient)"
-            strokeWidth="2"
-            className="animate-[lightning_0.1s_0.05s_ease-out]"
-          />
-          <defs>
-            <linearGradient id="lightning-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#4a9fff" />
-              <stop offset="50%" stopColor="#22d3ee" />
-              <stop offset="100%" stopColor="#ffffff" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-    </div>
-  );
-}
-
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useRafState({ x: 0, y: 0 });
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isFlashing, setIsFlashing] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -153,17 +115,6 @@ export function HeroSection() {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [setMousePosition]);
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setIsFlashing(true);
-      setTimeout(() => {
-        setCurrentImage((prev) => (prev + 1) % PROFILE.images.length);
-        setTimeout(() => setIsFlashing(false), 150);
-      }, 100);
-    }, 4000);
-    return () => clearInterval(t);
-  }, []);
 
   const particles = useMemo(() => PARTICLES, []);
 
@@ -212,26 +163,14 @@ export function HeroSection() {
             
             {/* Image container */}
             <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-cosmic-blue/30">
-              {PROFILE.images.map((img, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-opacity duration-100 ${
-                    currentImage === index ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`Profile ${index + 1}`}
-                    fill
-                    sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 288px"
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-              ))}
-              
-              {/* Electric flash overlay */}
-              {isFlashing && <ElectricFlash />}
+              <Image
+                src={PROFILE.image}
+                alt="Bashar Rizk"
+                fill
+                sizes="(max-width: 640px) 192px, (max-width: 768px) 224px, (max-width: 1024px) 256px, 288px"
+                className="object-cover"
+                priority
+              />
             </div>
             
             {/* Floating particles around image */}
