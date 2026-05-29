@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { memo, useCallback, useEffect, useState } from "react";
 import {
   ExternalLink,
@@ -20,7 +19,6 @@ import { SectionHeader } from "@/components/portfolio/section-header";
 import { ScrollSlide } from "@/components/portfolio/scroll-slide";
 import { PROJECTS, getDefaultProjectImage } from "@/data/projects";
 import type { Project } from "@/data/projects";
-import { springProject } from "@/lib/motion";
 import { MobilePhoneMockup } from "./mobile-phone-mockup";
 import { WebBrowserMockup } from "./web-browser-mockup";
 
@@ -57,27 +55,27 @@ const ImageLightbox = memo(function ImageLightbox({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/95 backdrop-blur-xl"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg)]/95"
       onClick={onClose}
     >
-      <div className="pointer-events-none absolute inset-4 rounded-2xl border border-zinc-700/50 md:inset-8" />
+      <div className="pointer-events-none absolute inset-4 border-[3px] border-[var(--border)] md:inset-8" />
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-50 rounded-full border border-zinc-700 bg-zinc-900/90 p-3 text-zinc-300 transition hover:border-lime-400/50 hover:text-lime-400 md:top-8 md:right-8"
+        className="absolute top-4 right-4 z-50 border-[3px] border-[var(--border)] bg-[var(--bg-card)] p-3 text-[var(--text)] shadow-[3px_3px_0_var(--accent)] transition hover:border-[var(--accent)] md:top-8 md:right-8"
         aria-label="Close"
       >
         <X className="w-6 h-6" />
       </button>
       <div className="absolute top-4 left-4 md:top-8 md:left-8 z-50">
-        <h3 className="text-lg font-semibold text-zinc-100 md:text-xl">{projectTitle}</h3>
-        <p className="text-sm text-muted-foreground font-mono">{currentIndex + 1} / {images.length}</p>
+        <h3 className="font-pixel text-[0.55rem] text-[var(--text)] md:text-[0.65rem]">{projectTitle}</h3>
+        <p className="font-pixel-body text-lg text-[var(--text-muted)]">{currentIndex + 1} / {images.length}</p>
       </div>
       {images.length > 1 && (
         <>
-          <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 top-1/2 z-50 -translate-y-1/2 rounded-full border border-zinc-700 bg-zinc-900/90 p-4 text-zinc-200 transition hover:border-lime-400/50 hover:text-lime-400 md:left-8" aria-label="Previous">
+          <button onClick={(e) => { e.stopPropagation(); onPrev(); }} className="absolute left-4 top-1/2 z-50 -translate-y-1/2 border-[3px] border-[var(--border)] bg-[var(--bg-card)] p-4 text-[var(--text)] shadow-[3px_3px_0_var(--accent)] transition hover:border-[var(--accent)] md:left-8" aria-label="Previous">
             <ChevronLeft className="w-8 h-8" />
           </button>
-          <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 top-1/2 z-50 -translate-y-1/2 rounded-full border border-zinc-700 bg-zinc-900/90 p-4 text-zinc-200 transition hover:border-lime-400/50 hover:text-lime-400 md:right-8" aria-label="Next">
+          <button onClick={(e) => { e.stopPropagation(); onNext(); }} className="absolute right-4 top-1/2 z-50 -translate-y-1/2 border-[3px] border-[var(--border)] bg-[var(--bg-card)] p-4 text-[var(--text)] shadow-[3px_3px_0_var(--accent)] transition hover:border-[var(--accent)] md:right-8" aria-label="Next">
             <ChevronRight className="w-8 h-8" />
           </button>
         </>
@@ -94,7 +92,7 @@ const ImageLightbox = memo(function ImageLightbox({
         )}
       </div>
       {images.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 rounded-xl border border-zinc-800 bg-zinc-900/90 p-2 backdrop-blur-sm md:bottom-8">
+        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2 border-[3px] border-[var(--border)] bg-[var(--bg-card)] p-2 shadow-[3px_3px_0_var(--accent)] md:bottom-8">
           {images.map((img, i) => (
             <button
               key={i}
@@ -104,7 +102,7 @@ const ImageLightbox = memo(function ImageLightbox({
                 if (d > 0) for (let j = 0; j < d; j++) onNext();
                 else if (d < 0) for (let j = 0; j < Math.abs(d); j++) onPrev();
               }}
-              className={`relative h-14 w-14 overflow-hidden rounded-lg border-2 transition-all md:h-16 md:w-16 ${i === currentIndex ? "border-lime-400 shadow-[0_0_12px_rgba(163,230,53,0.35)]" : "border-transparent opacity-50 hover:opacity-100"}`}
+              className={`relative h-14 w-14 overflow-hidden border-[2px] transition-all md:h-16 md:w-16 ${i === currentIndex ? "border-[var(--accent)] shadow-[2px_2px_0_var(--accent)]" : "border-[var(--border)] opacity-50 hover:opacity-100"}`}
             >
               <Image src={img} alt="" fill sizes="64px" className="object-cover" />
             </button>
@@ -126,7 +124,6 @@ const ProjectRow = memo(function ProjectRow({
   onImageClick: (projectId: number, imageIndex: number) => void;
   imageOnLeft: boolean;
 }) {
-  const reduce = useReducedMotion();
   const [currentImage, setCurrentImage] = useState(
     "defaultImageIndex" in project && typeof project.defaultImageIndex === "number"
       ? Math.min(project.defaultImageIndex, project.images.length - 1)
@@ -139,7 +136,7 @@ const ProjectRow = memo(function ProjectRow({
   const defaultShot = getDefaultProjectImage(project);
 
   const imageBlock = (
-    <div className="group/image relative min-h-[260px] w-full flex-shrink-0 overflow-hidden rounded-2xl border border-zinc-800/90 bg-zinc-950/50 shadow-[0_0_0_1px_rgba(255,255,255,0.03),inset_0_0_0_1px_rgba(255,255,255,0.02)] sm:min-h-[320px] lg:min-h-[340px] lg:w-[48%]">
+    <div className="group/image relative min-h-[260px] w-full flex-shrink-0 overflow-hidden border-b-[3px] border-[var(--border)] bg-[var(--bg-2)] sm:min-h-[320px] lg:min-h-[340px] lg:w-[48%] lg:border-b-0 lg:border-r-[3px]">
       <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6">
         {project.is_mobile_app ? (
           <>
@@ -153,12 +150,12 @@ const ProjectRow = memo(function ProjectRow({
                 sizes="(max-width: 1024px) 90vw, 400px"
               />
             </div>
-            <div className="relative hidden h-full min-h-[260px] w-full max-w-md overflow-hidden rounded-xl lg:block">
+            <div className="relative hidden h-full min-h-[260px] w-full max-w-md overflow-hidden lg:block">
               <Image
                 src={project.images[currentImage] ?? defaultShot}
                 alt={project.title}
                 fill
-                className="object-cover object-top transition duration-[1.1s] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover/image:scale-[1.02]"
+                className="object-cover object-top"
                 sizes="(max-width: 1280px) 45vw, 520px"
                 priority={index === 0}
               />
@@ -178,15 +175,15 @@ const ProjectRow = memo(function ProjectRow({
       </div>
       {project.images.length > 1 && (
         <>
-          <button type="button" onClick={(e) => { e.stopPropagation(); prev(); }} className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-xl border border-zinc-600 bg-black/60 p-2.5 text-white/90 transition hover:border-lime-400/50 hover:text-white" aria-label="Previous">
-            <ChevronLeft className="w-5 h-5" />
+          <button type="button" onClick={(e) => { e.stopPropagation(); prev(); }} className="absolute left-2 top-1/2 z-10 -translate-y-1/2 border-[3px] border-[var(--color-dark)] bg-[var(--bg-primary)] p-2 shadow-[2px_2px_0_var(--color-dark)]" aria-label="Previous">
+            <ChevronLeft className="h-5 w-5" />
           </button>
-          <button type="button" onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-xl border border-zinc-600 bg-black/60 p-2.5 text-white/90 transition hover:border-lime-400/50 hover:text-white" aria-label="Next">
-            <ChevronRight className="w-5 h-5" />
+          <button type="button" onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-2 top-1/2 z-10 -translate-y-1/2 border-[3px] border-[var(--color-dark)] bg-[var(--bg-primary)] p-2 shadow-[2px_2px_0_var(--color-dark)]" aria-label="Next">
+            <ChevronRight className="h-5 w-5" />
           </button>
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+          <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-1.5">
             {project.images.map((_, i) => (
-              <button key={i} type="button" onClick={(e) => { e.stopPropagation(); setCurrentImage(i); }} className={`h-1.5 rounded-full transition-all ${i === currentImage ? "w-6 bg-lime-400" : "w-1.5 bg-white/40 hover:bg-white/60"}`} aria-label={`Screen ${i + 1}`} />
+              <button key={i} type="button" onClick={(e) => { e.stopPropagation(); setCurrentImage(i); }} className={`h-2 border-[2px] border-[var(--color-dark)] transition-all ${i === currentImage ? "w-6 bg-[var(--color-accent)]" : "w-2 bg-[var(--bg-primary)]"}`} aria-label={`Screen ${i + 1}`} />
             ))}
           </div>
         </>
@@ -194,7 +191,7 @@ const ProjectRow = memo(function ProjectRow({
       <button
         type="button"
         onClick={() => onImageClick(project.id, currentImage)}
-        className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/50 px-2.5 py-1.5 font-mono text-xs text-white/70 transition hover:bg-black/70 hover:text-lime-300"
+        className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 border-[2px] border-[var(--color-dark)] bg-[var(--bg-primary)] px-2.5 py-1.5 font-pixel text-[0.4rem] uppercase tracking-wider shadow-[2px_2px_0_var(--color-dark)]"
       >
         <ZoomIn className="w-3.5 h-3.5" />
         Expand
@@ -206,49 +203,60 @@ const ProjectRow = memo(function ProjectRow({
     <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
       <div className="flex items-center gap-3 flex-wrap mb-3">
         {project.is_featured && (
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-lime-400/30 bg-lime-400/10 px-2.5 py-1 font-mono text-xs text-lime-400">
-            <Star className="h-3 w-3 fill-lime-400" /> Featured
+          <span className="skill-chip inline-flex items-center gap-1.5 text-[var(--color-accent)]">
+            <Star className="h-3 w-3 fill-[var(--color-accent)]" /> Featured
           </span>
         )}
-        <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{project.role}</span>
+        <span className="font-pixel text-[0.45rem] uppercase tracking-wider text-[var(--text-muted)]">
+          {project.role}
+        </span>
         {project.is_mobile_app && (
-          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-            <Smartphone className="w-3.5 h-3.5" /> Mobile
+          <span className="skill-chip inline-flex items-center gap-1">
+            <Smartphone className="h-3 w-3" /> Mobile
           </span>
         )}
         {!project.is_mobile_app && (
-          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-            <Monitor className="w-3.5 h-3.5" /> Web
+          <span className="skill-chip inline-flex items-center gap-1">
+            <Monitor className="h-3 w-3" /> Web
           </span>
         )}
       </div>
-      <h3 className="mb-3 font-display text-2xl font-semibold text-zinc-100 sm:text-3xl">
+      <h3 className="font-pixel mb-3 text-[0.65rem] leading-relaxed text-[var(--text-primary)] sm:text-[0.75rem]">
         {project.title}
       </h3>
-      <p className="mb-5 line-clamp-3 text-base leading-relaxed text-zinc-500">
+      <p className="font-pixel-body mb-5 line-clamp-3 text-lg leading-relaxed text-[var(--text-muted)]">
         {project.description}
       </p>
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="mb-6 flex flex-wrap gap-2">
         {project.tech_stack.map((tech) => (
-          <span key={tech} className="rounded-md border border-zinc-800 bg-zinc-900/80 px-2.5 py-1 font-mono text-xs text-zinc-400">
+          <span key={tech} className="skill-chip">
             {tech}
           </span>
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <Link
-          href={`/projects/${project.slug}`}
-          className="inline-flex items-center gap-2 rounded-full border border-lime-400/50 bg-lime-400/10 px-5 py-3 text-sm font-semibold text-lime-400 transition hover:bg-lime-400/20"
-        >
+        <Link href={`/projects/${project.slug}`} className="pixel-btn">
           View case study
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="h-4 w-4" />
         </Link>
-        <a href={project.project_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-3 text-sm text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-200" aria-label="View code">
+        <a
+          href={project.project_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pixel-btn-outline"
+          aria-label="View code"
+        >
           <Github className="h-4 w-4" />
           Code
         </a>
-        <a href={project.project_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-zinc-700 px-4 py-3 text-sm text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-200" aria-label="Live demo">
-          <ExternalLink className="w-4 h-4" />
+        <a
+          href={project.project_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pixel-btn-outline"
+          aria-label="Live demo"
+        >
+          <ExternalLink className="h-4 w-4" />
           Demo
         </a>
       </div>
@@ -256,18 +264,7 @@ const ProjectRow = memo(function ProjectRow({
   );
 
   return (
-    <motion.article
-      className="group/project grid scroll-mt-24 grid-cols-1 items-stretch gap-0 overflow-hidden rounded-3xl border border-zinc-800/90 bg-zinc-950/40 shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_32px_80px_rgba(0,0,0,0.25)] transition-colors duration-500 hover:border-lime-400/20 lg:grid-cols-[1fr_1fr] lg:gap-12"
-      whileHover={
-        reduce
-          ? undefined
-          : {
-              y: -3,
-              boxShadow: "0 0 0 1px rgba(163, 230, 53, 0.12), 0 48px 100px rgba(0,0,0,0.35)",
-              transition: springProject,
-            }
-      }
-    >
+    <article className="pixel-card-project group/project grid scroll-mt-24 grid-cols-1 items-stretch gap-0 overflow-hidden lg:grid-cols-[1fr_1fr]">
       {imageOnLeft ? (
         <>
           {imageBlock}
@@ -279,14 +276,14 @@ const ProjectRow = memo(function ProjectRow({
           <div className="order-1 lg:order-2">{imageBlock}</div>
         </>
       )}
-    </motion.article>
+    </article>
   );
 });
 
 const GRID_STYLE = {
   backgroundImage:
-    "linear-gradient(#27272a 1px, transparent 1px), linear-gradient(90deg, #27272a 1px, transparent 1px)",
-  backgroundSize: "48px 48px",
+    "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.025) 3px, rgba(255,255,255,0.025) 4px), repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.025) 3px, rgba(255,255,255,0.025) 4px)",
+  backgroundSize: "4px 4px",
 } as const;
 
 export const ProjectsSection = memo(function ProjectsSection() {
@@ -318,14 +315,8 @@ export const ProjectsSection = memo(function ProjectsSection() {
 
   return (
     <>
-      <section
-        id="projects"
-        className="section-ribbon relative border-b border-zinc-800/80 bg-zinc-950/40 py-20 sm:py-24 md:py-32"
-      >
-        <div
-          className="absolute inset-0 opacity-[0.12] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_30%,#000,transparent_75%)]"
-          style={GRID_STYLE}
-        />
+      <section id="projects" className="section-ribbon pixel-section relative py-20 sm:py-24 md:py-32">
+        <div className="absolute inset-0 opacity-40" style={GRID_STYLE} />
 
         <div className="relative mx-auto max-w-6xl px-5 sm:px-6">
           <SectionHeader
@@ -356,7 +347,7 @@ export const ProjectsSection = memo(function ProjectsSection() {
               href="https://github.com/Si1verSurfer"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-700/90 bg-zinc-950/40 px-6 py-3 font-medium text-zinc-300 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition hover:border-lime-400/25 hover:bg-zinc-900/60"
+              className="pixel-btn-outline"
             >
               <Github className="w-5 h-5" />
               View all on GitHub

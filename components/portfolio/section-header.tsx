@@ -15,17 +15,14 @@ export function SectionHeader({ eyebrow, title, description, className }: Sectio
     <header className={cn("relative mb-14 max-w-6xl md:mb-20", className)}>
       <ScrollSlide from="up" delay={0}>
         <div className="space-y-4 text-center md:text-left">
-          <p className="font-mono text-xs uppercase tracking-[0.4em] text-lime-400/90">
-            {eyebrow}
-          </p>
-          <h2 className="font-display text-3xl font-semibold leading-[1.08] tracking-tight text-zinc-50 sm:text-4xl md:text-5xl">
-            {title}
-          </h2>
-          <p className="max-w-2xl text-pretty text-base leading-relaxed text-zinc-500 md:max-w-none">
+          <p className="section-eyebrow">{eyebrow}</p>
+          <h2 className="section-title">{title}</h2>
+          <p className="max-w-2xl text-pretty text-[1.3rem] leading-relaxed text-[var(--text-muted)] md:max-w-none">
             {description}
           </p>
         </div>
       </ScrollSlide>
+      <div className="pixel-divider" role="separator" />
     </header>
   );
 }
