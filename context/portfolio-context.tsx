@@ -12,7 +12,7 @@ import {
 } from "react";
 
 const SCROLL_THROTTLE_MS = 80;
-const SECTION_IDS = ["skills", "projects", "contact"] as const;
+const SECTION_IDS = ["about", "work", "capabilities", "contact"] as const;
 type SectionId = (typeof SECTION_IDS)[number];
 
 // ---- Scroll state (single listener, memoized value to reduce re-renders) ----
@@ -130,14 +130,16 @@ type SectionState = {
 };
 
 const defaultVisibility: SectionVisibility = {
-  skills: false,
-  projects: false,
+  about: false,
+  work: false,
+  capabilities: false,
   contact: false,
 };
 
 const defaultRatio: SectionRatio = {
-  skills: 0,
-  projects: 0,
+  about: 0,
+  work: 0,
+  capabilities: 0,
   contact: 0,
 };
 
