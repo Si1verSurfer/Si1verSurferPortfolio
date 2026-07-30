@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -18,7 +16,7 @@ export function WorkSection() {
             href="https://github.com/Si1verSurfer"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--cream-muted)] hover:text-[var(--cream)]"
+            className="link-arrow text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--cream-muted)] hover:text-[var(--cream)]"
           >
             Explore all projects
             <ArrowUpRight className="h-4 w-4" />
@@ -30,15 +28,17 @@ export function WorkSection() {
             <Link
               key={project.slug}
               href={`/projects/${project.slug}`}
-              className="group surface-card overflow-hidden transition hover:-translate-y-1 hover:border-[var(--border-strong)]"
+              className="group hover-card surface-card overflow-hidden"
             >
               <div className="relative aspect-[16/11] overflow-hidden bg-[var(--navy-soft)]">
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="object-cover object-top transition duration-500 group-hover:scale-[1.02]"
+                  className="project-thumb object-cover object-top"
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  quality={80}
+                  loading="lazy"
                 />
               </div>
               <div className="flex items-end justify-between gap-4 p-5">
@@ -50,7 +50,7 @@ export function WorkSection() {
                     {project.categories.join(" · ")}
                   </p>
                 </div>
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--border-strong)] text-[var(--cream)] transition group-hover:bg-[var(--cream)] group-hover:text-[var(--navy)]">
+                <span className="arrow-circle flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--border-strong)] text-[var(--cream)]">
                   <ArrowUpRight className="h-4 w-4" />
                 </span>
               </div>

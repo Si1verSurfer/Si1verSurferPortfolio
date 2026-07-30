@@ -32,8 +32,8 @@ export function CapabilitiesSection() {
             {CAPABILITIES.map((item) => {
               const Icon = ICON_MAP[item.icon] ?? Layers;
               return (
-                <article key={item.title} className="surface-card p-6">
-                  <Icon className="mb-4 h-5 w-5 text-[var(--cream-dim)]" strokeWidth={1.5} />
+                <article key={item.title} className="hover-card surface-card p-6">
+                  <Icon className="capability-icon mb-4 h-5 w-5 text-[var(--cream-dim)]" strokeWidth={1.5} />
                   <h3 className="font-display text-base font-semibold uppercase tracking-wide text-[var(--cream)]">
                     {item.title}
                   </h3>
@@ -46,23 +46,20 @@ export function CapabilitiesSection() {
           </div>
 
           <div className="space-y-6">
-            <div className="surface-card p-6">
+            <div className="hover-card surface-card p-6">
               <h3 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-[var(--cream)]">
                 Tools & Technologies
               </h3>
               <div className="mt-5 flex flex-wrap gap-2">
                 {TOOLS.map((tool) => (
-                  <span
-                    key={tool}
-                    className="rounded-full border border-[var(--border)] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--cream-muted)]"
-                  >
+                  <span key={tool} className="hover-tag">
                     {tool}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="surface-card p-6">
+            <div className="hover-card surface-card p-6">
               <h3 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-[var(--cream)]">
                 Focus Areas
               </h3>

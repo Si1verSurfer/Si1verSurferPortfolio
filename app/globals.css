@@ -64,6 +64,12 @@
     scroll-behavior: smooth;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
@@ -82,6 +88,8 @@
 
   .section-pad {
     @apply py-20 md:py-28;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
   }
 
   .eyebrow {
@@ -99,23 +107,298 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[var(--cream)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--navy)] transition hover:opacity-90;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-[var(--cream)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--navy)];
+    transition:
+      transform 0.22s ease,
+      opacity 0.22s ease,
+      box-shadow 0.22s ease;
+  }
+
+  .btn-primary:hover {
+    @apply opacity-95;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(240, 231, 213, 0.18);
+  }
+
+  .btn-outline:hover {
+    @apply border-[var(--cream)] bg-white/5;
+    transform: translateY(-2px);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border-strong)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--cream)] transition hover:border-[var(--cream)] hover:bg-white/5;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-[var(--border-strong)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--cream)];
+    transition:
+      transform 0.22s ease,
+      border-color 0.22s ease,
+      background-color 0.22s ease,
+      color 0.22s ease;
+  }
+
+  .btn-outline:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary svg,
+  .btn-outline svg,
+  .link-arrow svg,
+  .link-back svg {
+    transition: transform 0.22s ease;
+  }
+
+  .btn-primary:hover svg,
+  .btn-outline:hover svg,
+  .link-arrow:hover svg {
+    transform: translate(2px, -2px);
+  }
+
+  .link-back:hover svg {
+    transform: translate(-2px, 0);
   }
 
   .surface-card {
-    @apply rounded-2xl border border-[var(--border)] bg-[var(--navy-light)]/80 backdrop-blur-sm;
+    @apply rounded-2xl border border-[var(--border)] bg-[var(--navy-light)]/80;
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      background-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .hover-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-strong);
+    background-color: rgba(42, 51, 84, 0.92);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
   }
 
   .nav-link {
-    @apply text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--cream-muted)] transition hover:text-[var(--cream)];
+    @apply relative text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[var(--cream-muted)];
+    transition: color 0.22s ease;
   }
 
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 1px;
+    background: var(--cream);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+
+  .nav-link:hover,
   .nav-link-active {
     @apply text-[var(--cream)];
+  }
+
+  .nav-link:hover::after,
+  .nav-link-active::after {
+    transform: scaleX(1);
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-2 transition-colors duration-200;
+  }
+
+  .hover-tag {
+    @apply rounded-full border border-[var(--border)] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--cream-muted)];
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .hover-tag:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    color: var(--cream);
+    background-color: rgba(240, 231, 213, 0.06);
+  }
+
+  .hover-stat {
+    transition:
+      transform 0.25s ease,
+      background-color 0.25s ease;
+  }
+
+  .hover-stat:hover {
+    transform: translateY(-3px);
+    background-color: rgba(240, 231, 213, 0.03);
+  }
+
+  .hover-stat:hover svg {
+    color: var(--cream);
+    transform: translateY(-2px);
+  }
+
+  .hover-stat svg {
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-[var(--border-strong)] bg-transparent px-4 py-3 text-sm text-[var(--cream)] outline-none placeholder:text-[var(--cream-dim)];
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .input-field:hover {
+    border-color: rgba(240, 231, 213, 0.4);
+    background-color: rgba(240, 231, 213, 0.03);
+  }
+
+  .input-field:focus {
+    border-color: var(--cream);
+    box-shadow: 0 0 0 3px rgba(240, 231, 213, 0.08);
+  }
+
+  .hero-frame {
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .hero-frame:hover {
+    transform: translateY(-4px);
+    border-color: var(--cream);
+    box-shadow: 0 32px 64px rgba(0, 0, 0, 0.38);
+  }
+
+  .hero-badge {
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .hero-badge:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+  }
+
+  .icon-btn {
+    transition:
+      transform 0.22s ease,
+      border-color 0.22s ease,
+      background-color 0.22s ease,
+      color 0.22s ease;
+  }
+
+  .icon-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--cream);
+    background-color: rgba(240, 231, 213, 0.08);
+    color: var(--cream);
+  }
+
+  .logo-mark {
+    transition: transform 0.22s ease, opacity 0.22s ease;
+  }
+
+  .logo-mark:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  .menu-toggle {
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .menu-toggle:hover {
+    transform: scale(1.05);
+    border-color: var(--cream);
+    background-color: rgba(240, 231, 213, 0.06);
+  }
+
+  .capability-icon {
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .hover-card:hover .capability-icon {
+    transform: scale(1.12) translateY(-2px);
+    color: var(--cream);
+  }
+
+  .project-thumb {
+    transition: transform 0.45s ease;
+  }
+
+  .group:hover .project-thumb {
+    transform: scale(1.04);
+  }
+
+  .arrow-circle {
+    transition:
+      transform 0.25s ease,
+      background-color 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .group:hover .arrow-circle {
+    transform: rotate(-8deg) scale(1.05);
+    background-color: var(--cream);
+    color: var(--navy);
+    border-color: var(--cream);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary,
+    .btn-outline,
+    .surface-card,
+    .hover-card,
+    .nav-link,
+    .hover-tag,
+    .hover-stat,
+    .input-field,
+    .hero-frame,
+    .hero-badge,
+    .icon-btn,
+    .logo-mark,
+    .menu-toggle,
+    .capability-icon,
+    .project-thumb,
+    .arrow-circle,
+    .btn-primary svg,
+    .btn-outline svg,
+    .link-arrow svg,
+    .hover-stat svg {
+      transition: none !important;
+    }
+
+    .btn-primary:hover,
+    .btn-outline:hover,
+    .hover-card:hover,
+    .hover-stat:hover,
+    .hover-tag:hover,
+    .hero-frame:hover,
+    .hero-badge:hover,
+    .icon-btn:hover,
+    .logo-mark:hover,
+    .menu-toggle:hover,
+    .group:hover .project-thumb,
+    .group:hover .arrow-circle,
+    .hover-card:hover .capability-icon,
+    .link-back svg,
+    .link-back:hover svg {
+      transform: none !important;
+    }
   }
 
   .font-display {

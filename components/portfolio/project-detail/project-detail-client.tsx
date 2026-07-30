@@ -16,7 +16,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
         <div className="site-container">
           <Link
             href="/#work"
-            className="mb-8 inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--cream-muted)] hover:text-[var(--cream)]"
+            className="link-back link-arrow mb-8 inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--cream-muted)] hover:text-[var(--cream)]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to work
@@ -30,10 +30,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
 
               <div className="mt-6 flex flex-wrap gap-2">
                 {project.categories.map((cat) => (
-                  <span
-                    key={cat}
-                    className="rounded-full border border-[var(--border)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--cream-muted)]"
-                  >
+                  <span key={cat} className="hover-tag !px-3 !py-1 !text-[0.68rem] !tracking-[0.12em]">
                     {cat}
                   </span>
                 ))}
@@ -61,10 +58,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
                 </h2>
                 <div className="flex flex-wrap gap-2">
                   {project.tech_stack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--cream-muted)]"
-                    >
+                    <span key={tech} className="hover-tag !text-xs !normal-case !tracking-normal">
                       {tech}
                     </span>
                   ))}
@@ -72,7 +66,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
               </div>
             </div>
 
-            <div className="surface-card overflow-hidden">
+            <div className="hover-card surface-card overflow-hidden">
               <div className="relative aspect-[16/11] w-full bg-[var(--navy-soft)]">
                 <Image
                   src={project.image}
@@ -80,6 +74,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
                   fill
                   className="object-cover object-top"
                   sizes="(max-width: 1024px) 100vw, 60vw"
+                  quality={85}
                   priority
                 />
               </div>

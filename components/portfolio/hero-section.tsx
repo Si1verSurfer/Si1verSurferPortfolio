@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { ArrowUpRight, Download } from "lucide-react";
 import { portfolioProfile } from "@/data/profile";
@@ -36,26 +34,27 @@ export function HeroSection() {
         </div>
 
         <div className="relative">
-          <div className="absolute -right-2 top-8 hidden max-w-[11rem] rounded-2xl border border-[var(--border)] bg-[var(--navy-light)]/90 p-4 text-right backdrop-blur md:block">
+          <div className="hero-badge absolute -right-2 top-8 hidden max-w-[11rem] rounded-2xl border border-[var(--border)] bg-[var(--navy-light)] p-4 text-right md:block">
             <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--cream-dim)]">
               Available for
             </p>
             <p className="mt-1 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--cream)]">
               New projects
             </p>
-            <a href="#work" className="mt-3 inline-flex items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--cream-muted)] hover:text-[var(--cream)]">
+            <a href="#work" className="link-arrow mt-3 inline-flex items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--cream-muted)] hover:text-[var(--cream)]">
               View projects
               <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
           </div>
 
-          <div className="relative mx-auto aspect-[4/5] max-w-md overflow-hidden rounded-[2rem] border border-[var(--border-strong)] bg-[var(--navy-light)] shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+          <div className="hero-frame relative mx-auto aspect-[4/5] max-w-md overflow-hidden rounded-[2rem] border border-[var(--border-strong)] bg-[var(--navy-light)] shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
             <Image
               src={portfolioProfile.avatarSrc}
               alt={portfolioProfile.name}
               fill
               className="object-cover object-top"
               sizes="(max-width: 768px) 100vw, 420px"
+              quality={85}
               priority
             />
           </div>

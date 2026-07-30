@@ -22,12 +22,12 @@ export function ProcessSection() {
           {PROCESS_STEPS.map((step) => {
             const Icon = ICON_MAP[step.icon] ?? Search;
             return (
-              <article key={step.step} className="surface-card p-6">
+              <article key={step.step} className="hover-card surface-card p-6">
                 <div className="mb-5 flex items-center justify-between">
                   <span className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--cream-dim)]">
                     {step.step}
                   </span>
-                  <Icon className="h-4 w-4 text-[var(--cream-dim)]" strokeWidth={1.5} />
+                  <Icon className="capability-icon h-4 w-4 text-[var(--cream-dim)]" strokeWidth={1.5} />
                 </div>
                 <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-[var(--cream)]">
                   {step.title}

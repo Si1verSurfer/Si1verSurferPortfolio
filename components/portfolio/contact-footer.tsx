@@ -21,7 +21,7 @@ export function ContactFooter() {
     <footer id="contact" className="scroll-mt-24 border-t border-[var(--border)]">
       <section className="section-pad">
         <div className="site-container grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="surface-card flex min-h-[320px] flex-col justify-between border-[var(--border-strong)] p-8 cta-shimmer md:p-10">
+          <div className="hover-card surface-card flex min-h-[320px] flex-col justify-between border-[var(--border-strong)] p-8 cta-shimmer md:p-10">
             <div>
               <p className="eyebrow mb-4">Contact</p>
               <h2 className="font-display text-3xl font-semibold uppercase leading-tight tracking-tight text-[var(--cream)] md:text-4xl">
@@ -35,12 +35,15 @@ export function ContactFooter() {
           </div>
 
           <div className="space-y-6">
-            <div className="surface-card p-6">
+            <div className="hover-card surface-card p-6">
               <div className="space-y-4 text-sm text-[var(--cream-muted)]">
-                <p className="flex items-center gap-3">
+                <a
+                  href="mailto:bashar772004@gmail.com"
+                  className="link-arrow flex items-center gap-3 hover:text-[var(--cream)]"
+                >
                   <Mail className="h-4 w-4 text-[var(--cream-dim)]" />
                   bashar772004@gmail.com
-                </p>
+                </a>
                 <p className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-[var(--cream-dim)]" />
                   Worldwide (remote)
@@ -51,7 +54,7 @@ export function ContactFooter() {
                   href="https://github.com/Si1verSurfer"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-outline !px-4 !py-2"
+                  className="icon-btn btn-outline !px-4 !py-2"
                   aria-label="GitHub"
                 >
                   <Github className="h-4 w-4" />
@@ -60,7 +63,7 @@ export function ContactFooter() {
                   href="https://www.linkedin.com/in/bashar-rizq/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-outline !px-4 !py-2"
+                  className="icon-btn btn-outline !px-4 !py-2"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="h-4 w-4" />
@@ -68,13 +71,13 @@ export function ContactFooter() {
               </div>
             </div>
 
-            <form onSubmit={onSubmit} className="surface-card space-y-4 p-6">
+            <form onSubmit={onSubmit} className="hover-card surface-card space-y-4 p-6">
               <input
                 required
                 value={form.name}
                 onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                 placeholder="Your name"
-                className="w-full rounded-xl border border-[var(--border-strong)] bg-transparent px-4 py-3 text-sm text-[var(--cream)] outline-none placeholder:text-[var(--cream-dim)] focus:border-[var(--cream)]"
+                className="input-field"
               />
               <input
                 required
@@ -82,7 +85,7 @@ export function ContactFooter() {
                 value={form.email}
                 onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                 placeholder="Your email"
-                className="w-full rounded-xl border border-[var(--border-strong)] bg-transparent px-4 py-3 text-sm text-[var(--cream)] outline-none placeholder:text-[var(--cream-dim)] focus:border-[var(--cream)]"
+                className="input-field"
               />
               <textarea
                 required
@@ -90,7 +93,7 @@ export function ContactFooter() {
                 value={form.message}
                 onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
                 placeholder="Tell me about your project"
-                className="w-full resize-none rounded-xl border border-[var(--border-strong)] bg-transparent px-4 py-3 text-sm text-[var(--cream)] outline-none placeholder:text-[var(--cream-dim)] focus:border-[var(--cream)]"
+                className="input-field resize-none"
               />
               <button type="submit" disabled={sending} className="btn-primary w-full disabled:opacity-60">
                 {sending ? "Sending..." : "Send message"}

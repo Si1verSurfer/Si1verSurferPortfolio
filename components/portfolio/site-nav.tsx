@@ -18,12 +18,12 @@ export function SiteNav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "border-b border-[var(--border)] bg-[var(--navy)]/92 backdrop-blur-xl" : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
+        isScrolled ? "border-b border-[var(--border)] bg-[var(--navy)]" : "bg-transparent"
       }`}
     >
       <div className="site-container flex h-20 items-center justify-between gap-6">
-        <Link href="/" className="font-display text-lg font-semibold tracking-[0.18em] text-[var(--cream)]">
+        <Link href="/" className="logo-mark font-display text-lg font-semibold tracking-[0.18em] text-[var(--cream)]">
           SS
         </Link>
 
@@ -50,7 +50,7 @@ export function SiteNav() {
 
         <button
           type="button"
-          className="inline-flex rounded-full border border-[var(--border-strong)] p-2 text-[var(--cream)] md:hidden"
+          className="menu-toggle inline-flex rounded-full border border-[var(--border-strong)] p-2 text-[var(--cream)] md:hidden"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
         >

@@ -10,7 +10,7 @@ export function StatsBar() {
         {STATS.map((stat, index) => {
           const Icon = ICONS[index] ?? Timer;
           return (
-            <div key={stat.label} className="flex flex-col items-center px-4 py-8 text-center md:px-6 md:py-10">
+            <div key={stat.label} className="hover-stat flex flex-col items-center px-4 py-8 text-center md:px-6 md:py-10">
               <Icon className="mb-4 h-5 w-5 text-[var(--cream-dim)]" strokeWidth={1.5} />
               <span className="font-display text-3xl font-semibold text-[var(--cream)] md:text-4xl">
                 {stat.value}

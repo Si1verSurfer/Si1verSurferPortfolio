@@ -7,17 +7,13 @@ import {
   useMemo,
   useRef,
   useReducer,
-  useState,
   type ReactNode,
 } from "react";
 
-const SCROLL_THROTTLE_MS = 80;
+const SCROLL_THROTTLE_MS = 100;
 const SECTION_IDS = ["about", "work", "capabilities", "contact"] as const;
-type SectionId = (typeof SECTION_IDS)[number];
 
-// ---- Scroll state (single listener, memoized value to reduce re-renders) ----
 type ScrollState = {
-  scrollProgress: number;
   activeSection: string;
   isScrolled: boolean;
 };
@@ -25,25 +21,12 @@ type ScrollState = {
 const ScrollContext = createContext<ScrollState | null>(null);
 
 const INITIAL_SCROLL: ScrollState = {
-  scrollProgress: 0,
   activeSection: "",
   isScrolled: false,
 };
 
-function applyScrollDocumentVars(scrollProgress: number) {
-  const t = scrollProgress / 100;
-  if (typeof document !== "undefined") {
-    document.documentElement.style.setProperty("--scroll", String(t));
-  }
-}
-
 function computeScrollState(): ScrollState {
   const y = window.scrollY;
-  const docHeight =
-    document.documentElement.scrollHeight - window.innerHeight;
-  const scrollProgress =
-    docHeight > 0 ? Math.min((y / docHeight) * 100, 100) : 0;
-  applyScrollDocumentVars(scrollProgress);
   let activeSection = "";
   for (const id of SECTION_IDS) {
     const el = document.getElementById(id);
@@ -56,7 +39,6 @@ function computeScrollState(): ScrollState {
     }
   }
   return {
-    scrollProgress,
     activeSection,
     isScrolled: y > 50,
   };
@@ -65,9 +47,7 @@ function computeScrollState(): ScrollState {
 function ScrollProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useReducer(
     (prev: ScrollState, next: ScrollState) =>
-      prev.scrollProgress === next.scrollProgress &&
-      prev.activeSection === next.activeSection &&
-      prev.isScrolled === next.isScrolled
+      prev.activeSection === next.activeSection && prev.isScrolled === next.isScrolled
         ? prev
         : next,
     INITIAL_SCROLL
@@ -91,27 +71,16 @@ function ScrollProvider({ children }: { children: ReactNode }) {
       setState(computeScrollState());
     };
 
-    const onResize = () => {
-      setState(computeScrollState());
-    };
-
     onScroll();
-    if (typeof document !== "undefined") {
-      applyScrollDocumentVars(0);
-    }
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
-  const value = useMemo(() => state, [state.scrollProgress, state.activeSection, state.isScrolled]);
-  return (
-    <ScrollContext.Provider value={value}>{children}</ScrollContext.Provider>
-  );
+  const value = useMemo(() => state, [state.activeSection, state.isScrolled]);
+  return <ScrollContext.Provider value={value}>{children}</ScrollContext.Provider>;
 }
 
 export function useScrollState(): ScrollState {
@@ -120,163 +89,6 @@ export function useScrollState(): ScrollState {
   return ctx;
 }
 
-// ---- Section visibility: single reducer (one re-render per observer tick) ----
-type SectionVisibility = Record<SectionId, boolean>;
-type SectionRatio = Record<SectionId, number>;
-
-type SectionState = {
-  visible: SectionVisibility;
-  ratio: SectionRatio;
-};
-
-const defaultVisibility: SectionVisibility = {
-  about: false,
-  work: false,
-  capabilities: false,
-  contact: false,
-};
-
-const defaultRatio: SectionRatio = {
-  about: 0,
-  work: 0,
-  capabilities: 0,
-  contact: 0,
-};
-
-const INITIAL_SECTION: SectionState = {
-  visible: defaultVisibility,
-  ratio: defaultRatio,
-};
-
-type SectionAction =
-  | { type: "UPDATE"; payload: { id: SectionId; isIntersecting: boolean; ratio: number }[] };
-
-function sectionReducer(state: SectionState, action: SectionAction): SectionState {
-  if (action.type !== "UPDATE") return state;
-  let visibleChanged = false;
-  let ratioChanged = false;
-  const nextVisible = { ...state.visible };
-  const nextRatio = { ...state.ratio };
-  for (const { id, isIntersecting, ratio } of action.payload) {
-    if (!SECTION_IDS.includes(id)) continue;
-    if (nextVisible[id] !== isIntersecting) {
-      nextVisible[id] = isIntersecting;
-      visibleChanged = true;
-    }
-    if (nextRatio[id] !== ratio) {
-      nextRatio[id] = ratio;
-      ratioChanged = true;
-    }
-  }
-  if (!visibleChanged && !ratioChanged) return state;
-  return { visible: nextVisible, ratio: nextRatio };
-}
-
-const SectionVisibilityContext = createContext<SectionVisibility | null>(null);
-const SectionRatioContext = createContext<SectionRatio | null>(null);
-
-function SectionVisibilityProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(sectionReducer, INITIAL_SECTION);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const observedRef = useRef<Map<string, Element>>(new Map());
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const payload = entries.map((e) => ({
-          id: e.target.id as SectionId,
-          isIntersecting: e.isIntersecting,
-          ratio: e.intersectionRatio,
-        }));
-        dispatch({ type: "UPDATE", payload });
-      },
-      { threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], rootMargin: "0px 0px -5% 0px" }
-    );
-    const observer = observerRef.current;
-
-    const t = setInterval(() => {
-      SECTION_IDS.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const current = observedRef.current.get(id);
-        if (current === el) return;
-        observedRef.current.set(id, el);
-        observer.observe(el);
-      });
-    }, 150);
-
-    return () => {
-      clearInterval(t);
-      observer.disconnect();
-      observerRef.current = null;
-      observedRef.current.clear();
-    };
-  }, []);
-
-  const visibleValue = useMemo(() => state.visible, [state.visible]);
-  const ratioValue = useMemo(() => state.ratio, [state.ratio]);
-
-  return (
-    <SectionVisibilityContext.Provider value={visibleValue}>
-      <SectionRatioContext.Provider value={ratioValue}>
-        {children}
-      </SectionRatioContext.Provider>
-    </SectionVisibilityContext.Provider>
-  );
-}
-
-export function useSectionVisibility(id: SectionId): boolean {
-  const ctx = useContext(SectionVisibilityContext);
-  if (!ctx) return false;
-  return ctx[id] ?? false;
-}
-
-export function useSectionVisibilityRatio(id: SectionId): number {
-  const ctx = useContext(SectionRatioContext);
-  if (!ctx) return 0;
-  return ctx[id] ?? 0;
-}
-
-export function useAllSectionVisibility(): SectionVisibility {
-  const ctx = useContext(SectionVisibilityContext);
-  if (!ctx) return defaultVisibility;
-  return ctx;
-}
-
-// ---- Mobile menu (stable setOpen reference) ----
-type MobileMenuState = {
-  isOpen: boolean;
-  setOpen: (open: boolean) => void;
-};
-
-const MobileMenuContext = createContext<MobileMenuState | null>(null);
-
-function MobileMenuProvider({ children }: { children: ReactNode }) {
-  const [isOpen, setOpen] = useState(false);
-  const value = useMemo(
-    () => ({ isOpen, setOpen }),
-    [isOpen]
-  );
-  return (
-    <MobileMenuContext.Provider value={value}>
-      {children}
-    </MobileMenuContext.Provider>
-  );
-}
-
-export function useMobileMenu(): MobileMenuState {
-  const ctx = useContext(MobileMenuContext);
-  if (!ctx) throw new Error("useMobileMenu must be used within PortfolioProvider");
-  return ctx;
-}
-
-// ---- Combined provider ----
 export function PortfolioProvider({ children }: { children: ReactNode }) {
-  return (
-    <ScrollProvider>
-      <SectionVisibilityProvider>
-        <MobileMenuProvider>{children}</MobileMenuProvider>
-      </SectionVisibilityProvider>
-    </ScrollProvider>
-  );
+  return <ScrollProvider>{children}</ScrollProvider>;
 }
