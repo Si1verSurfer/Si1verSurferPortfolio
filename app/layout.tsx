@@ -1,26 +1,21 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Cairo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { PortfolioProviders } from "@/components/portfolio/providers";
 import "./globals.css";
 
-const heading = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
-const body = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-cairo",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Si1ver Surfer | Software Engineer",
+  title: "Si1ver Surfer | بشار رزق — Software Engineer",
   description:
-    "Software Engineer and AI Specialist building polished mobile, web, and AI-powered products.",
+    "أبني تطبيقات ومواقع واضحة وسريعة — منتجات تُستخدم كل يوم، وتبقى سهلة مع الوقت.",
   icons: {
     icon: [
       { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
@@ -35,8 +30,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${heading.variable} ${body.variable} font-sans`} suppressHydrationWarning>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <body className={`${cairo.variable} font-sans`} suppressHydrationWarning>
         <PortfolioProviders>{children}</PortfolioProviders>
         <Analytics />
       </body>

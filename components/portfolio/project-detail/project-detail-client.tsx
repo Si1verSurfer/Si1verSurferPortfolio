@@ -16,7 +16,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
         <div className="site-container">
           <Link
             href="/#work"
-            className="link-back link-arrow mb-8 inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-[var(--cream-muted)] hover:text-[var(--cream)]"
+            className="link-back link-arrow mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[var(--cream-muted)] hover:text-[var(--cream)]"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to work

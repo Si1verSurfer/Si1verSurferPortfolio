@@ -1,62 +1,114 @@
+"use client";
+
 import Image from "next/image";
-import { ArrowUpRight, Download } from "lucide-react";
+import { ArrowUpRight, Github } from "lucide-react";
 import { portfolioProfile } from "@/data/profile";
+import { useLanguage } from "@/context/language-context";
+import { scrollToSection } from "@/lib/scroll-to-section";
 
 export function HeroSection() {
+  const { t, isRtl, locale } = useLanguage();
+
   return (
-    <section id="about" className="relative overflow-hidden pt-28 pb-16 md:pt-32 md:pb-24">
-      <div className="site-container grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-        <div className="relative z-10">
-          <p className="eyebrow mb-6">Digital experiences that inspire</p>
-          <h1 className="display-title mb-4 text-[var(--cream)]">{portfolioProfile.title}</h1>
-          <p className="mb-6 font-display text-sm font-semibold uppercase tracking-[0.22em] text-[var(--cream-dim)]">
-            {portfolioProfile.alias}
-          </p>
-          <p className="max-w-xl text-base leading-relaxed text-[var(--cream-muted)] md:text-lg">
-            {portfolioProfile.summary}
-          </p>
+    <section
+      id="home"
+      className="hero-section relative overflow-hidden pb-10 pt-28 scroll-mt-28 md:pb-16 md:pt-32"
+    >
+      <div className="hero-section-glow pointer-events-none absolute inset-0" aria-hidden />
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a href="#work" className="btn-primary">
-              View my work
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-            <a
-              href="https://github.com/Si1verSurfer"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline"
-            >
-              <Download className="h-4 w-4" />
-              GitHub profile
-            </a>
-          </div>
-        </div>
+      <div className="site-container relative">
+        <div className="grid items-end gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-6 xl:gap-12">
+          <div className="relative z-10 pb-6 lg:pb-16">
+            <div className="hero-intro mb-7 inline-flex items-center gap-3 rounded-full border border-[var(--border)] bg-[var(--navy-light)]/55 px-4 py-2.5 backdrop-blur-sm">
+              <span className="status-dot" aria-hidden />
+              <span className="text-sm font-semibold text-[var(--cream-muted)]">
+                {t.hero.available}
+              </span>
+            </div>
 
-        <div className="relative">
-          <div className="hero-badge absolute -right-2 top-8 hidden max-w-[11rem] rounded-2xl border border-[var(--border)] bg-[var(--navy-light)] p-4 text-right md:block">
-            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[var(--cream-dim)]">
-              Available for
+            <p className="eyebrow mb-4">{t.hero.eyebrow}</p>
+
+            <h1 className="hero-headline mb-5 text-[var(--cream)]">
+              <span className="block">{t.hero.titleLine1}</span>
+              <span className="hero-headline-accent block">{t.hero.titleLine2}</span>
+            </h1>
+
+            <p className="mb-4 text-base font-semibold text-[var(--cream)] md:text-lg">
+              {locale === "ar" ? portfolioProfile.nameAr : portfolioProfile.name}
+              <span className="mx-2 text-[var(--cream-dim)]">·</span>
+              <span className="font-medium text-[var(--cream-dim)]">{portfolioProfile.alias}</span>
             </p>
-            <p className="mt-1 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--cream)]">
-              New projects
-            </p>
-            <a href="#work" className="link-arrow mt-3 inline-flex items-center gap-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--cream-muted)] hover:text-[var(--cream)]">
-              View projects
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
+
+            <p className="hero-tagline max-w-xl text-[var(--cream-muted)]">{t.hero.tagline}</p>
+
+            <div className="mt-7 flex flex-wrap gap-2.5">
+              {t.hero.highlights.map((tag) => (
+                <span key={tag} className="hero-tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-9 flex flex-wrap gap-3.5">
+              <a
+                href="#work"
+                className="btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection("work");
+                }}
+              >
+                {t.hero.viewWork}
+                <ArrowUpRight className={`h-4 w-4 ${isRtl ? "-scale-x-100" : ""}`} />
+              </a>
+              <a
+                href={portfolioProfile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                <Github className="h-4 w-4" />
+                {t.hero.github}
+              </a>
+            </div>
           </div>
 
-          <div className="hero-frame relative mx-auto aspect-[4/5] max-w-md overflow-hidden rounded-[2rem] border border-[var(--border-strong)] bg-[var(--navy-light)] shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-            <Image
-              src={portfolioProfile.avatarSrc}
-              alt={portfolioProfile.name}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 768px) 100vw, 420px"
-              quality={85}
-              priority
-            />
+          <div className="relative mx-auto w-full max-w-[460px] lg:max-w-none">
+            <div className="hero-orbit pointer-events-none absolute inset-[6%] rounded-full" aria-hidden />
+            <div className="hero-portrait-glow pointer-events-none absolute inset-0 scale-105" aria-hidden />
+
+            <div className="hero-float relative mx-auto aspect-[3/4] w-full max-w-[440px]">
+              <div
+                className="pointer-events-none absolute inset-x-[12%] bottom-[2%] h-[14%] rounded-[50%] bg-black/40 blur-3xl"
+                aria-hidden
+              />
+
+              <div className="hero-cutout absolute inset-0">
+                <Image
+                  src={portfolioProfile.avatarSrc}
+                  alt={portfolioProfile.name}
+                  fill
+                  className="object-contain object-bottom"
+                  sizes="(max-width: 768px) 90vw, 440px"
+                  quality={90}
+                  priority
+                />
+              </div>
+
+              <div className="hero-badge-float absolute start-0 top-[18%] z-20 hidden sm:block">
+                <div className="rounded-2xl border border-[var(--border-strong)] bg-[var(--navy)]/80 px-4 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.35)] backdrop-blur-md">
+                  <p className="text-xs font-semibold text-[var(--cream-dim)]">{t.hero.focusLabel}</p>
+                  <p className="mt-1 text-sm font-bold text-[var(--cream)]">{t.hero.focusValue}</p>
+                </div>
+              </div>
+
+              <div className="hero-badge-float absolute end-0 bottom-[22%] z-20 hidden sm:block">
+                <div className="rounded-2xl border border-[var(--border-strong)] bg-[var(--navy)]/80 px-4 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.35)] backdrop-blur-md">
+                  <p className="text-2xl font-extrabold text-[var(--cream)]">{t.hero.appsValue}</p>
+                  <p className="mt-0.5 text-xs font-semibold text-[var(--cream-dim)]">{t.hero.appsLabel}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

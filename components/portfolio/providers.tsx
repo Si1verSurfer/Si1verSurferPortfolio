@@ -1,7 +1,16 @@
 "use client";
 
 import { PortfolioProvider } from "@/context/portfolio-context";
+import { LanguageProvider } from "@/context/language-context";
+import { LocaleSync } from "@/components/portfolio/locale-sync";
 
 export function PortfolioProviders({ children }: { children: React.ReactNode }) {
-  return <PortfolioProvider>{children}</PortfolioProvider>;
+  return (
+    <LanguageProvider>
+      <PortfolioProvider>
+        <LocaleSync />
+        {children}
+      </PortfolioProvider>
+    </LanguageProvider>
+  );
 }

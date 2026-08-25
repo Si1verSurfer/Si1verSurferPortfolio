@@ -5,77 +5,99 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useReducer,
+  useRef,
   type ReactNode,
 } from "react";
-
-const SCROLL_THROTTLE_MS = 100;
-const SECTION_IDS = ["about", "work", "capabilities", "contact"] as const;
+import { SECTION_IDS, type SectionId } from "@/data/translations";
+import { getNavOffset } from "@/lib/scroll-to-section";
 
 type ScrollState = {
-  activeSection: string;
+  activeSection: SectionId | "";
   isScrolled: boolean;
 };
+
+type ScrollAction =
+  | { type: "SET_ACTIVE"; payload: SectionId | "" }
+  | { type: "SET_SCROLLED"; payload: boolean };
 
 const ScrollContext = createContext<ScrollState | null>(null);
 
 const INITIAL_SCROLL: ScrollState = {
-  activeSection: "",
+  activeSection: "home",
   isScrolled: false,
 };
 
-function computeScrollState(): ScrollState {
-  const y = window.scrollY;
-  let activeSection = "";
-  for (const id of SECTION_IDS) {
-    const el = document.getElementById(id);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= 120 && rect.bottom >= 120) {
-        activeSection = id;
-        break;
-      }
-    }
+function scrollReducer(state: ScrollState, action: ScrollAction): ScrollState {
+  switch (action.type) {
+    case "SET_ACTIVE":
+      return state.activeSection === action.payload
+        ? state
+        : { ...state, activeSection: action.payload };
+    case "SET_SCROLLED":
+      return state.isScrolled === action.payload
+        ? state
+        : { ...state, isScrolled: action.payload };
+    default:
+      return state;
   }
-  return {
-    activeSection,
-    isScrolled: y > 50,
-  };
 }
 
 function ScrollProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useReducer(
-    (prev: ScrollState, next: ScrollState) =>
-      prev.activeSection === next.activeSection && prev.isScrolled === next.isScrolled
-        ? prev
-        : next,
-    INITIAL_SCROLL
-  );
-  const rafRef = useRef<number | null>(null);
-  const lastRun = useRef(0);
+  const [state, dispatch] = useReducer(scrollReducer, INITIAL_SCROLL);
+  const ratiosRef = useRef<Map<string, number>>(new Map());
 
   useEffect(() => {
     const onScroll = () => {
-      const now = Date.now();
-      if (rafRef.current !== null) return;
-      if (now - lastRun.current < SCROLL_THROTTLE_MS) {
-        rafRef.current = requestAnimationFrame(() => {
-          rafRef.current = null;
-          lastRun.current = Date.now();
-          setState(computeScrollState());
-        });
-        return;
-      }
-      lastRun.current = now;
-      setState(computeScrollState());
+      dispatch({ type: "SET_SCROLLED", payload: window.scrollY > 48 });
     };
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          ratiosRef.current.set(entry.target.id, entry.intersectionRatio);
+        });
+
+        let bestId: SectionId | "" = "";
+        let bestRatio = 0;
+
+        for (const id of SECTION_IDS) {
+          const ratio = ratiosRef.current.get(id) ?? 0;
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        }
+
+        if (bestId && bestRatio > 0) {
+          dispatch({ type: "SET_ACTIVE", payload: bestId });
+        }
+      },
+      {
+        threshold: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9],
+        rootMargin: `-${getNavOffset() - 24}px 0px -42% 0px`,
+      }
+    );
+
+    const observeSections = () => {
+      observer.disconnect();
+      ratiosRef.current.clear();
+      SECTION_IDS.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    };
+
+    observeSections();
     onScroll();
+
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", observeSections, { passive: true });
+
     return () => {
+      observer.disconnect();
       window.removeEventListener("scroll", onScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", observeSections);
     };
   }, []);
 

@@ -17,8 +17,8 @@ export const PROJECTS: Project[] = [
     title: "Bori",
     slug: "bori",
     description:
-      "Private driver rental platform for families — instant and scheduled trips, live tracking, subscriptions, and a complete driver coordination flow.",
-    categories: ["Mobile App", "UI/UX Design"],
+      "Book a driver for your family — now or later, with live tracking.",
+    categories: ["Mobile App", "Family transport"],
     tech_stack: ["Flutter", "Firebase", "Google Maps"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -30,7 +30,7 @@ export const PROJECTS: Project[] = [
     title: "Haykal",
     slug: "haykal",
     description:
-      "Real estate and construction ecosystem with property listings, project tracking, service categories, and detailed case-study views for buyers and developers.",
+      "Browse properties and follow construction projects in one place.",
     categories: ["Mobile App", "Real Estate"],
     tech_stack: ["Flutter", "Firebase", "REST API"],
     role: "Full Stack Developer",
@@ -43,12 +43,12 @@ export const PROJECTS: Project[] = [
     title: "Mtloob Medical",
     slug: "mtloob-medical",
     description:
-      "B2B medical supplies marketplace connecting healthcare providers with verified suppliers, RFQs, smart notifications, and direct contact flows.",
+      "Clinics order medical supplies from trusted vendors, simply.",
     categories: ["Mobile App", "Healthcare"],
     tech_stack: ["Flutter", "Node.js", "Firebase"],
     role: "Mobile Developer",
     project_url: "https://github.com/Si1verSurfer",
-    is_featured: true,
+    is_featured: false,
     image: "/projects/mtloob-medical.png",
   },
   {
@@ -56,12 +56,12 @@ export const PROJECTS: Project[] = [
     title: "Rafiq Al-Dhikr",
     slug: "rafiq-al-dhikr",
     description:
-      "Comprehensive Islamic lifestyle app with Quran, Hadith, prayer times, Azkar, Qibla direction, and a polished spiritual daily-use experience.",
+      "Quran, prayer times, and dhikr — quiet tools for everyday use.",
     categories: ["Mobile App", "Islamic Tech"],
     tech_stack: ["Flutter", "SQLite", "GPS"],
     role: "Flutter Developer",
     project_url: "https://github.com/Si1verSurfer",
-    is_featured: true,
+    is_featured: false,
     image: "/projects/rafiq-al-dhikr.png",
   },
   {
@@ -69,12 +69,12 @@ export const PROJECTS: Project[] = [
     title: "Zoro Delivery",
     slug: "zoro-delivery",
     description:
-      "Multi-service delivery platform with customer and driver apps plus admin dashboards for orders, regions, analytics, and branch management.",
+      "Order, deliver, and manage — apps for customers, drivers, and admins.",
     categories: ["Mobile App", "Web Dashboard"],
     tech_stack: ["Flutter", "React.js", "Node.js"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
-    is_featured: true,
+    is_featured: false,
     image: "/projects/zoro-delivery.png",
   },
   {
@@ -82,7 +82,7 @@ export const PROJECTS: Project[] = [
     title: "Safer Travel",
     slug: "safer-travel",
     description:
-      "Travel booking platform for flights, hotels, car rentals, and activities — with offers, partner integrations, and a smart trip planner experience.",
+      "Search flights, hotels, and trips without the clutter.",
     categories: ["Web App", "Travel"],
     tech_stack: ["React.js", "Next.js", "REST API"],
     role: "Full Stack Developer",
@@ -95,12 +95,12 @@ export const PROJECTS: Project[] = [
     title: "ILEX Logistics",
     slug: "ilex-logistics",
     description:
-      "Shipping and logistics platform with shipment creation, live tracking maps, status timelines, and enterprise-grade delivery workflows.",
+      "Create a shipment and watch it move on the map.",
     categories: ["Mobile App", "Logistics"],
     tech_stack: ["Flutter", "Flask", "Maps API"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
-    is_featured: true,
+    is_featured: false,
     image: "/projects/ilex-logistics.png",
   },
   {
@@ -108,7 +108,7 @@ export const PROJECTS: Project[] = [
     title: "Joman Al-Thikr",
     slug: "joman-al-thikr",
     description:
-      "Premium Islamic platform featuring Quran reading, Azkar, prayer times, lessons library, bookmarks, and customizable reading themes.",
+      "Read, bookmark, and return — a calm space for daily worship.",
     categories: ["Mobile App", "Islamic Tech"],
     tech_stack: ["Flutter", "SQLite", "Clean Architecture"],
     role: "Flutter Developer",

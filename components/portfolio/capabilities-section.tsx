@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Boxes,
   Brain,
@@ -8,6 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { CAPABILITIES, TOOLS } from "@/data/capabilities";
+import { useLanguage } from "@/context/language-context";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   smartphone: Smartphone,
@@ -19,58 +22,75 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 export function CapabilitiesSection() {
+  const { t } = useLanguage();
+
   return (
-    <section id="capabilities" className="section-pad scroll-mt-24 border-t border-[var(--border)]">
-      <div className="site-container">
-        <div className="mb-12 md:mb-16">
-          <p className="eyebrow mb-3">Expertise</p>
-          <h2 className="section-title">Capabilities & Tools</h2>
+    <section
+      id="capabilities"
+      className="section-pad relative scroll-mt-28 overflow-hidden border-t border-[var(--border)]"
+    >
+      <div className="section-glow section-glow-alt pointer-events-none absolute inset-0" aria-hidden />
+
+      <div className="site-container relative">
+        <div className="mb-12 max-w-2xl md:mb-16">
+          <div className="section-kicker mb-4">
+            <span className="section-kicker-line" aria-hidden />
+            <p className="eyebrow !mb-0">{t.capabilities.eyebrow}</p>
+          </div>
+          <h2 className="section-title mb-4">{t.capabilities.title}</h2>
+          <p className="section-intro">{t.capabilities.subtitle}</p>
         </div>
 
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="grid gap-5 sm:grid-cols-2">
-            {CAPABILITIES.map((item) => {
+        <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr] lg:gap-8">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {CAPABILITIES.map((item, index) => {
               const Icon = ICON_MAP[item.icon] ?? Layers;
+              const localized = t.capabilities.items[index];
               return (
-                <article key={item.title} className="hover-card surface-card p-6">
-                  <Icon className="capability-icon mb-4 h-5 w-5 text-[var(--cream-dim)]" strokeWidth={1.5} />
-                  <h3 className="font-display text-base font-semibold uppercase tracking-wide text-[var(--cream)]">
-                    {item.title}
+                <article key={item.title} className="capability-card hover-card surface-card p-6 md:p-7">
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <div className="capability-icon-wrap">
+                      <Icon className="capability-icon h-5 w-5 text-[var(--cream)]" strokeWidth={1.6} />
+                    </div>
+                    <span className="text-xs font-bold text-[var(--cream-dim)]">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-bold text-[var(--cream)] md:text-lg">
+                    {localized?.title ?? item.title}
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-[var(--cream-muted)]">
-                    {item.description}
+                    {localized?.description ?? item.description}
                   </p>
                 </article>
               );
             })}
           </div>
 
-          <div className="space-y-6">
-            <div className="hover-card surface-card p-6">
-              <h3 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-[var(--cream)]">
-                Tools & Technologies
-              </h3>
+          <aside className="space-y-5">
+            <div className="side-panel hover-card surface-card p-6 md:p-7">
+              <h3 className="text-base font-bold text-[var(--cream)]">{t.capabilities.toolsTitle}</h3>
               <div className="mt-5 flex flex-wrap gap-2">
                 {TOOLS.map((tool) => (
-                  <span key={tool} className="hover-tag">
+                  <span key={tool} className="tool-chip">
                     {tool}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="hover-card surface-card p-6">
-              <h3 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-[var(--cream)]">
-                Focus Areas
-              </h3>
-              <ul className="mt-5 space-y-4 text-sm leading-relaxed text-[var(--cream-muted)]">
-                <li>Cross-platform mobile apps with Flutter</li>
-                <li>Full-stack web platforms with React & Next.js</li>
-                <li>Applied AI systems and production deployment</li>
-                <li>Clean architecture and scalable product delivery</li>
+            <div className="side-panel side-panel-accent hover-card surface-card p-6 md:p-7">
+              <h3 className="text-base font-bold text-[var(--cream)]">{t.capabilities.focusTitle}</h3>
+              <ul className="mt-5 space-y-4">
+                {t.capabilities.focusItems.map((item, i) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--cream-muted)]">
+                    <span className="focus-index">{i + 1}</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </section>
