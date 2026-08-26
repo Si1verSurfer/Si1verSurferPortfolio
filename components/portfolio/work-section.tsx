@@ -3,12 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { PROJECTS } from "@/data/projects";
 import { useLanguage } from "@/context/language-context";
 import { portfolioProfile } from "@/data/profile";
+import { duration, easeOutExpo } from "@/lib/motion";
 
 export function WorkSection() {
   const { t, isRtl } = useLanguage();
+  const reduced = useReducedMotion();
   const featured = PROJECTS.filter((p) => p.is_featured).slice(0, 2);
   const rest = PROJECTS.filter((p) => !featured.some((f) => f.slug === p.slug));
 
@@ -20,169 +23,172 @@ export function WorkSection() {
       <div className="section-glow pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="site-container relative">
-        <header className="mb-12 grid gap-8 md:mb-16 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-          <div>
-            <div className="section-kicker mb-4">
-              <span className="section-kicker-line" aria-hidden />
-              <p className="eyebrow !mb-0">{t.work.eyebrow}</p>
+        <motion.div
+          className="wk-board"
+          initial={reduced ? false : { opacity: 0, y: 22 }}
+          whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: duration.reveal, ease: easeOutExpo }}
+        >
+          <header className="wk-head">
+            <div className="min-w-0">
+              <div className="section-kicker mb-3">
+                <span className="section-kicker-line !bg-[var(--navy)]/25" aria-hidden />
+                <p className="eyebrow !mb-0 !text-[var(--navy)]/45">{t.work.eyebrow}</p>
+              </div>
+              <h2 className="wk-title">{t.work.title}</h2>
+              <p className="wk-subtitle">{t.work.subtitle}</p>
             </div>
-            <h2 className="section-title mb-4">{t.work.title}</h2>
-            <p className="section-intro max-w-xl">{t.work.subtitle}</p>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-4 lg:justify-end">
-            <div className="work-count-pill">
-              <span className="text-2xl font-extrabold text-[var(--cream)]">{PROJECTS.length}</span>
-              <span className="text-sm font-semibold text-[var(--cream-dim)]">
-                {t.work.countLabel}
-              </span>
-            </div>
-            <a
-              href={portfolioProfile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline !px-5 !py-2.5"
-            >
-              {t.work.explore}
-              <ArrowUpRight className={`h-4 w-4 ${isRtl ? "-scale-x-100" : ""}`} />
-            </a>
-          </div>
-        </header>
-
-        {/* Two featured projects */}
-        <div className="mb-6 grid gap-5 md:mb-8 lg:grid-cols-2">
-          {featured.map((project, index) => {
-            const localized = t.work.projects[project.slug];
-            return (
-              <Link
-                key={project.slug}
-                href={`/projects/${project.slug}`}
-                className="work-featured group overflow-hidden"
+            <div className="wk-actions">
+              <div className="wk-count">
+                <span className="wk-count-num">{PROJECTS.length}</span>
+                <span className="wk-count-label">{t.work.countLabel}</span>
+              </div>
+              <a
+                href={portfolioProfile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="wk-ghost-btn"
               >
-                <div className="relative aspect-[16/11] overflow-hidden bg-[var(--navy-soft)]">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="project-thumb object-cover object-top"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    quality={90}
-                    priority={index === 0}
-                  />
-                  <div className="work-featured-overlay absolute inset-0" />
-                  <div className="absolute start-4 top-4 flex items-center gap-2">
-                    <span className="rounded-full border border-[var(--border-strong)] bg-[var(--navy)]/75 px-3 py-1 text-xs font-bold text-[var(--cream)] backdrop-blur-md">
-                      {t.work.featuredLabel}
-                    </span>
-                    <span className="rounded-full border border-[var(--border)] bg-[var(--navy)]/55 px-2.5 py-1 text-xs font-bold text-[var(--cream-dim)] backdrop-blur-md">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                </div>
+                {t.work.explore}
+                <ArrowUpRight className={`h-3.5 w-3.5 ${isRtl ? "-scale-x-100" : ""}`} />
+              </a>
+            </div>
+          </header>
 
-                <div className="work-featured-panel flex flex-col gap-5 p-6 md:p-7">
-                  <div>
-                    <p className="mb-2 text-sm font-semibold text-[var(--cream-dim)]">
+          {/* Featured showcase */}
+          <div className="wk-featured">
+            {featured.map((project, index) => {
+              const localized = t.work.projects[project.slug];
+              const primary = index === 0;
+
+              return (
+                <Link
+                  key={project.slug}
+                  href={`/projects/${project.slug}`}
+                  className={`wk-hero group ${primary ? "wk-hero-primary" : "wk-hero-secondary"}`}
+                >
+                  <div className="wk-hero-media">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="project-thumb object-cover object-top"
+                      sizes={
+                        primary
+                          ? "(max-width: 1024px) 100vw, 66vw"
+                          : "(max-width: 1024px) 100vw, 34vw"
+                      }
+                      quality={90}
+                      priority={primary}
+                    />
+                    <div className="wk-hero-shade" />
+                    <div className="wk-hero-badges">
+                      <span className="wk-badge wk-badge-accent">{t.work.featuredLabel}</span>
+                      <span className="wk-badge">{String(index + 1).padStart(2, "0")}</span>
+                    </div>
+                  </div>
+
+                  <div className="wk-hero-body">
+                    <p className="wk-cat">
                       {localized?.categories ?? project.categories.join(" · ")}
                     </p>
-                    <h3 className="text-2xl font-extrabold leading-tight text-[var(--cream)] md:text-3xl">
-                      {project.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-[var(--cream-muted)] md:text-base">
-                      {localized?.description ?? project.description}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="mb-2.5 text-xs font-bold text-[var(--cream-dim)]">{t.work.techLabel}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech_stack.map((tech) => (
-                        <span key={tech} className="tech-chip">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between gap-4 border-t border-[var(--border)] pt-4">
-                    <span className="text-sm font-semibold text-[var(--cream-muted)]">
-                      {localized?.role ?? project.role}
-                    </span>
-                    <span className="inline-flex items-center gap-2 text-sm font-bold text-[var(--cream)]">
-                      {t.work.viewProject}
-                      <span className="arrow-circle flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-strong)]">
+                    <div className="wk-hero-row">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="wk-hero-title">{project.title}</h3>
+                        <p className="wk-hero-desc">
+                          {localized?.description ?? project.description}
+                        </p>
+                      </div>
+                      <span className="wk-go" aria-hidden>
                         <ArrowUpRight className={`h-4 w-4 ${isRtl ? "-scale-x-100" : ""}`} />
                       </span>
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                    </div>
 
-        {/* Remaining projects */}
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {rest.map((project, index) => {
-            const localized = t.work.projects[project.slug];
-            return (
-              <Link
-                key={project.slug}
-                href={`/projects/${project.slug}`}
-                className="work-item group"
-              >
-                <div className="relative aspect-[16/11] overflow-hidden bg-[var(--navy-soft)]">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="project-thumb object-cover object-top"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    quality={85}
-                    loading="lazy"
-                  />
-                  <div className="work-item-overlay absolute inset-0" />
-                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 p-4">
-                    <span className="rounded-full border border-[var(--border-strong)] bg-[var(--navy)]/65 px-3 py-1 text-xs font-semibold text-[var(--cream-muted)] backdrop-blur-md">
-                      {localized?.role ?? project.role}
-                    </span>
-                    <span className="arrow-circle flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-strong)] bg-[var(--navy)]/55 text-[var(--cream)] backdrop-blur-md">
-                      <ArrowUpRight className={`h-3.5 w-3.5 ${isRtl ? "-scale-x-100" : ""}`} />
-                    </span>
+                    <div className="wk-meta">
+                      <span className="wk-role">{localized?.role ?? project.role}</span>
+                      <div className="wk-techs">
+                        {project.tech_stack.slice(0, primary ? 4 : 3).map((tech) => (
+                          <span key={tech} className="wk-tech">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Link>
+              );
+            })}
+          </div>
 
-                <div className="work-item-body">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-bold text-[var(--cream)] md:text-xl">
-                        {project.title}
-                      </h3>
-                      <p className="mt-1 text-sm font-semibold text-[var(--cream-dim)]">
+          {/* Compact modern grid */}
+          <div className="wk-list-head">
+            <p className="wk-list-label">{t.work.countLabel}</p>
+            <span className="wk-list-line" aria-hidden />
+          </div>
+
+          <div className="wk-mosaic">
+            {rest.map((project, index) => {
+              const localized = t.work.projects[project.slug];
+
+              return (
+                <motion.div
+                  key={project.slug}
+                  initial={reduced ? false : { opacity: 0, y: 16 }}
+                  whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{
+                    delay: reduced ? 0 : index * 0.04,
+                    duration: 0.45,
+                    ease: easeOutExpo,
+                  }}
+                >
+                  <Link href={`/projects/${project.slug}`} className="wk-tile group">
+                    <div className="wk-tile-media">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="project-thumb object-cover object-top"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        quality={85}
+                        loading="lazy"
+                      />
+                      <div className="wk-tile-shade" />
+                      <span className="wk-tile-index">{String(index + 3).padStart(2, "0")}</span>
+                      <span className="wk-tile-go">
+                        <ArrowUpRight className={`h-3.5 w-3.5 ${isRtl ? "-scale-x-100" : ""}`} />
+                      </span>
+                    </div>
+
+                    <div className="wk-tile-body">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="wk-tile-title">{project.title}</h3>
+                      </div>
+                      <p className="wk-tile-cat">
                         {localized?.categories ?? project.categories.join(" · ")}
                       </p>
+                      <p className="wk-tile-desc">
+                        {localized?.description ?? project.description}
+                      </p>
+                      <div className="wk-tile-foot">
+                        <span className="wk-role">{localized?.role ?? project.role}</span>
+                        <div className="wk-techs">
+                          {project.tech_stack.slice(0, 2).map((tech) => (
+                            <span key={tech} className="wk-tech">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <span className="mt-1 shrink-0 text-xs font-bold text-[var(--cream-dim)]">
-                      {String(index + 3).padStart(2, "0")}
-                    </span>
-                  </div>
-
-                  <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[var(--cream-muted)]">
-                    {localized?.description ?? project.description}
-                  </p>
-
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {project.tech_stack.slice(0, 3).map((tech) => (
-                      <span key={tech} className="tech-chip !px-2.5 !py-1 !text-xs">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

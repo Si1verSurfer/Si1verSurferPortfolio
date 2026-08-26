@@ -4,10 +4,12 @@ import { HeroSection } from "@/components/portfolio/hero-section";
 import { AboutSection } from "@/components/portfolio/about-section";
 import { StatsBar } from "@/components/portfolio/stats-bar";
 import { WorkSection } from "@/components/portfolio/work-section";
+import { ProofSection } from "@/components/portfolio/proof-section";
 import { CapabilitiesSection } from "@/components/portfolio/capabilities-section";
 import { ProcessSection } from "@/components/portfolio/process-section";
 import { ContactFooter } from "@/components/portfolio/contact-footer";
 
+/** Business funnel: hook → offers → proof of work → trust → method → depth → close */
 export function PortfolioHome() {
   return (
     <>
@@ -18,8 +20,9 @@ export function PortfolioHome() {
         <StatsBar />
         <AboutSection />
         <WorkSection />
-        <CapabilitiesSection />
+        <ProofSection />
         <ProcessSection />
+        <CapabilitiesSection />
         <ContactFooter />
       </main>
     </>
