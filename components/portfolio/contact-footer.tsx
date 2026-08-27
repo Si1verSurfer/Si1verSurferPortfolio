@@ -30,7 +30,7 @@ export function ContactFooter() {
           <div className="contact-finale overflow-hidden">
             <div className="contact-finale-top px-7 py-10 md:px-10 md:py-14 lg:px-14">
               <div className="mx-auto max-w-3xl text-center">
-                <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[var(--border)] bg-[var(--navy)]/35 px-4 py-2">
+                <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-[var(--border)] bg-white/70 px-4 py-2 backdrop-blur-md">
                   <span className="status-dot" aria-hidden />
                   <span className="text-sm font-semibold text-[var(--cream-muted)]">
                     {t.hero.available}

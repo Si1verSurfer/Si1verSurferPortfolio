@@ -18,14 +18,14 @@ export function WorkSection() {
   return (
     <section
       id="work"
-      className="section-pad relative scroll-mt-28 overflow-hidden border-t border-[var(--border)]"
+      className="section-pad relative scroll-mt-28 overflow-x-hidden border-t border-[var(--border)]"
     >
       <div className="section-glow pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="site-container relative">
         <motion.div
           className="wk-board"
-          initial={reduced ? false : { opacity: 0, y: 22 }}
+          initial={false}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: duration.reveal, ease: easeOutExpo }}
@@ -135,7 +135,7 @@ export function WorkSection() {
               return (
                 <motion.div
                   key={project.slug}
-                  initial={reduced ? false : { opacity: 0, y: 16 }}
+                  initial={false}
                   whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{

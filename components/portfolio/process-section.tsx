@@ -30,14 +30,14 @@ export function ProcessSection() {
   return (
     <section
       id="process"
-      className="section-pad relative scroll-mt-28 overflow-hidden border-t border-[var(--border)]"
+      className="section-pad relative scroll-mt-28 overflow-x-hidden border-t border-[var(--border)]"
     >
       <div className="section-glow section-glow-alt pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="site-container relative">
         <motion.div
           className="px-board"
-          initial={reduced ? false : { opacity: 0, y: 22 }}
+          initial={false}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.12 }}
           transition={{ duration: duration.reveal, ease: easeOutExpo }}
@@ -74,7 +74,7 @@ export function ProcessSection() {
                 <motion.article
                   key={step.step}
                   className="px-step"
-                  initial={reduced ? false : { opacity: 0, y: 16 }}
+                  initial={false}
                   whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{

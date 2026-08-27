@@ -19,24 +19,22 @@ export function SiteNav() {
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-5">
       <div
-        className={`floating-nav pointer-events-auto mx-auto max-w-6xl ${
+        className={`floating-nav pointer-events-auto ${
           isScrolled ? "floating-nav-scrolled" : "floating-nav-idle"
         }`}
       >
-        <div className="flex items-center justify-between gap-3 px-2 py-1 sm:gap-4 sm:px-3">
+        <div className="flex items-center justify-between gap-3 px-1.5 py-1 sm:gap-4 sm:px-2">
           <Link
             href="/"
-            className="logo-mark flex min-w-0 items-center gap-3 text-[var(--cream)]"
+            className="logo-mark flex min-w-0 items-center gap-2.5"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection("home");
               setOpen(false);
             }}
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--border-strong)] bg-[var(--navy-soft)]/60 text-xs font-extrabold tracking-wide">
-              SS
-            </span>
-            <span className="hidden truncate text-sm font-bold lg:inline">
+            <span className="logo-mark-badge">SS</span>
+            <span className="hidden truncate text-sm font-semibold lg:inline">
               {portfolioProfile.alias}
             </span>
           </Link>
@@ -73,7 +71,7 @@ export function SiteNav() {
 
             <a
               href="#contact"
-              className="btn-primary !px-5 !py-2.5 !text-xs"
+              className="btn-primary !px-4 !py-2 !text-xs"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection("contact");
@@ -104,7 +102,7 @@ export function SiteNav() {
 
             <button
               type="button"
-              className="menu-toggle inline-flex rounded-full border border-[var(--border-strong)] p-2.5 text-[var(--cream)]"
+              className="menu-toggle"
               aria-label={t.nav.menu}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
@@ -116,8 +114,8 @@ export function SiteNav() {
       </div>
 
       {open && (
-        <div className="floating-nav-menu pointer-events-auto mx-auto mt-3 max-w-6xl px-1 lg:hidden">
-          <div className="flex flex-col gap-1 p-3">
+        <div className="floating-nav-menu pointer-events-auto mt-3 lg:hidden">
+          <div className="flex flex-col gap-1 p-2.5">
             {links.map((link) => (
               <SectionLink
                 key={link.id}

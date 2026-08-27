@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef } from "react";
 import {
   ArrowUpRight,
   Building2,
@@ -16,7 +15,7 @@ import {
   Workflow,
   type LucideIcon,
 } from "lucide-react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { SERVICE_PLANS } from "@/data/services";
 import { useLanguage } from "@/context/language-context";
 import { scrollToSection } from "@/lib/scroll-to-section";
@@ -36,8 +35,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
 export function AboutSection() {
   const { t, isRtl } = useLanguage();
   const reduced = useReducedMotion();
-  const gridRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(gridRef, { once: true, amount: 0.08 });
 
   const featuredPlan = SERVICE_PLANS.find((p) => p.featured) ?? null;
   const regularPlans = SERVICE_PLANS.filter((p) => !p.featured);
@@ -45,7 +42,7 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="section-pad relative scroll-mt-28 overflow-hidden border-t border-[var(--border)]"
+      className="section-pad relative scroll-mt-28 overflow-x-hidden border-t border-[var(--border)]"
     >
       <div className="section-glow pointer-events-none absolute inset-0" aria-hidden />
       <div
@@ -56,7 +53,7 @@ export function AboutSection() {
       <div className="site-container relative">
         <motion.header
           className="services-header mb-8 sm:mb-10 md:mb-12 lg:mb-14"
-          initial={reduced ? false : { opacity: 0, y: 24 }}
+          initial={false}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: duration.reveal, ease: easeOutExpo }}
@@ -92,7 +89,7 @@ export function AboutSection() {
 
         <motion.div
           className="services-trust mb-6 sm:mb-8"
-          initial={reduced ? false : { opacity: 0, y: 18 }}
+          initial={false}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ delay: 0.08, duration: duration.reveal, ease: easeOutExpo }}
@@ -109,20 +106,14 @@ export function AboutSection() {
           ))}
         </motion.div>
 
-        <div ref={gridRef} className="services-layout">
+        <div className="services-layout">
           {featuredPlan && (() => {
             const copy = t.services.plans[featuredPlan.id];
             const Icon = ICON_MAP[featuredPlan.icon] ?? Layers;
             return (
               <motion.article
                 className="service-card service-card-featured group"
-                initial={reduced ? false : { opacity: 0, y: 28, scale: 0.98 }}
-                animate={
-                  inView || reduced
-                    ? { opacity: 1, y: 0, scale: 1 }
-                    : { opacity: 0, y: 28, scale: 0.98 }
-                }
-                transition={{ duration: 0.55, ease: easeOutExpo }}
+                initial={false}
                 whileHover={reduced ? undefined : { y: -4 }}
               >
                 <div className="service-card-shine pointer-events-none absolute inset-0" aria-hidden />
@@ -192,17 +183,7 @@ export function AboutSection() {
                 <motion.article
                   key={plan.id}
                   className="service-card group"
-                  initial={reduced ? false : { opacity: 0, y: 32, scale: 0.97 }}
-                  animate={
-                    inView || reduced
-                      ? { opacity: 1, y: 0, scale: 1 }
-                      : { opacity: 0, y: 32, scale: 0.97 }
-                  }
-                  transition={{
-                    delay: reduced ? 0 : 0.05 + index * 0.05,
-                    duration: 0.5,
-                    ease: easeOutExpo,
-                  }}
+                  initial={false}
                   whileHover={reduced ? undefined : { y: -5 }}
                 >
                   <div className="service-card-shine pointer-events-none absolute inset-0" aria-hidden />
@@ -265,7 +246,7 @@ export function AboutSection() {
 
         <motion.div
           className="service-note mt-5 sm:mt-6 lg:mt-8"
-          initial={reduced ? false : { opacity: 0, y: 20 }}
+          initial={false}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: duration.reveal, ease: easeOutExpo }}

@@ -34,14 +34,14 @@ export function ProofSection() {
   return (
     <section
       id="proof"
-      className="section-pad relative scroll-mt-28 overflow-hidden border-t border-[var(--border)]"
+      className="section-pad relative scroll-mt-28 overflow-x-hidden border-t border-[var(--border)]"
     >
       <div className="section-glow pointer-events-none absolute inset-0" aria-hidden />
 
       <div className="site-container relative">
         <motion.div
           className="rv-shell"
-          initial={reduced ? false : { opacity: 0, y: 20 }}
+          initial={false}
           whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.12 }}
           transition={{ duration: duration.reveal, ease: easeOutExpo }}
@@ -124,7 +124,7 @@ export function ProofSection() {
                 <motion.article
                   key={review.id}
                   className="rv-card"
-                  initial={reduced ? false : { opacity: 0, y: 14 }}
+                  initial={false}
                   whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{
