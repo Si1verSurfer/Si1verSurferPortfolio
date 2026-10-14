@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { PortfolioProviders } from "@/components/portfolio/providers";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -13,9 +14,20 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "Si1ver Surfer | بشار رزق — Software Engineer",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: "Bashar Rizk | بشار رزق — Software Engineer",
+    template: "%s | Bashar Rizk",
+  },
   description:
     "أبني تطبيقات ومواقع واضحة وسريعة — منتجات تُستخدم كل يوم، وتبقى سهلة مع الوقت.",
+  openGraph: {
+    siteName: "Bashar Rizk",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
   icons: {
     icon: [
       { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },

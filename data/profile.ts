@@ -2,7 +2,9 @@
 export const portfolioProfile = {
   name: "Bashar Rizk",
   nameAr: "بشار رزق",
-  alias: "Si1ver Surfer",
+  /** Short label for nav / footer (no online alias) */
+  shortName: "Bashar",
+  shortNameAr: "بشار",
   title: "Software Engineer",
   titleAr: "مهندس برمجيات",
   summary:
@@ -10,6 +12,7 @@ export const portfolioProfile = {
   summaryAr:
     "أبني تطبيقات ومواقع واضحة وسريعة — منتجات يستخدمها الناس كل يوم، ويعودون إليها.",
   email: "bashar772004@gmail.com",
+  website: "https://basharr.com",
   location: "Remote",
   github: "https://github.com/Si1verSurfer",
   linkedin: "https://www.linkedin.com/in/bashar-rizq/",

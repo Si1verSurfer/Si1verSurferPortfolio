@@ -5,20 +5,38 @@ import { ArrowUpRight, Github, Linkedin, Mail, MapPin, Send } from "lucide-react
 import { portfolioProfile } from "@/data/profile";
 import { useLanguage } from "@/context/language-context";
 import { scrollToSection } from "@/lib/scroll-to-section";
+import { buildInquiryMailto } from "@/lib/inquiry-mailto";
 
 export function ContactFooter() {
   const { t, isRtl, locale } = useLanguage();
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    projectType: "",
+    budget: "",
+    timeline: "",
+    message: "",
+  });
   const displayName = locale === "ar" ? portfolioProfile.nameAr : portfolioProfile.name;
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setSending(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSending(false);
-    setForm({ name: "", email: "", message: "" });
-    alert(t.contact.formSuccess);
+    const projectType =
+      form.projectType || t.contact.projectTypes[0] || "Mobile app";
+    const budget = form.budget || t.contact.budgetRanges[0] || "Not sure yet";
+    const timeline = form.timeline || t.contact.timelineOptions[0] || "Flexible";
+
+    const mailto = buildInquiryMailto(portfolioProfile.email, {
+      name: form.name,
+      email: form.email,
+      projectType,
+      budget,
+      timeline,
+      message: form.message,
+      locale,
+    });
+
+    window.location.href = mailto;
   };
 
   return (
@@ -37,7 +55,10 @@ export function ContactFooter() {
                   </span>
                 </div>
 
-                <div className="section-kicker mb-4 justify-center">
+                <p className="contact-availability-hint">{t.hero.availabilityHint}</p>
+                <p className="contact-reply-hint">{t.hero.replyHint}</p>
+
+                <div className="section-kicker mb-4 mt-6 justify-center">
                   <span className="section-kicker-line" aria-hidden />
                   <p className="eyebrow !mb-0">{t.contact.eyebrow}</p>
                   <span className="section-kicker-line" aria-hidden />
@@ -58,7 +79,7 @@ export function ContactFooter() {
                 <div>
                   <p className="text-sm font-semibold text-[var(--cream-dim)]">{displayName}</p>
                   <p className="mt-1 text-xl font-extrabold text-[var(--cream)]">
-                    {portfolioProfile.alias}
+                    {displayName}
                   </p>
                   <p className="mt-2 text-sm text-[var(--cream-muted)]">
                     {locale === "ar" ? portfolioProfile.titleAr : portfolioProfile.title}
@@ -147,6 +168,60 @@ export function ContactFooter() {
                     className="input-field"
                   />
                 </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="sr-only" htmlFor="contact-project-type">
+                    {t.contact.formProjectType}
+                  </label>
+                  <select
+                    id="contact-project-type"
+                    value={form.projectType}
+                    onChange={(e) => setForm((p) => ({ ...p, projectType: e.target.value }))}
+                    className="input-field"
+                  >
+                    <option value="">{t.contact.formProjectType}</option>
+                    {t.contact.projectTypes.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <label className="sr-only" htmlFor="contact-budget">
+                    {t.contact.formBudget}
+                  </label>
+                  <select
+                    id="contact-budget"
+                    value={form.budget}
+                    onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))}
+                    className="input-field"
+                  >
+                    <option value="">{t.contact.formBudget}</option>
+                    {t.contact.budgetRanges.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <label className="sr-only" htmlFor="contact-timeline">
+                  {t.contact.formTimeline}
+                </label>
+                <select
+                  id="contact-timeline"
+                  value={form.timeline}
+                  onChange={(e) => setForm((p) => ({ ...p, timeline: e.target.value }))}
+                  className="input-field"
+                >
+                  <option value="">{t.contact.formTimeline}</option>
+                  {t.contact.timelineOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
                 <textarea
                   required
                   rows={5}
@@ -155,13 +230,9 @@ export function ContactFooter() {
                   placeholder={t.contact.formMessage}
                   className="input-field resize-none"
                 />
-                <button
-                  type="submit"
-                  disabled={sending}
-                  className="btn-primary w-full disabled:opacity-60"
-                >
+                <button type="submit" className="btn-primary w-full">
                   <Send className="h-4 w-4" />
-                  {sending ? t.contact.formSending : t.contact.formSubmit}
+                  {t.contact.formSubmitMailto}
                 </button>
               </form>
             </div>
@@ -179,7 +250,7 @@ export function ContactFooter() {
             className="link-arrow font-semibold hover:text-[var(--cream)]"
             onClick={() => scrollToSection("home")}
           >
-            {portfolioProfile.alias}
+            {displayName}
             <ArrowUpRight className={`h-3.5 w-3.5 ${isRtl ? "-scale-x-100 rotate-[-90deg]" : "rotate-[-90deg]"}`} />
           </button>
         </div>

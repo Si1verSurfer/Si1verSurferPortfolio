@@ -43,6 +43,8 @@ export type TranslationContent = {
     focusValue: string;
     appsValue: string;
     appsLabel: string;
+    availabilityHint: string;
+    replyHint: string;
   };
   about: {
     eyebrow: string;
@@ -94,6 +96,14 @@ export type TranslationContent = {
     countLabel: string;
     projects: Record<string, { categories: string; description: string; role: string }>;
     liveOnStore: string;
+    filterAll: string;
+    filterMobile: string;
+    filterWeb: string;
+    filterIslamic: string;
+    filterEcommerce: string;
+    filterLiveStore: string;
+    filterEmpty: string;
+    showingCount: string;
   };
   projectDetail: {
     back: string;
@@ -106,6 +116,9 @@ export type TranslationContent = {
     contact: string;
     moreTitle: string;
     viewProject: string;
+    problem: string;
+    roleDetail: string;
+    outcomes: string;
   };
   capabilities: {
     eyebrow: string;
@@ -168,6 +181,13 @@ export type TranslationContent = {
     formSuccess: string;
     formIntroTitle: string;
     formIntro: string;
+    formProjectType: string;
+    formBudget: string;
+    formTimeline: string;
+    formSubmitMailto: string;
+    projectTypes: string[];
+    budgetRanges: string[];
+    timelineOptions: string[];
     rights: string;
   };
   language: {
@@ -202,6 +222,8 @@ export const translations: Record<Locale, TranslationContent> = {
       focusValue: "Mobile · Web · AI",
       appsValue: "8+",
       appsLabel: "Products shipped",
+      availabilityHint: "Next build slot: open for November starts",
+      replyHint: "I reply within 24 hours",
     },
     about: {
       eyebrow: "About",
@@ -454,6 +476,14 @@ export const translations: Record<Locale, TranslationContent> = {
         },
       },
       liveOnStore: "App Store",
+      filterAll: "All",
+      filterMobile: "Mobile",
+      filterWeb: "Web",
+      filterIslamic: "Islamic",
+      filterEcommerce: "E‑commerce",
+      filterLiveStore: "App Store",
+      filterEmpty: "No projects match this filter yet.",
+      showingCount: "Showing",
     },
     projectDetail: {
       back: "Back to work",
@@ -466,6 +496,9 @@ export const translations: Record<Locale, TranslationContent> = {
       contact: "Start a project",
       moreTitle: "More projects",
       viewProject: "View project",
+      problem: "The problem",
+      roleDetail: "What I built",
+      outcomes: "Outcomes",
     },
     capabilities: {
       eyebrow: "Skills",
@@ -654,6 +687,32 @@ export const translations: Record<Locale, TranslationContent> = {
       formSuccess: "Got it — thank you.",
       formIntroTitle: "Send your message",
       formIntro: "Share your idea briefly — I’ll reply personally.",
+      formProjectType: "Project type",
+      formBudget: "Budget range",
+      formTimeline: "Timeline",
+      formSubmitMailto: "Send via email",
+      projectTypes: [
+        "Mobile app",
+        "Web platform",
+        "Full product (mobile + web + backend)",
+        "UI / UX design",
+        "Backend / API",
+        "AI feature",
+        "Other",
+      ],
+      budgetRanges: [
+        "Not sure yet",
+        "Under $2k",
+        "$2k – $5k",
+        "$5k – $10k",
+        "$10k+",
+      ],
+      timelineOptions: [
+        "Flexible",
+        "ASAP (4–6 weeks)",
+        "1–3 months",
+        "3+ months",
+      ],
       rights: "All rights reserved.",
     },
     language: { en: "EN", ar: "ع" },
@@ -683,6 +742,8 @@ export const translations: Record<Locale, TranslationContent> = {
       focusValue: "موبايل · ويب · ذكاء اصطناعي",
       appsValue: "+8",
       appsLabel: "منتجات أُطلقت",
+      availabilityHint: "موعد البناء القادم: متاح لبدايات نوفمبر",
+      replyHint: "أرد خلال 24 ساعة",
     },
     about: {
       eyebrow: "نبذة",
@@ -935,6 +996,14 @@ export const translations: Record<Locale, TranslationContent> = {
         },
       },
       liveOnStore: "App Store",
+      filterAll: "الكل",
+      filterMobile: "موبايل",
+      filterWeb: "ويب",
+      filterIslamic: "إسلامي",
+      filterEcommerce: "تجارة إلكترونية",
+      filterLiveStore: "App Store",
+      filterEmpty: "لا توجد مشاريع لهذا التصنيف بعد.",
+      showingCount: "يعرض",
     },
     projectDetail: {
       back: "العودة للأعمال",
@@ -947,6 +1016,9 @@ export const translations: Record<Locale, TranslationContent> = {
       contact: "ابدأ مشروعاً",
       moreTitle: "مشاريع أخرى",
       viewProject: "عرض المشروع",
+      problem: "المشكلة",
+      roleDetail: "ما الذي بنيته",
+      outcomes: "النتائج",
     },
     capabilities: {
       eyebrow: "الخبرات",
@@ -1133,6 +1205,27 @@ export const translations: Record<Locale, TranslationContent> = {
       formSuccess: "وصلني رسالتك — شكراً لك.",
       formIntroTitle: "أرسل رسالتك",
       formIntro: "اكتب فكرتك باختصار، وأرد عليك شخصياً.",
+      formProjectType: "نوع المشروع",
+      formBudget: "نطاق الميزانية",
+      formTimeline: "الجدول الزمني",
+      formSubmitMailto: "إرسال عبر البريد",
+      projectTypes: [
+        "تطبيق موبايل",
+        "منصة ويب",
+        "منتج كامل (موبايل + ويب + باكند)",
+        "تصميم UI / UX",
+        "Backend / API",
+        "ميزة ذكاء اصطناعي",
+        "أخرى",
+      ],
+      budgetRanges: [
+        "غير محدد بعد",
+        "أقل من 2000$",
+        "2000$ – 5000$",
+        "5000$ – 10000$",
+        "10000$+",
+      ],
+      timelineOptions: ["مرن", "عاجل (4–6 أسابيع)", "1–3 أشهر", "3+ أشهر"],
       rights: "جميع الحقوق محفوظة.",
     },
     language: { en: "EN", ar: "ع" },

@@ -1,19 +1,56 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { PROJECTS } from "@/data/projects";
+import {
+  type ProjectFilterId,
+  PROJECT_TAG_IDS,
+  projectMatchesFilter,
+} from "@/data/project-tags";
 import { useLanguage } from "@/context/language-context";
 import { portfolioProfile } from "@/data/profile";
 import { duration, easeOutExpo } from "@/lib/motion";
 
+function getFilterLabel(
+  id: ProjectFilterId,
+  work: (typeof import("@/data/translations"))["translations"]["en"]["work"]
+): string {
+  switch (id) {
+    case "all":
+      return work.filterAll;
+    case "mobile":
+      return work.filterMobile;
+    case "web":
+      return work.filterWeb;
+    case "islamic":
+      return work.filterIslamic;
+    case "ecommerce":
+      return work.filterEcommerce;
+    case "live-store":
+      return work.filterLiveStore;
+    default:
+      return work.filterAll;
+  }
+}
+
 export function WorkSection() {
   const { t, isRtl } = useLanguage();
   const reduced = useReducedMotion();
-  const featured = PROJECTS.filter((p) => p.is_featured).slice(0, 2);
-  const rest = PROJECTS.filter((p) => !featured.some((f) => f.slug === p.slug));
+  const [activeFilter, setActiveFilter] = useState<ProjectFilterId>("all");
+
+  const filteredProjects = useMemo(
+    () => PROJECTS.filter((p) => projectMatchesFilter(p, activeFilter)),
+    [activeFilter]
+  );
+
+  const featured = filteredProjects.filter((p) => p.is_featured).slice(0, 2);
+  const rest = filteredProjects.filter((p) => !featured.some((f) => f.slug === p.slug));
+
+  const filterOptions: ProjectFilterId[] = ["all", ...PROJECT_TAG_IDS];
 
   return (
     <section
@@ -57,7 +94,30 @@ export function WorkSection() {
             </div>
           </header>
 
+          <div className="wk-filters" role="toolbar" aria-label={t.work.filterAll}>
+            {filterOptions.map((id) => (
+              <button
+                key={id}
+                type="button"
+                className={`wk-filter-btn ${activeFilter === id ? "wk-filter-btn-active" : ""}`}
+                aria-pressed={activeFilter === id}
+                onClick={() => setActiveFilter(id)}
+              >
+                {getFilterLabel(id, t.work)}
+              </button>
+            ))}
+            <span className="wk-filter-count">
+              {t.work.showingCount}{" "}
+              <strong>{filteredProjects.length}</strong> / {PROJECTS.length}
+            </span>
+          </div>
+
+          {filteredProjects.length === 0 ? (
+            <p className="wk-filter-empty">{t.work.filterEmpty}</p>
+          ) : null}
+
           {/* Featured showcase */}
+          {featured.length > 0 ? (
           <div className="wk-featured">
             {featured.map((project, index) => {
               const localized = t.work.projects[project.slug];
@@ -124,8 +184,11 @@ export function WorkSection() {
               );
             })}
           </div>
+          ) : null}
 
           {/* Compact modern grid */}
+          {rest.length > 0 ? (
+          <>
           <div className="wk-list-head">
             <p className="wk-list-label">{t.work.countLabel}</p>
             <span className="wk-list-line" aria-hidden />
@@ -197,6 +260,8 @@ export function WorkSection() {
               );
             })}
           </div>
+          </>
+          ) : null}
         </motion.div>
       </div>
     </section>

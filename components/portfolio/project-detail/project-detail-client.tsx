@@ -12,6 +12,7 @@ import {
 import { motion, useReducedMotion } from "framer-motion";
 import type { Project } from "@/data/projects";
 import { getRelatedProjects } from "@/data/projects";
+import { getCaseStudy } from "@/data/project-case-studies";
 import { SiteNav } from "@/components/portfolio/site-nav";
 import { SiteBackdrop } from "@/components/portfolio/site-backdrop";
 import { ContactFooter } from "@/components/portfolio/contact-footer";
@@ -19,7 +20,7 @@ import { useLanguage } from "@/context/language-context";
 import { duration, easeOutExpo } from "@/lib/motion";
 
 export function ProjectDetailClient({ project }: { project: Project }) {
-  const { t, isRtl } = useLanguage();
+  const { t, isRtl, locale } = useLanguage();
   const reduced = useReducedMotion();
   const localized = t.work.projects[project.slug];
   const related = getRelatedProjects(project.slug, 3);
@@ -28,6 +29,7 @@ export function ProjectDetailClient({ project }: { project: Project }) {
   const role = localized?.role ?? project.role;
   const categoriesLabel =
     localized?.categories ?? project.categories.join(" · ");
+  const caseStudy = getCaseStudy(project.slug, locale);
 
   return (
     <>
@@ -111,6 +113,27 @@ export function ProjectDetailClient({ project }: { project: Project }) {
                       ))}
                     </div>
                   </div>
+
+                  {caseStudy ? (
+                    <div className="pd-case-study">
+                      <div className="pd-case-block">
+                        <h2 className="pd-case-label">{t.projectDetail.problem}</h2>
+                        <p className="pd-case-text">{caseStudy.problem}</p>
+                      </div>
+                      <div className="pd-case-block">
+                        <h2 className="pd-case-label">{t.projectDetail.roleDetail}</h2>
+                        <p className="pd-case-text">{caseStudy.roleDetail}</p>
+                      </div>
+                      <div className="pd-case-block">
+                        <h2 className="pd-case-label">{t.projectDetail.outcomes}</h2>
+                        <ul className="pd-outcomes">
+                          {caseStudy.outcomes.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="pd-showcase">

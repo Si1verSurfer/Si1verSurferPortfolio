@@ -15,6 +15,8 @@ export function SiteNav() {
   const { locale, setLocale, t, isRtl } = useLanguage();
   const [open, setOpen] = useState(false);
   const links = getNavLinks(locale);
+  const brandLabel = locale === "ar" ? portfolioProfile.shortNameAr : portfolioProfile.shortName;
+  const brandInitials = locale === "ar" ? "ب" : "BR";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-5">
@@ -33,9 +35,9 @@ export function SiteNav() {
               setOpen(false);
             }}
           >
-            <span className="logo-mark-badge">SS</span>
+            <span className="logo-mark-badge">{brandInitials}</span>
             <span className="hidden truncate text-sm font-semibold lg:inline">
-              {portfolioProfile.alias}
+              {brandLabel}
             </span>
           </Link>
 

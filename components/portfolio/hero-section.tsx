@@ -36,6 +36,14 @@ export function HeroSection() {
               <span>{t.hero.available}</span>
             </motion.div>
 
+            <motion.p className="hero-availability" {...fadeUp(0.1)}>
+              <span>{t.hero.availabilityHint}</span>
+              <span className="hero-availability-sep" aria-hidden>
+                ·
+              </span>
+              <span>{t.hero.replyHint}</span>
+            </motion.p>
+
             <motion.p className="hero-kicker" {...fadeUp(0.12)}>
               {t.hero.eyebrow}
             </motion.p>
@@ -49,7 +57,7 @@ export function HeroSection() {
                 {t.hero.titleLine1} {t.hero.titleLine2}
               </span>
               <span className="hero-byline-sep">·</span>
-              {portfolioProfile.alias}
+              {portfolioProfile.location}
             </motion.p>
 
             <motion.p className="hero-tagline" {...fadeUp(0.34)}>

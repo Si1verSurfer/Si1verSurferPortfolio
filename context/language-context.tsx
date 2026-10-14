@@ -26,15 +26,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("ar");
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = params.get("lang");
     const saved = localStorage.getItem(STORAGE_KEY) as Locale | null;
-    if (saved === "en" || saved === "ar") {
-      setLocaleState(saved);
-    }
+    const initial =
+      fromQuery === "en" || fromQuery === "ar"
+        ? fromQuery
+        : saved === "en" || saved === "ar"
+          ? saved
+          : null;
+    if (initial) setLocaleState(initial);
   }, []);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
     localStorage.setItem(STORAGE_KEY, next);
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", next);
+    window.history.replaceState({}, "", url.toString());
   }, []);
 
   const value = useMemo(

@@ -1,9 +1,12 @@
+import type { ProjectTagId } from "@/data/project-tags";
+
 export type Project = {
   id: number;
   title: string;
   slug: string;
   description: string;
   categories: string[];
+  tags: ProjectTagId[];
   tech_stack: string[];
   role: string;
   project_url: string;
@@ -20,6 +23,7 @@ export const PROJECTS: Project[] = [
     description:
       "Book a driver for your family — now or later, with live tracking.",
     categories: ["Mobile App", "Family transport"],
+    tags: ["mobile", "live-store"],
     tech_stack: ["Flutter", "Firebase", "Google Maps"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -35,6 +39,7 @@ export const PROJECTS: Project[] = [
     description:
       "The driver app for Bori — KYC, trips, maps, and earnings for certified drivers.",
     categories: ["Mobile App", "Family transport"],
+    tags: ["mobile", "live-store"],
     tech_stack: ["Flutter", "Firebase", "Google Maps"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -49,6 +54,7 @@ export const PROJECTS: Project[] = [
     description:
       "Browse properties and follow construction projects in one place.",
     categories: ["Mobile App", "Real Estate"],
+    tags: ["mobile", "ecommerce", "live-store"],
     tech_stack: ["Flutter", "Firebase", "REST API"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -64,6 +70,7 @@ export const PROJECTS: Project[] = [
     description:
       "Clinics order medical supplies from trusted vendors, simply.",
     categories: ["Mobile App", "Healthcare"],
+    tags: ["mobile"],
     tech_stack: ["Flutter", "Node.js", "Firebase"],
     role: "Mobile Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -77,6 +84,7 @@ export const PROJECTS: Project[] = [
     description:
       "Quran, prayer times, and dhikr — quiet tools for everyday use.",
     categories: ["Mobile App", "Islamic Tech"],
+    tags: ["mobile", "islamic", "live-store"],
     tech_stack: ["Flutter", "SQLite", "GPS"],
     role: "Flutter Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -92,6 +100,7 @@ export const PROJECTS: Project[] = [
     description:
       "Order, deliver, and manage — apps for customers, drivers, and admins.",
     categories: ["Mobile App", "Web Dashboard"],
+    tags: ["mobile", "web", "ecommerce"],
     tech_stack: ["Flutter", "React.js", "Node.js"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -105,6 +114,7 @@ export const PROJECTS: Project[] = [
     description:
       "Search flights, hotels, and trips without the clutter.",
     categories: ["Web App", "Travel"],
+    tags: ["web"],
     tech_stack: ["React.js", "Next.js", "REST API"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -118,6 +128,7 @@ export const PROJECTS: Project[] = [
     description:
       "Create a shipment and watch it move on the map.",
     categories: ["Mobile App", "Logistics"],
+    tags: ["mobile"],
     tech_stack: ["Flutter", "Flask", "Maps API"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -131,6 +142,7 @@ export const PROJECTS: Project[] = [
     description:
       "Read, bookmark, and return — a calm space for daily worship.",
     categories: ["Mobile App", "Islamic Tech"],
+    tags: ["mobile", "islamic", "live-store"],
     tech_stack: ["Flutter", "SQLite", "Clean Architecture"],
     role: "Flutter Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -146,6 +158,7 @@ export const PROJECTS: Project[] = [
     description:
       "A smart Umrah companion — step-by-step rituals, Makkah maps, offline guides, family tracking, and an AI assistant for calm guidance on the ground.",
     categories: ["Mobile App", "Umrah & travel"],
+    tags: ["mobile", "islamic"],
     tech_stack: ["Flutter", "Maps", "AI Assistant", "Offline mode"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -159,6 +172,7 @@ export const PROJECTS: Project[] = [
     description:
       "Groceries, produce, meat, and household essentials from nearby stores — browsed, carted, and delivered to your door with a clear Arabic-first experience.",
     categories: ["Mobile App", "Grocery delivery"],
+    tags: ["mobile", "ecommerce"],
     tech_stack: ["Flutter", "Firebase", "Payments", "Maps"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
@@ -172,6 +186,7 @@ export const PROJECTS: Project[] = [
     description:
       "Premium lighting and home décor — a bilingual storefront and mobile app with curated collections, warm branding, and a checkout flow built for trust.",
     categories: ["Web & Mobile", "E-commerce"],
+    tags: ["mobile", "web", "ecommerce"],
     tech_stack: ["Next.js", "Flutter", "E-commerce", "UI/UX"],
     role: "Full Stack Developer",
     project_url: "https://github.com/Si1verSurfer",
