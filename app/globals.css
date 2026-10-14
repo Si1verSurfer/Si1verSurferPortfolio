@@ -1065,6 +1065,28 @@
     @apply relative aspect-[16/10] overflow-hidden bg-[var(--navy-soft)];
   }
 
+  .wk-tile-media--contain,
+  .wk-hero-media--contain {
+    background: linear-gradient(165deg, #f6f6f8 0%, #ececef 100%);
+  }
+
+  .wk-tile-media--contain .wk-tile-shade,
+  .wk-hero-media--contain .wk-hero-shade {
+    opacity: 0.25;
+  }
+
+  .project-thumb-contain {
+    object-fit: contain;
+    object-position: center;
+    padding: 0.65rem;
+  }
+
+  @media (min-width: 640px) {
+    .project-thumb-contain {
+      padding: 0.85rem;
+    }
+  }
+
   .wk-tile-shade {
     @apply absolute inset-0 opacity-80 transition-opacity duration-300;
     background: linear-gradient(
@@ -1110,6 +1132,180 @@
 
   .wk-tile-foot {
     @apply mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--navy)]/8 pt-2.5;
+  }
+
+  .wk-live-badge {
+    @apply absolute bottom-3 start-3 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/30 px-2.5 py-1 text-[0.58rem] font-bold text-white backdrop-blur-md;
+    background: rgba(17, 17, 20, 0.55);
+  }
+
+  /* —— Project detail —— */
+  .pd-board {
+    @apply overflow-hidden rounded-[1.35rem] border border-white/80 p-5 sm:rounded-[1.55rem] sm:p-6 md:p-8;
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .pd-back {
+    @apply mb-6 text-[var(--navy)]/55 hover:text-[var(--navy)];
+  }
+
+  .pd-hero {
+    @apply grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:items-start lg:gap-10;
+  }
+
+  .pd-kicker {
+    @apply mb-3 flex items-center gap-3;
+  }
+
+  .pd-title {
+    @apply text-3xl font-extrabold leading-tight text-[var(--navy)] sm:text-4xl md:text-[2.35rem];
+    letter-spacing: -0.03em;
+  }
+
+  html[dir="rtl"] .pd-title {
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
+  .pd-desc {
+    @apply mt-4 max-w-xl text-base leading-relaxed text-[var(--navy)]/62 md:text-[1.02rem];
+  }
+
+  .pd-meta-grid {
+    @apply mt-6 grid gap-3 sm:grid-cols-2;
+  }
+
+  .pd-meta-cell {
+    @apply rounded-[1rem] border border-[var(--navy)]/10 px-4 py-3;
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .pd-meta-label {
+    @apply block text-[0.62rem] font-bold uppercase tracking-[0.14em] text-[var(--navy)]/45;
+  }
+
+  html[dir="rtl"] .pd-meta-label {
+    @apply normal-case tracking-normal;
+  }
+
+  .pd-meta-value {
+    @apply mt-1 block text-sm font-bold text-[var(--navy)];
+  }
+
+  .pd-actions {
+    @apply mt-7 flex flex-wrap gap-3;
+  }
+
+  .pd-stack {
+    @apply mt-8 border-t border-[var(--navy)]/8 pt-6;
+  }
+
+  .pd-stack-label {
+    @apply mb-3 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[var(--navy)]/45;
+  }
+
+  html[dir="rtl"] .pd-stack-label {
+    @apply normal-case tracking-normal;
+  }
+
+  .pd-stack-chips {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .pd-showcase {
+    @apply lg:sticky lg:top-28;
+  }
+
+  .pd-showcase-frame {
+    @apply relative overflow-hidden rounded-[1.25rem] border border-[var(--navy)]/10 p-3 sm:p-4;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.85) 0%, rgba(243, 243, 245, 0.95) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .pd-showcase-glow {
+    @apply pointer-events-none absolute inset-[15%] rounded-full;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+  }
+
+  .pd-showcase-media {
+    @apply relative mx-auto aspect-[10/16] w-full max-w-[320px] overflow-hidden rounded-[1.05rem] bg-[var(--navy-soft)];
+    box-shadow: 0 24px 48px rgba(26, 32, 52, 0.14);
+  }
+
+  .pd-showcase-media-wide {
+    @apply aspect-[16/10] max-w-none;
+    background: linear-gradient(165deg, #f6f6f8 0%, #ececef 100%);
+    box-shadow: 0 20px 44px rgba(26, 32, 52, 0.12);
+  }
+
+  .pd-showcase-img {
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .pd-showcase-img-contain {
+    object-fit: contain;
+    object-position: center;
+    padding: 0.75rem;
+  }
+
+  .pd-store-badge {
+    @apply absolute bottom-5 end-5 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/40 px-3 py-1.5 text-[0.65rem] font-bold text-white backdrop-blur-md transition;
+    background: rgba(17, 17, 20, 0.62);
+  }
+
+  .pd-store-badge:hover {
+    background: rgba(17, 17, 20, 0.82);
+    transform: translateY(-1px);
+  }
+
+  .pd-more {
+    @apply mt-10 border-t border-[var(--navy)]/8 pt-8 md:mt-12;
+  }
+
+  .pd-more-head {
+    @apply mb-4 flex items-center gap-3;
+  }
+
+  .pd-more-title {
+    @apply shrink-0 text-lg font-extrabold text-[var(--navy)] sm:text-xl;
+  }
+
+  .pd-more-grid {
+    @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .pd-more-card {
+    @apply flex min-w-0 flex-col overflow-hidden rounded-[1.05rem] border border-[var(--navy)]/10 transition;
+    background: rgba(255, 255, 255, 0.58);
+  }
+
+  .pd-more-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(26, 32, 52, 0.16);
+    box-shadow: 0 14px 32px rgba(26, 32, 52, 0.1);
+  }
+
+  .pd-more-media {
+    @apply relative aspect-[16/10] overflow-hidden bg-[var(--navy-soft)];
+  }
+
+  .pd-more-body {
+    @apply p-3.5 sm:p-4;
+  }
+
+  .pd-more-name {
+    @apply text-base font-extrabold text-[var(--navy)];
+  }
+
+  .pd-more-cat {
+    @apply mt-1 line-clamp-1 text-[0.68rem] font-bold text-[var(--navy)]/45;
   }
 
   .tech-chip {

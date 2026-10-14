@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { PROJECTS } from "@/data/projects";
+import { PROJECTS, projectThumbClass } from "@/data/projects";
 import { useLanguage } from "@/context/language-context";
 import { portfolioProfile } from "@/data/profile";
 import { duration, easeOutExpo } from "@/lib/motion";
@@ -69,12 +69,14 @@ export function WorkSection() {
                   href={`/projects/${project.slug}`}
                   className={`wk-hero group ${primary ? "wk-hero-primary" : "wk-hero-secondary"}`}
                 >
-                  <div className="wk-hero-media">
+                  <div
+                    className={`wk-hero-media ${project.imageFit === "contain" ? "wk-hero-media--contain" : ""}`}
+                  >
                     <Image
                       src={project.image}
                       alt={project.title}
                       fill
-                      className="project-thumb object-cover object-top"
+                      className={projectThumbClass(project)}
                       sizes={
                         primary
                           ? "(max-width: 1024px) 100vw, 66vw"
@@ -86,6 +88,9 @@ export function WorkSection() {
                     <div className="wk-hero-shade" />
                     <div className="wk-hero-badges">
                       <span className="wk-badge wk-badge-accent">{t.work.featuredLabel}</span>
+                      {project.app_store_url ? (
+                        <span className="wk-badge">{t.work.liveOnStore}</span>
+                      ) : null}
                       <span className="wk-badge">{String(index + 1).padStart(2, "0")}</span>
                     </div>
                   </div>
@@ -131,6 +136,7 @@ export function WorkSection() {
           <div className="wk-mosaic">
             {rest.map((project, index) => {
               const localized = t.work.projects[project.slug];
+              const catalogIndex = PROJECTS.findIndex((p) => p.slug === project.slug);
 
               return (
                 <motion.div
@@ -145,18 +151,25 @@ export function WorkSection() {
                   }}
                 >
                   <Link href={`/projects/${project.slug}`} className="wk-tile group">
-                    <div className="wk-tile-media">
+                    <div
+                      className={`wk-tile-media ${project.imageFit === "contain" ? "wk-tile-media--contain" : ""}`}
+                    >
                       <Image
                         src={project.image}
                         alt={project.title}
                         fill
-                        className="project-thumb object-cover object-top"
+                        className={projectThumbClass(project)}
                         sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
                         quality={85}
                         loading="lazy"
                       />
                       <div className="wk-tile-shade" />
-                      <span className="wk-tile-index">{String(index + 3).padStart(2, "0")}</span>
+                      <span className="wk-tile-index">
+                        {String(catalogIndex + 1).padStart(2, "0")}
+                      </span>
+                      {project.app_store_url ? (
+                        <span className="wk-live-badge">{t.work.liveOnStore}</span>
+                      ) : null}
                       <span className="wk-tile-go">
                         <ArrowUpRight className={`h-3.5 w-3.5 ${isRtl ? "-scale-x-100" : ""}`} />
                       </span>

@@ -92,6 +92,19 @@ export type TranslationContent = {
     techLabel: string;
     countLabel: string;
     projects: Record<string, { categories: string; description: string; role: string }>;
+    liveOnStore: string;
+  };
+  projectDetail: {
+    back: string;
+    overview: string;
+    role: string;
+    categories: string;
+    techStack: string;
+    appStore: string;
+    github: string;
+    contact: string;
+    moreTitle: string;
+    viewProject: string;
   };
   capabilities: {
     eyebrow: string;
@@ -378,6 +391,12 @@ export const translations: Record<Locale, TranslationContent> = {
           description: "Book a driver for your family — now or later, with live tracking.",
           role: "Full Stack",
         },
+        "bori-driver": {
+          categories: "Mobile · Driver app",
+          description:
+            "Official Bori driver app — verification, trips, navigation, and monthly earnings.",
+          role: "Full Stack",
+        },
         haykal: {
           categories: "Mobile · Real estate",
           description: "Browse properties and follow construction projects in one place.",
@@ -413,7 +432,38 @@ export const translations: Record<Locale, TranslationContent> = {
           description: "Read, bookmark, and return — a calm space for daily worship.",
           role: "Flutter",
         },
+        "rafiq-al-umrah": {
+          categories: "Mobile · Umrah companion",
+          description:
+            "Step-by-step rituals, interactive Makkah maps, offline guides, family location sharing, SOS tools, and an AI assistant — designed for clarity when it matters most.",
+          role: "Full Stack",
+        },
+        "bobo-ala-bab": {
+          categories: "Mobile · Grocery delivery",
+          description:
+            "Everything from one place — vegetables, grocery, meat, dairy, and home essentials from trusted stores, with fast delivery and secure checkout in Arabic.",
+          role: "Full Stack",
+        },
+        jumera: {
+          categories: "Web & mobile · Lighting & décor",
+          description:
+            "Luxury e-commerce for lighting and living — responsive storefront, product discovery, cart and checkout, plus a matching mobile app with a warm, editorial brand system.",
+          role: "Full Stack",
+        },
       },
+      liveOnStore: "App Store",
+    },
+    projectDetail: {
+      back: "Back to work",
+      overview: "Overview",
+      role: "Role",
+      categories: "Categories",
+      techStack: "Tech stack",
+      appStore: "View on App Store",
+      github: "View on GitHub",
+      contact: "Start a project",
+      moreTitle: "More projects",
+      viewProject: "View project",
     },
     capabilities: {
       eyebrow: "Skills",
@@ -821,6 +871,12 @@ export const translations: Record<Locale, TranslationContent> = {
           description: "احجز سائقاً لعائلتك الآن أو لاحقاً، مع تتبّع مباشر للرحلة.",
           role: "Full Stack",
         },
+        "bori-driver": {
+          categories: "موبايل · تطبيق السائق",
+          description:
+            "تطبيق بوري للسائقين — التحقق، الرحلات، الخرائط، والأرباح الشهرية.",
+          role: "Full Stack",
+        },
         haykal: {
           categories: "موبايل · عقارات",
           description: "استعرض العقارات وتابع مشاريع البناء من مكان واحد.",
@@ -856,7 +912,38 @@ export const translations: Record<Locale, TranslationContent> = {
           description: "اقرأ واحفظ وارجع — مساحة هادئة للعبادة اليومية.",
           role: "Flutter",
         },
+        "rafiq-al-umrah": {
+          categories: "موبايل · رفيق العمرة",
+          description:
+            "شعائر خطوة بخطوة، خرائط مكة التفاعلية، أدلة بدون إنترنت، تتبّع العائلة، طوارئ SOS، ومساعد ذكي — واجهة واضحة لرحلة أهدأ على الأرض.",
+          role: "Full Stack",
+        },
+        "bobo-ala-bab": {
+          categories: "موبايل · توصيل بقالة",
+          description:
+            "كل ما تحتاجه من مكان واحد — خضار وبقالة ولحوم وألبان ومستلزمات البيت من متاجر قريبة، مع توصيل سريع ودفع آمن بتجربة عربية أولاً.",
+          role: "Full Stack",
+        },
+        jumera: {
+          categories: "ويب وموبايل · إضاءة وديكور",
+          description:
+            "تجارة إلكترونية فاخرة للإضاءة وديكور المنزل — متجر متجاوب، اكتشاف منتجات، سلة ودفع، وتطبيق موبايل متناسق مع هوية دافئة وأسلوب تحريري.",
+          role: "Full Stack",
+        },
       },
+      liveOnStore: "App Store",
+    },
+    projectDetail: {
+      back: "العودة للأعمال",
+      overview: "نظرة عامة",
+      role: "الدور",
+      categories: "التصنيفات",
+      techStack: "التقنيات",
+      appStore: "عرض على App Store",
+      github: "عرض على GitHub",
+      contact: "ابدأ مشروعاً",
+      moreTitle: "مشاريع أخرى",
+      viewProject: "عرض المشروع",
     },
     capabilities: {
       eyebrow: "الخبرات",
