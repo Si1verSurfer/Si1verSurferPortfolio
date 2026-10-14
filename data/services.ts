@@ -15,8 +15,8 @@ export type ServicePlan = {
 /** Business funnel order: design → build → systems → complete */
 export const SERVICE_PLANS: ServicePlan[] = [
   { id: "uiux", icon: "palette" },
-  { id: "mobile", icon: "smartphone" },
-  { id: "web", icon: "monitor", featured: true },
+  { id: "mobile", icon: "smartphone", featured: true },
+  { id: "web", icon: "monitor" },
   { id: "backend", icon: "server" },
   { id: "automations", icon: "workflow" },
   { id: "odoo", icon: "building" },
