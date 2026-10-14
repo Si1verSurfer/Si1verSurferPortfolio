@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Project } from "@/data/projects";
-import { getRelatedProjects, projectThumbClass } from "@/data/projects";
+import { getRelatedProjects } from "@/data/projects";
 import { SiteNav } from "@/components/portfolio/site-nav";
 import { SiteBackdrop } from "@/components/portfolio/site-backdrop";
 import { ContactFooter } from "@/components/portfolio/contact-footer";
@@ -116,18 +116,12 @@ export function ProjectDetailClient({ project }: { project: Project }) {
                 <div className="pd-showcase">
                   <div className="pd-showcase-frame">
                     <div className="pd-showcase-glow" aria-hidden />
-                    <div
-                      className={`pd-showcase-media ${project.imageFit === "contain" ? "pd-showcase-media-wide" : ""}`}
-                    >
+                    <div className="pd-showcase-media">
                       <Image
                         src={project.image}
                         alt={project.title}
                         fill
-                        className={
-                          project.imageFit === "contain"
-                            ? "pd-showcase-img pd-showcase-img-contain"
-                            : "pd-showcase-img"
-                        }
+                        className="pd-showcase-img"
                         sizes="(max-width: 1024px) 100vw, 480px"
                         quality={90}
                         priority
@@ -162,14 +156,12 @@ export function ProjectDetailClient({ project }: { project: Project }) {
                         href={`/projects/${item.slug}`}
                         className="pd-more-card group"
                       >
-                        <div
-                          className={`pd-more-media ${item.imageFit === "contain" ? "wk-tile-media--contain" : ""}`}
-                        >
+                        <div className="pd-more-media">
                           <Image
                             src={item.image}
                             alt={item.title}
                             fill
-                            className={projectThumbClass(item)}
+                            className="project-thumb object-cover object-top"
                             sizes="(max-width: 640px) 100vw, 280px"
                             quality={80}
                           />

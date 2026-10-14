@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { PROJECTS, projectThumbClass } from "@/data/projects";
+import { PROJECTS } from "@/data/projects";
 import { useLanguage } from "@/context/language-context";
 import { portfolioProfile } from "@/data/profile";
 import { duration, easeOutExpo } from "@/lib/motion";
@@ -69,14 +69,12 @@ export function WorkSection() {
                   href={`/projects/${project.slug}`}
                   className={`wk-hero group ${primary ? "wk-hero-primary" : "wk-hero-secondary"}`}
                 >
-                  <div
-                    className={`wk-hero-media ${project.imageFit === "contain" ? "wk-hero-media--contain" : ""}`}
-                  >
+                  <div className="wk-hero-media">
                     <Image
                       src={project.image}
                       alt={project.title}
                       fill
-                      className={projectThumbClass(project)}
+                      className="project-thumb object-cover object-top"
                       sizes={
                         primary
                           ? "(max-width: 1024px) 100vw, 66vw"
@@ -151,14 +149,12 @@ export function WorkSection() {
                   }}
                 >
                   <Link href={`/projects/${project.slug}`} className="wk-tile group">
-                    <div
-                      className={`wk-tile-media ${project.imageFit === "contain" ? "wk-tile-media--contain" : ""}`}
-                    >
+                    <div className="wk-tile-media">
                       <Image
                         src={project.image}
                         alt={project.title}
                         fill
-                        className={projectThumbClass(project)}
+                        className="project-thumb object-cover object-top"
                         sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 33vw"
                         quality={85}
                         loading="lazy"

@@ -10,8 +10,6 @@ export type Project = {
   app_store_url?: string;
   is_featured: boolean;
   image: string;
-  /** Wide UI mockups read better with contain + padding */
-  imageFit?: "cover" | "contain";
 };
 
 export const PROJECTS: Project[] = [
@@ -153,7 +151,6 @@ export const PROJECTS: Project[] = [
     project_url: "https://github.com/Si1verSurfer",
     is_featured: false,
     image: "/projects/rafiq-al-umrah.jpg",
-    imageFit: "contain",
   },
   {
     id: 11,
@@ -167,7 +164,6 @@ export const PROJECTS: Project[] = [
     project_url: "https://github.com/Si1verSurfer",
     is_featured: false,
     image: "/projects/bobo-ala-bab.jpg",
-    imageFit: "contain",
   },
   {
     id: 12,
@@ -181,18 +177,11 @@ export const PROJECTS: Project[] = [
     project_url: "https://github.com/Si1verSurfer",
     is_featured: false,
     image: "/projects/jumera.jpg",
-    imageFit: "contain",
   },
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return PROJECTS.find((p) => p.slug === slug);
-}
-
-export function projectThumbClass(project: Pick<Project, "imageFit">): string {
-  return project.imageFit === "contain"
-    ? "project-thumb project-thumb-contain"
-    : "project-thumb object-cover object-top";
 }
 
 export function getAllProjectSlugs(): string[] {

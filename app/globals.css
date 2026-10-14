@@ -1065,28 +1065,6 @@
     @apply relative aspect-[16/10] overflow-hidden bg-[var(--navy-soft)];
   }
 
-  .wk-tile-media--contain,
-  .wk-hero-media--contain {
-    background: linear-gradient(165deg, #f6f6f8 0%, #ececef 100%);
-  }
-
-  .wk-tile-media--contain .wk-tile-shade,
-  .wk-hero-media--contain .wk-hero-shade {
-    opacity: 0.25;
-  }
-
-  .project-thumb-contain {
-    object-fit: contain;
-    object-position: center;
-    padding: 0.65rem;
-  }
-
-  @media (min-width: 640px) {
-    .project-thumb-contain {
-      padding: 0.85rem;
-    }
-  }
-
   .wk-tile-shade {
     @apply absolute inset-0 opacity-80 transition-opacity duration-300;
     background: linear-gradient(
@@ -1238,21 +1216,9 @@
     box-shadow: 0 24px 48px rgba(26, 32, 52, 0.14);
   }
 
-  .pd-showcase-media-wide {
-    @apply aspect-[16/10] max-w-none;
-    background: linear-gradient(165deg, #f6f6f8 0%, #ececef 100%);
-    box-shadow: 0 20px 44px rgba(26, 32, 52, 0.12);
-  }
-
   .pd-showcase-img {
     object-fit: cover;
     object-position: top center;
-  }
-
-  .pd-showcase-img-contain {
-    object-fit: contain;
-    object-position: center;
-    padding: 0.75rem;
   }
 
   .pd-store-badge {
