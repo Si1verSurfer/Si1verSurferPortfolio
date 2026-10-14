@@ -1754,19 +1754,15 @@
   }
 
   .service-card:hover {
-    border-color: var(--border-strong);
-    box-shadow:
-      0 28px 64px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    background: var(--glass-cream-strong);
+    border-color: rgba(26, 32, 52, 0.16);
+    box-shadow: 0 18px 40px rgba(26, 32, 52, 0.12);
+    background: rgba(255, 255, 255, 0.88);
   }
 
   .service-card-featured {
-    background: var(--glass-cream-strong);
-    border-color: rgba(240, 231, 213, 0.45);
-    box-shadow:
-      0 26px 64px rgba(0, 0, 0, 0.26),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 
   .service-featured-layout {
@@ -1777,28 +1773,70 @@
     @apply flex min-w-0 flex-col;
   }
 
-  .service-featured-includes {
-    @apply grid gap-2.5 rounded-[1.15rem] border border-[rgba(232,220,198,0.55)] p-4 sm:grid-cols-2 sm:gap-3 sm:p-5 lg:grid-cols-1 xl:grid-cols-2;
-    background:
-      linear-gradient(160deg, rgba(251, 247, 240, 0.92) 0%, rgba(240, 231, 213, 0.86) 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    color: var(--navy);
+  .service-includes-panel {
+    @apply rounded-[1.1rem] border border-[var(--navy)]/10 p-4 sm:rounded-[1.15rem] sm:p-4;
+    background: rgba(255, 255, 255, 0.52);
+    backdrop-filter: blur(12px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.88),
+      0 10px 28px rgba(26, 32, 52, 0.06);
   }
 
-  .service-card-featured .service-feature {
-    color: rgba(26, 32, 52, 0.72);
+  .service-includes-panel-featured {
+    @apply flex min-h-0 flex-col p-4 sm:p-5 lg:self-stretch;
   }
 
-  .service-card-featured .service-check {
-    background: rgba(26, 32, 52, 0.08);
-    color: var(--navy);
-    box-shadow: 0 0 0 1px rgba(26, 32, 52, 0.12);
+  .service-includes-label {
+    @apply mb-3 text-[0.62rem] font-bold uppercase tracking-[0.16em] text-[var(--navy)]/45;
+  }
+
+  html[dir="rtl"] .service-includes-label {
+    @apply normal-case tracking-normal;
+  }
+
+  .service-includes-list {
+    @apply grid flex-1 gap-2 sm:grid-cols-2 sm:gap-2.5 lg:grid-cols-1 xl:grid-cols-2;
+  }
+
+  .service-includes-list-compact {
+    @apply grid-cols-1 sm:grid-cols-1;
   }
 
   @media (min-width: 1024px) and (max-width: 1279px) {
-    .service-featured-includes {
-      @apply grid-cols-1 content-start;
+    .service-includes-list {
+      @apply grid-cols-1;
     }
+  }
+
+  .service-card-featured .service-feature {
+    @apply items-center rounded-xl border border-[var(--navy)]/8 px-3 py-2.5;
+    background: rgba(255, 255, 255, 0.72);
+    color: rgba(26, 32, 52, 0.78);
+    transition:
+      border-color 0.25s ease,
+      background 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .service-card-featured .service-feature:hover {
+    border-color: rgba(26, 32, 52, 0.14);
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-1px);
+  }
+
+  .service-card-featured .service-check {
+    @apply mt-0 h-6 w-6;
+    background: var(--ink);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(17, 17, 20, 0.18);
+  }
+
+  .service-feature-text {
+    @apply min-w-0 flex-1 text-sm font-semibold leading-snug;
+  }
+
+  .service-feature-index {
+    @apply shrink-0 text-[0.58rem] font-extrabold tabular-nums text-[var(--navy)]/25;
   }
 
   .service-featured-footer {
@@ -1854,13 +1892,17 @@
   }
 
   .service-feature {
-    @apply flex items-start gap-3 text-sm leading-relaxed text-[var(--cream-muted)];
+    @apply flex items-start gap-2.5 text-sm leading-relaxed text-[var(--navy)]/65;
+  }
+
+  .service-includes-panel .service-feature-text {
+    @apply font-medium text-[var(--navy)]/72;
   }
 
   .service-check {
-    @apply mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[var(--navy)];
-    background: var(--cream-soft);
-    box-shadow: 0 0 0 1px rgba(240, 231, 213, 0.35);
+    @apply mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white;
+    background: var(--ink);
+    box-shadow: 0 4px 10px rgba(17, 17, 20, 0.12);
     transition: transform 0.25s ease;
   }
 
@@ -1878,10 +1920,14 @@
   }
 
   .service-trust-item {
-    @apply flex min-w-0 items-center gap-2.5 rounded-2xl border border-[var(--border)] px-3.5 py-3 text-sm font-semibold text-[var(--cream)] sm:px-4;
-    background:
-      linear-gradient(145deg, rgba(251, 247, 240, 0.22), rgba(240, 231, 213, 0.08));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    @apply flex min-w-0 items-center gap-2.5 rounded-2xl border border-[var(--navy)]/10 px-3.5 py-3 text-sm font-semibold text-[var(--navy)] sm:px-4;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  }
+
+  .service-trust-item svg {
+    color: var(--ink);
   }
 
   .service-trust-item span {
@@ -1907,9 +1953,10 @@
   }
 
   .service-note {
-    @apply flex flex-col gap-5 rounded-[1.35rem] border border-[rgba(232,220,198,0.65)] p-5 sm:rounded-[1.5rem] sm:p-6 md:flex-row md:items-center md:justify-between md:p-8;
-    background: var(--cream-panel-soft);
-    box-shadow: var(--shadow-cream);
+    @apply flex flex-col gap-5 rounded-[1.35rem] border border-white/80 p-5 sm:rounded-[1.5rem] sm:p-6 md:flex-row md:items-center md:justify-between md:p-8;
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.9);
     transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   }
 
@@ -1931,10 +1978,8 @@
   }
 
   .service-note:hover {
-    border-color: rgba(232, 220, 198, 0.9);
-    box-shadow:
-      0 22px 52px rgba(0, 0, 0, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border-color: rgba(26, 32, 52, 0.14);
+    box-shadow: 0 18px 40px rgba(26, 32, 52, 0.1);
     transform: translateY(-2px);
   }
 

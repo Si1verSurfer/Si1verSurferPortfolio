@@ -100,7 +100,7 @@ export function AboutSection() {
             { icon: Sparkles, text: t.services.trust[2] },
           ].map(({ icon: Icon, text }) => (
             <div key={text} className="service-trust-item">
-              <Icon className="h-4 w-4 shrink-0 text-[var(--cream)]" strokeWidth={1.7} />
+              <Icon className="h-4 w-4 shrink-0 text-[var(--ink)]" strokeWidth={1.7} />
               <span>{text}</span>
             </div>
           ))}
@@ -159,16 +159,22 @@ export function AboutSection() {
                     </div>
                   </div>
 
-                  <ul className="service-featured-includes">
-                    {copy.includes.map((item) => (
-                      <li key={item} className="service-feature">
-                        <span className="service-check">
-                          <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
-                        </span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="service-includes-panel service-includes-panel-featured">
+                    <p className="service-includes-label">{t.services.includesLabel}</p>
+                    <ul className="service-includes-list">
+                      {copy.includes.map((item, featureIndex) => (
+                        <li key={item} className="service-feature">
+                          <span className="service-check">
+                            <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
+                          </span>
+                          <span className="service-feature-text">{item}</span>
+                          <span className="service-feature-index" aria-hidden>
+                            {String(featureIndex + 1).padStart(2, "0")}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </motion.article>
             );
@@ -209,16 +215,19 @@ export function AboutSection() {
                     </p>
                   </div>
 
-                  <ul className="relative mt-5 grid flex-1 gap-2 sm:mt-6 sm:gap-2.5">
-                    {copy.includes.map((item) => (
-                      <li key={item} className="service-feature">
-                        <span className="service-check">
-                          <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
-                        </span>
-                        <span className="line-clamp-2">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="service-includes-panel relative mt-5 flex-1 sm:mt-6">
+                    <p className="service-includes-label">{t.services.includesLabel}</p>
+                    <ul className="service-includes-list service-includes-list-compact">
+                      {copy.includes.map((item) => (
+                        <li key={item} className="service-feature">
+                          <span className="service-check">
+                            <Check className="h-3.5 w-3.5" strokeWidth={2.4} />
+                          </span>
+                          <span className="service-feature-text line-clamp-2">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
                   <div className="service-card-footer">
                     <div className="min-w-0">

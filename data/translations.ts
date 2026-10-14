@@ -65,6 +65,7 @@ export type TranslationContent = {
     cta: string;
     featuredLabel: string;
     timelineLabel: string;
+    includesLabel: string;
     planCta: string;
     noteTitle: string;
     noteText: string;
@@ -244,6 +245,7 @@ export const translations: Record<Locale, TranslationContent> = {
       cta: "Start a project",
       featuredLabel: "Most chosen",
       timelineLabel: "Typical timeline",
+      includesLabel: "What's included",
       planCta: "Get this plan",
       noteTitle: "Need a custom package?",
       noteText:
@@ -724,6 +726,7 @@ export const translations: Record<Locale, TranslationContent> = {
       cta: "ابدأ مشروعاً",
       featuredLabel: "الأكثر اختياراً",
       timelineLabel: "المدة المعتادة",
+      includesLabel: "يشمل الباقة",
       planCta: "أريد هذه الباقة",
       noteTitle: "تحتاج باقة مخصصة؟",
       noteText:
