@@ -86,24 +86,24 @@ export const PROJECT_CASE_STUDIES: Record<string, LocalizedCaseStudy> = {
   "mtloob-medical": {
     en: {
       problem:
-        "Clinics struggled to reorder medical supplies quickly from approved vendors with clear status and trust.",
+        "Healthcare buyers and clinics needed a direct, trusted way to browse medical suppliers and request custom quotes — without opaque middle layers.",
       roleDetail:
-        "Mobile developer on the Matloob flow — clinic ordering UI, vendor catalog, and Firebase-backed order state.",
+        "Mobile developer on مطلوب طبي (Mtloob) — RFQ creation, supplier catalogs, keyword-matched notifications, and privacy controls for buyer–vendor contact.",
       outcomes: [
-        "Simplified clinic → vendor ordering with fewer steps per restock",
-        "Reliable mobile UX for repeat weekly orders",
-        "Foundation for notifications and order history",
+        "Live on the App Store with RFQs, favorites, and supplier product galleries",
+        "Push alerts when new medical quote requests match vendor keywords",
+        "Clearer location labels and sales contact settings for suppliers",
       ],
     },
     ar: {
       problem:
-        "العيادات تواجه صعوبة في إعادة طلب المستلزمات الطبية بسرعة من موردين معتمدين مع حالة واضحة.",
+        "الممارسون الصحيون والمشتريات يحتاجون طريقة مباشرة وموثوقة لتصفح الموردين الطبيين وطلب عروض أسعار مخصصة دون وسيط.",
       roleDetail:
-        "تطوير موبايل لمسار Matloob — واجهة الطلب، كatalog المورد، وحالة الطلب على Firebase.",
+        "تطوير موبايل لمطلوب طبي — إنشاء طلبات عروض، كatalog الموردين، إشعارات بالكلمات المفتاحية، وضوابط خصوصية للتواصل.",
       outcomes: [
-        "تبسيط طلب العيادة → المورد بخطوات أقل",
-        "تجربة موبايل موثوقة للطلبات المتكررة",
-        "أساس للإشعارات وسجل الطلبات",
+        "متاح على App Store مع RFQ والمفضلة ومعرض منتجات المورد",
+        "إشعارات عند طلبات عروض طبية مطابقة لكلمات المورد",
+        "تسميات أوضح للموقع وإعدادات تواصل المبيعات للموردين",
       ],
     },
   },

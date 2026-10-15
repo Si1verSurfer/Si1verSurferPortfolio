@@ -1,42 +1,101 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import { ArrowUpRight, Github, Linkedin, Mail, MapPin, Send } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Loader2, Mail, MapPin, Send } from "lucide-react";
+import { toast } from "sonner";
 import { portfolioProfile } from "@/data/profile";
 import { useLanguage } from "@/context/language-context";
 import { scrollToSection } from "@/lib/scroll-to-section";
-import { buildInquiryMailto } from "@/lib/inquiry-mailto";
+import { ContactPhoneInput, type PhoneValue } from "@/components/portfolio/contact-phone-input";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 export function ContactFooter() {
   const { t, isRtl, locale } = useLanguage();
-  const [form, setForm] = useState({
+  const [sending, setSending] = useState(false);
+  const [form, setForm] = useState<{
+    name: string;
+    email: string;
+    phone: PhoneValue | undefined;
+    projectType: string;
+    budget: string;
+    timeline: string;
+    message: string;
+    company: string;
+  }>({
     name: "",
     email: "",
+    phone: undefined,
     projectType: "",
     budget: "",
     timeline: "",
     message: "",
+    company: "",
   });
   const displayName = locale === "ar" ? portfolioProfile.nameAr : portfolioProfile.name;
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (form.company) return;
+
+    const phone = form.phone?.trim() ?? "";
+    if (!phone || !isValidPhoneNumber(phone)) {
+      toast.error(t.contact.formError);
+      return;
+    }
+
     const projectType =
       form.projectType || t.contact.projectTypes[0] || "Mobile app";
     const budget = form.budget || t.contact.budgetRanges[0] || "Not sure yet";
     const timeline = form.timeline || t.contact.timelineOptions[0] || "Flexible";
 
-    const mailto = buildInquiryMailto(portfolioProfile.email, {
-      name: form.name,
-      email: form.email,
-      projectType,
-      budget,
-      timeline,
-      message: form.message,
-      locale,
-    });
+    setSending(true);
 
-    window.location.href = mailto;
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone,
+          projectType,
+          budget,
+          timeline,
+          message: form.message,
+          locale,
+          company: form.company,
+        }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+
+      if (res.status === 503) {
+        toast.error(t.contact.formErrorConfig);
+        return;
+      }
+
+      if (!res.ok) {
+        toast.error(data.error || t.contact.formError);
+        return;
+      }
+
+      toast.success(t.contact.formSuccess);
+      setForm({
+        name: "",
+        email: "",
+        phone: undefined,
+        projectType: "",
+        budget: "",
+        timeline: "",
+        message: "",
+        company: "",
+      });
+    } catch {
+      toast.error(t.contact.formError);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -151,6 +210,17 @@ export function ContactFooter() {
                   <p className="mt-1 text-sm text-[var(--cream-dim)]">{t.contact.formIntro}</p>
                 </div>
 
+                <input
+                  type="text"
+                  name="company"
+                  value={form.company}
+                  onChange={(e) => setForm((p) => ({ ...p, company: e.target.value }))}
+                  className="contact-honeypot"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden
+                />
+
                 <div className="grid gap-4 sm:grid-cols-2">
                   <input
                     required
@@ -158,6 +228,7 @@ export function ContactFooter() {
                     onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                     placeholder={t.contact.formName}
                     className="input-field"
+                    autoComplete="name"
                   />
                   <input
                     required
@@ -166,8 +237,21 @@ export function ContactFooter() {
                     onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                     placeholder={t.contact.formEmail}
                     className="input-field"
+                    autoComplete="email"
                   />
                 </div>
+
+                <label className="sr-only" htmlFor="contact-phone">
+                  {t.contact.formPhone}
+                </label>
+                <ContactPhoneInput
+                  id="contact-phone"
+                  locale={locale}
+                  value={form.phone}
+                  onChange={(phone) => setForm((p) => ({ ...p, phone }))}
+                  placeholder={t.contact.formPhone}
+                  required
+                />
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="sr-only" htmlFor="contact-project-type">
@@ -230,9 +314,13 @@ export function ContactFooter() {
                   placeholder={t.contact.formMessage}
                   className="input-field resize-none"
                 />
-                <button type="submit" className="btn-primary w-full">
-                  <Send className="h-4 w-4" />
-                  {t.contact.formSubmitMailto}
+                <button type="submit" className="btn-primary w-full" disabled={sending}>
+                  {sending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                  {sending ? t.contact.formSending : t.contact.formSubmit}
                 </button>
               </form>
             </div>

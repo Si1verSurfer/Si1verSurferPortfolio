@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { PROJECTS } from "@/data/projects";
 import {
   type ProjectFilterId,
@@ -13,7 +13,7 @@ import {
 } from "@/data/project-tags";
 import { useLanguage } from "@/context/language-context";
 import { portfolioProfile } from "@/data/profile";
-import { duration, easeOutExpo } from "@/lib/motion";
+import { duration, easeOutExpo, springNav } from "@/lib/motion";
 
 function getFilterLabel(
   id: ProjectFilterId,
@@ -51,6 +51,29 @@ export function WorkSection() {
   const rest = filteredProjects.filter((p) => !featured.some((f) => f.slug === p.slug));
 
   const filterOptions: ProjectFilterId[] = ["all", ...PROJECT_TAG_IDS];
+
+  const stageTransition = reduced
+    ? { duration: 0 }
+    : { duration: duration.fade, ease: easeOutExpo };
+
+  const gridContainerVariants = {
+    initial: {},
+    animate: {
+      transition: {
+        staggerChildren: reduced ? 0 : 0.045,
+        delayChildren: reduced ? 0 : 0.06,
+      },
+    },
+  };
+
+  const gridItemVariants = {
+    initial: reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.42, ease: easeOutExpo },
+    },
+  };
 
   return (
     <section
@@ -95,40 +118,80 @@ export function WorkSection() {
           </header>
 
           <div className="wk-filters" role="toolbar" aria-label={t.work.filterAll}>
-            {filterOptions.map((id) => (
-              <button
-                key={id}
-                type="button"
-                className={`wk-filter-btn ${activeFilter === id ? "wk-filter-btn-active" : ""}`}
-                aria-pressed={activeFilter === id}
-                onClick={() => setActiveFilter(id)}
-              >
-                {getFilterLabel(id, t.work)}
-              </button>
-            ))}
+            {filterOptions.map((id) => {
+              const isActive = activeFilter === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  className={`wk-filter-btn ${isActive ? "wk-filter-btn-active" : ""}`}
+                  aria-pressed={isActive}
+                  onClick={() => setActiveFilter(id)}
+                >
+                  {isActive ? (
+                    <motion.span
+                      layoutId="work-filter-pill"
+                      className="wk-filter-pill"
+                      transition={springNav}
+                      aria-hidden
+                    />
+                  ) : null}
+                  <span className="relative z-[1]">{getFilterLabel(id, t.work)}</span>
+                </button>
+              );
+            })}
             <span className="wk-filter-count">
               {t.work.showingCount}{" "}
-              <strong>{filteredProjects.length}</strong> / {PROJECTS.length}
+              <motion.strong
+                key={`${activeFilter}-${filteredProjects.length}`}
+                initial={reduced ? false : { opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={stageTransition}
+              >
+                {filteredProjects.length}
+              </motion.strong>{" "}
+              / {PROJECTS.length}
             </span>
           </div>
 
-          {filteredProjects.length === 0 ? (
-            <p className="wk-filter-empty">{t.work.filterEmpty}</p>
-          ) : null}
+          <div className="wk-projects-stage">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={activeFilter}
+                initial={reduced ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduced ? undefined : { opacity: 0, y: -10 }}
+                transition={stageTransition}
+              >
+                {filteredProjects.length === 0 ? (
+                  <motion.p
+                    className="wk-filter-empty"
+                    initial={reduced ? false : { opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={stageTransition}
+                  >
+                    {t.work.filterEmpty}
+                  </motion.p>
+                ) : null}
 
-          {/* Featured showcase */}
-          {featured.length > 0 ? (
-          <div className="wk-featured">
-            {featured.map((project, index) => {
-              const localized = t.work.projects[project.slug];
-              const primary = index === 0;
+                {/* Featured showcase */}
+                {featured.length > 0 ? (
+                  <motion.div
+                    className="wk-featured"
+                    variants={gridContainerVariants}
+                    initial="initial"
+                    animate="animate"
+                  >
+                    {featured.map((project, index) => {
+                      const localized = t.work.projects[project.slug];
+                      const primary = index === 0;
 
-              return (
-                <Link
-                  key={project.slug}
-                  href={`/projects/${project.slug}`}
-                  className={`wk-hero group ${primary ? "wk-hero-primary" : "wk-hero-secondary"}`}
-                >
+                      return (
+                        <motion.div key={project.slug} variants={gridItemVariants}>
+                          <Link
+                            href={`/projects/${project.slug}`}
+                            className={`wk-hero group ${primary ? "wk-hero-primary" : "wk-hero-secondary"}`}
+                          >
                   <div className="wk-hero-media">
                     <Image
                       src={project.image}
@@ -180,38 +243,34 @@ export function WorkSection() {
                       </div>
                     </div>
                   </div>
-                </Link>
-              );
-            })}
-          </div>
-          ) : null}
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </motion.div>
+                ) : null}
 
-          {/* Compact modern grid */}
-          {rest.length > 0 ? (
-          <>
-          <div className="wk-list-head">
-            <p className="wk-list-label">{t.work.countLabel}</p>
-            <span className="wk-list-line" aria-hidden />
-          </div>
+                {/* Compact modern grid */}
+                {rest.length > 0 ? (
+                  <>
+                    <div className="wk-list-head">
+                      <p className="wk-list-label">{t.work.countLabel}</p>
+                      <span className="wk-list-line" aria-hidden />
+                    </div>
 
-          <div className="wk-mosaic">
-            {rest.map((project, index) => {
-              const localized = t.work.projects[project.slug];
-              const catalogIndex = PROJECTS.findIndex((p) => p.slug === project.slug);
+                    <motion.div
+                      className="wk-mosaic"
+                      variants={gridContainerVariants}
+                      initial="initial"
+                      animate="animate"
+                    >
+                      {rest.map((project) => {
+                        const localized = t.work.projects[project.slug];
+                        const catalogIndex = PROJECTS.findIndex((p) => p.slug === project.slug);
 
-              return (
-                <motion.div
-                  key={project.slug}
-                  initial={false}
-                  whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{
-                    delay: reduced ? 0 : index * 0.04,
-                    duration: 0.45,
-                    ease: easeOutExpo,
-                  }}
-                >
-                  <Link href={`/projects/${project.slug}`} className="wk-tile group">
+                        return (
+                          <motion.div key={project.slug} variants={gridItemVariants}>
+                            <Link href={`/projects/${project.slug}`} className="wk-tile group">
                     <div className="wk-tile-media">
                       <Image
                         src={project.image}
@@ -255,13 +314,16 @@ export function WorkSection() {
                         </div>
                       </div>
                     </div>
-                  </Link>
-                </motion.div>
-              );
-            })}
+                            </Link>
+                          </motion.div>
+                        );
+                      })}
+                    </motion.div>
+                  </>
+                ) : null}
+              </motion.div>
+            </AnimatePresence>
           </div>
-          </>
-          ) : null}
         </motion.div>
       </div>
     </section>

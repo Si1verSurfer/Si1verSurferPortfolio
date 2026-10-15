@@ -65,15 +65,17 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 3,
-    title: "Mtloob Medical",
+    title: "مطلوب طبي | Mtloob",
     slug: "mtloob-medical",
     description:
-      "Clinics order medical supplies from trusted vendors, simply.",
-    categories: ["Mobile App", "Healthcare"],
-    tags: ["mobile"],
-    tech_stack: ["Flutter", "Node.js", "Firebase"],
+      "Medical RFQs and supplier catalogs — practitioners and buyers reach vendors directly, without a middleman.",
+    categories: ["Mobile App", "Healthcare marketplace"],
+    tags: ["mobile", "ecommerce", "live-store"],
+    tech_stack: ["Flutter", "Firebase", "RFQ", "Push notifications"],
     role: "Mobile Developer",
     project_url: "https://github.com/Si1verSurfer",
+    app_store_url:
+      "https://apps.apple.com/us/app/%D9%85%D8%B7%D9%84%D9%88%D8%A8-%D8%B7%D8%A8%D9%9A-mtloob/id6753684200",
     is_featured: false,
     image: "/projects/mtloob-medical.png",
   },

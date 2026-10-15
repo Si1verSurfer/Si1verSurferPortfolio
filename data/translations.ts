@@ -185,6 +185,9 @@ export type TranslationContent = {
     formBudget: string;
     formTimeline: string;
     formSubmitMailto: string;
+    formPhone: string;
+    formError: string;
+    formErrorConfig: string;
     projectTypes: string[];
     budgetRanges: string[];
     timelineOptions: string[];
@@ -427,8 +430,9 @@ export const translations: Record<Locale, TranslationContent> = {
           role: "Full Stack",
         },
         "mtloob-medical": {
-          categories: "Mobile · Healthcare",
-          description: "Help clinics order medical supplies with trust and simplicity.",
+          categories: "Mobile · Medical marketplace",
+          description:
+            "Browse suppliers, send custom RFQs, and connect with medical vendors on one secure app — live on the App Store.",
           role: "Mobile",
         },
         "rafiq-al-dhikr": {
@@ -684,13 +688,16 @@ export const translations: Record<Locale, TranslationContent> = {
       formMessage: "Tell me about your idea",
       formSubmit: "Send message",
       formSending: "Sending…",
-      formSuccess: "Got it — thank you.",
+      formSuccess: "Message sent — I’ll get back to you soon.",
       formIntroTitle: "Send your message",
       formIntro: "Share your idea briefly — I’ll reply personally.",
       formProjectType: "Project type",
       formBudget: "Budget range",
       formTimeline: "Timeline",
       formSubmitMailto: "Send via email",
+      formPhone: "Phone number",
+      formError: "Couldn’t send your message. Please try again.",
+      formErrorConfig: "Contact form isn’t configured yet. Email me directly for now.",
       projectTypes: [
         "Mobile app",
         "Web platform",
@@ -947,8 +954,9 @@ export const translations: Record<Locale, TranslationContent> = {
           role: "Full Stack",
         },
         "mtloob-medical": {
-          categories: "موبايل · رعاية صحية",
-          description: "منصة تساعد العيادات على طلب المستلزمات الطبية بثقة وسهولة.",
+          categories: "موبايل · سوق طبي",
+          description:
+            "تصفّح الموردين، اطلب عروض أسعار مخصصة، وتواصل مباشرة — مطلوب طبي متاح على App Store.",
           role: "موبايل",
         },
         "rafiq-al-dhikr": {
@@ -1202,13 +1210,16 @@ export const translations: Record<Locale, TranslationContent> = {
       formMessage: "حدّثني عن فكرتك",
       formSubmit: "إرسال الرسالة",
       formSending: "جاري الإرسال…",
-      formSuccess: "وصلني رسالتك — شكراً لك.",
+      formSuccess: "تم الإرسال — سأرد عليك قريباً.",
       formIntroTitle: "أرسل رسالتك",
       formIntro: "اكتب فكرتك باختصار، وأرد عليك شخصياً.",
       formProjectType: "نوع المشروع",
       formBudget: "نطاق الميزانية",
       formTimeline: "الجدول الزمني",
       formSubmitMailto: "إرسال عبر البريد",
+      formPhone: "رقم الهاتف",
+      formError: "تعذّر إرسال الرسالة. حاول مرة أخرى.",
+      formErrorConfig: "نموذج التواصل غير مفعّل بعد. راسلني على البريد مباشرة.",
       projectTypes: [
         "تطبيق موبايل",
         "منصة ويب",

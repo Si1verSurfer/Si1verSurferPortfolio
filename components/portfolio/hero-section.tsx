@@ -106,7 +106,33 @@ export function HeroSection() {
             </div>
 
             <div className="hero-portrait">
-              <div className="hero-portrait-frame">
+              <div className="hero-portrait-backdrop" aria-hidden>
+                <span className="hero-portrait-orb hero-portrait-orb-a" />
+                <span className="hero-portrait-orb hero-portrait-orb-b" />
+              </div>
+              <div className="hero-portrait-halo" aria-hidden />
+              <div className="hero-portrait-plinth" aria-hidden />
+
+              <motion.div
+                className="hero-portrait-frame"
+                animate={
+                  reduced
+                    ? undefined
+                    : {
+                        y: [0, -5, 0],
+                        scale: [1, 1.014, 1],
+                      }
+                }
+                transition={
+                  reduced
+                    ? { duration: 0 }
+                    : {
+                        duration: 7.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }
+                }
+              >
                 <Image
                   src={portfolioProfile.avatarSrc}
                   alt={portfolioProfile.name}
@@ -116,9 +142,11 @@ export function HeroSection() {
                   quality={90}
                   priority
                 />
-              </div>
-              {/* Soft linear dissolve — hides the hard shirt edge */}
+              </motion.div>
+
+              <div className="hero-portrait-edge-soft" aria-hidden />
               <div className="hero-portrait-fade" aria-hidden />
+              <div className="hero-portrait-sheen" aria-hidden />
             </div>
 
             <div className="hero-pill hero-pill-a">
